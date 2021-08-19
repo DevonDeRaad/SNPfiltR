@@ -4,14 +4,18 @@
 #' visualize the distribution of mean depth per sample across all SNPs in your vcf file,
 #' and will not alter your vcf file. 2) specify vcfR object, and set 'maxdepth' = 'integer value'.
 #' This option will show you where your specified cutoff falls in the distribution of SNP depth,
-#' and it will remove all SNPs with a mean depth above the specified threshold from the vcf.
+#' and remove all SNPs with a mean depth above the specified threshold from the vcf.
 #' Super high depth loci are likely multiple loci stuck together into a single paralogous locus.
-#' Note: This function filters 'per SNP' rather than 'per genotype' otherwise it would disproportionately
-#' remove genotypes from our deepest sequenced samples (because sequencing depth is so variable between samples).
+#' Note: This function filters on a 'per SNP' basis rather than a 'per genotype' basis,
+#' otherwise it would disproportionately remove genotypes from our deepest sequenced samples
+#' (because sequencing depth is so variable between samples).
 #'
 #' @param vcfR a vcfR object
 #' @param maxdepth an integer specifying the maximum mean depth for a SNP to be retained
 #' @return The vcfR object input, with SNPs above the 'maxdepth' cutoff removed
+#' @examples
+#' max_depth(vcfR=system.file("extdata","unfiltered.vcf.gz",package="SNPfiltR",mustWork=TRUE),
+#' maxdepth=100)
 #' @export
 max_depth <- function(vcfR, maxdepth=NULL){
 

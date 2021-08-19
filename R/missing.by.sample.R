@@ -10,9 +10,9 @@
 #'
 #' Note: This decision is highly project specific, but these visualizations should help you get a feel for how
 #' very low data samples cannot be rescued simply by a missing data SNP filter. If you want to remove
-#' specific samples from your vcf that cannot be specified with a simple cutoff refer to this great tutorial:
-#' https://knausb.github.io/vcfR_documentation/sequence_coverage.html which was the basis for the code
-#' implemented in this function.
+#' specific samples from your vcf that cannot be specified with a simple cutoff refer to this great
+#' [tutorial](https://knausb.github.io/vcfR_documentation/sequence_coverage.html)
+#' which was the basis for the code implemented in this function.
 #'
 #' @param vcfR a vcfR object
 #' @param popmap if specifies, it must be a two column dataframe with columns names 'id' and 'pop'.
@@ -22,6 +22,8 @@
 #' @return if 'cutoff' is not specified, will return a dataframe containing the average depth and proportion
 #' missing data in each sample. If 'cutoff' is specified, the samples falling above the missing data cutoff
 #' will be removed, and the filtered vcfR object will be returned.
+#' @examples
+#' missing.by.sample(vcfR=system.file("extdata","unfiltered.vcf.gz",package="SNPfiltR",mustWork=TRUE))
 #' @export
 missing.by.sample <- function(vcfR, popmap=NULL, cutoff=NULL){
 

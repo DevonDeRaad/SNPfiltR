@@ -1,15 +1,20 @@
-#bring in full vcf file
-#read in vcf as vcfR
-vcfR <- read.vcfR("~/Desktop/aph.data/unzipped.filtered.vcf")
-dim(vcfR@gt)
-
-#
-head(vcfR@fix)
-levels(as.factor(vcfR@fix[,1]))
-
-distance.thin <- function(vcfR, distance=NULL){
+#' Filter a vcf file based on distance between SNPs on a given scaffold
+#'
+#' This function requires a vcfR object as input, and returns a vcfR object filtered
+#' to retain only SNPs greater than a specified distance apart on each scaffold.
+#' This type of filtering is often employed to reduce linkage amongst SNPs.
+#'
+#' @param vcfR a vcfR object
+#' @return An identical vcfR object, except that SNPs separated by less than the
+#' specified distance have been removed from the file
+#' @examples
+#' filter.allele.balance(vcfR=
+#' system.file("extdata","unfiltered.vcf.gz",package="SNPfiltR",mustWork=TRUE),
+#' min.distance=10000)
+#' @export
+distance.thin <- function(vcfR, min.distance=NULL){
 #set distance
-j=distance
+j=min.distance
 #generate all bp positions as a numeric vector
 fix<-as.numeric(vcfR@fix[,2])
 #intialize empty vector to hold filtering
@@ -32,7 +37,7 @@ for (t in 1:length(levels(as.factor(vcfR@fix[,1])))){
     #store logical indicating whether this SNP is greater than j base pairs from the previous SNP
     k[i]<- fix[i] > prev+j
     #if it is, then we keep this SNP, making it the new 'previous' for assessing the next point.
-    #If we dont keep the SNP, we don't update the closest point
+    #If we don't keep the SNP, we don't update the closest point
     if (fix[i] > prev+j){
       prev<-fix[i]
     }
@@ -43,10 +48,20 @@ for (t in 1:length(levels(as.factor(vcfR@fix[,1])))){
   #we paste these into a continuously built vector for each chrom
   g<-c(g, fix.sub %in% keep)
 }
+
+#calculate total SNPs input
+z<-length(g)
+
 #subset vcfR locus info based on logical
 vcfR@fix<-vcfR@fix[g,]
 #subset genotypes based on logical
 vcfR@gt<-vcfR@gt[g,]
+
+#calculate total SNPs retained
+p<-nrow(vcfR@fix)
+
+print(paste0(p," out of ",z," input SNPs were not located within ",j," base-pairs of another SNP and were retained despite filtering"))
+
 #return vcfR
 return(vcfR)
 }

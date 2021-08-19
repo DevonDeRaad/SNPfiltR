@@ -24,6 +24,8 @@
 #' would remove all SNPs with a MAC of 2 or less)
 #' @return if 'min.mac' is not specified, will print out DAPC results. If 'min.mac' is specified, SNPs
 #' falling below the MAC cutoff will be removed, and the filtered vcfR object will be returned.
+#' @examples
+#' min_mac(vcfR=system.file("extdata","unfiltered.vcf.gz",package="SNPfiltR",mustWork=TRUE), min.mac=2)
 #' @export
 min_mac <- function(vcfR, popmap=NULL, min.mac=NULL){
 
