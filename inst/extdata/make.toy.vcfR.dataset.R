@@ -6,21 +6,25 @@
 #library(devtools)
 #clean_vignettes(pkg = "SNPfiltR")
 
-#read in vcf and make subset example datasets
+#load packages
 library(vcfR)
+library(SNPfiltR)
 
+#read in vcf and make subset example datasets
 vcffog<-read.vcfR("~/Desktop/hipposideros/n3.vcf")
 
-vc.500<-vcffog[sample.int(151015, 500), c(1:20)]
+#subset to 500 random SNPs
+vcfR.example<-vcffog[sample.int(151015, 500), c(1:20)]
 
-write.vcf(vc.500, file = "~/Desktop/SNPfiltR/inst/extdata/unfiltered.vcf.gz")
+#save this vcf
+write.vcf(vcfR.example, file = "~/Downloads/SNPfilter.example.vcf.gz")
 
-vcfR<-read.vcfR("~/Desktop/SNPfiltR/inst/extdata/unfiltered.vcf.gz")
-usethis::use_data(vcfR)
+#save this vcfR as available data for the SNPfiltR package
+usethis::use_data(vcfR.example)
 
-missing.by.sample(vcfR = system.file("extdata", "unfiltered.vcf.gz", package = "RADstackshelpR"))
-
-
+#load and test
+rm(list=ls())
+missing.by.snp(vcfR = vcfR.example)
 
 #Now do big M
 vc.1<-vcffog[sample.int(110576, 100), c(1:20)]
