@@ -8,9 +8,7 @@
 #' @return An identical vcfR object, except that SNPs separated by less than the
 #' specified distance have been removed from the file
 #' @examples
-#' filter.allele.balance(vcfR=
-#' system.file("extdata","unfiltered.vcf.gz",package="SNPfiltR",mustWork=TRUE),
-#' min.distance=10000)
+#' distance.thin(vcfR = SNPfiltR:::vcfR.example, min.distance = 1000)
 #' @export
 distance.thin <- function(vcfR, min.distance=NULL){
 #set distance

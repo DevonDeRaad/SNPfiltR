@@ -14,8 +14,8 @@
 #' @param maxdepth an integer specifying the maximum mean depth for a SNP to be retained
 #' @return The vcfR object input, with SNPs above the 'maxdepth' cutoff removed
 #' @examples
-#' max_depth(vcfR=system.file("extdata","unfiltered.vcf.gz",package="SNPfiltR",mustWork=TRUE),
-#' maxdepth=100)
+#' max_depth(vcfR = SNPfiltR:::vcfR.example)
+#' max_depth(vcfR = SNPfiltR:::vcfR.example, maxdepth = 100)
 #' @export
 max_depth <- function(vcfR, maxdepth=NULL){
 

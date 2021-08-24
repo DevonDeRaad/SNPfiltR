@@ -23,7 +23,8 @@
 #' missing data in each sample. If 'cutoff' is specified, the samples falling above the missing data cutoff
 #' will be removed, and the filtered vcfR object will be returned.
 #' @examples
-#' missing.by.sample(vcfR=system.file("extdata","unfiltered.vcf.gz",package="SNPfiltR",mustWork=TRUE))
+#' missing.by.sample(vcfR = SNPfiltR:::vcfR.example)
+#' missing.by.sample(vcfR = SNPfiltR:::vcfR.example, cutoff = .7)
 #' @export
 missing.by.sample <- function(vcfR, popmap=NULL, cutoff=NULL){
 

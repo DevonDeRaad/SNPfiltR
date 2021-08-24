@@ -1,4 +1,4 @@
-#devtools::install_github("DevonDeRaad/SNPfiltR")
+devtools::install_github("DevonDeRaad/SNPfiltR")
 
 #clean package
 #library(pkgdown)
@@ -20,51 +20,40 @@ vcfR.example<-vcffog[sample.int(151015, 500), c(1:20)]
 write.vcf(vcfR.example, file = "~/Downloads/SNPfilter.example.vcf.gz")
 
 #save this vcfR as available data for the SNPfiltR package
-usethis::use_data(vcfR.example)
+usethis::use_data(vcfR.example, internal = TRUE, overwrite = T)
 
-#load and test
+#clean global environment
 rm(list=ls())
-missing.by.snp(vcfR = vcfR.example)
 
-#Now do big M
-vc.1<-vcffog[sample.int(110576, 100), c(1:20)]
-vc.2<-vcffog[sample.int(110576, 90), c(1:20)]
-vc.3<-vcffog[sample.int(110576, 80), c(1:20)]
-vc.4<-vcffog[sample.int(110576, 70), c(1:20)]
-vc.5<-vcffog[sample.int(110576, 60), c(1:20)]
-vc.6<-vcffog[sample.int(110576, 50), c(1:20)]
-vc.7<-vcffog[sample.int(110576, 40), c(1:20)]
-vc.8<-vcffog[sample.int(110576, 30), c(1:20)]
+#load and test examples
+#missing by snp
+missing.by.snp(vcfR = SNPfiltR:::vcfR.example)
+missing.by.snp(vcfR = SNPfiltR:::vcfR.example, cutoff = .6)
 
-#write.vcf(vc.1, file = "~/Desktop/RADstackshelpR/inst/extdata/bigM1.vcf.gz")
-#write.vcf(vc.2, file = "~/Desktop/RADstackshelpR/inst/extdata/bigM2.vcf.gz")
-#write.vcf(vc.3, file = "~/Desktop/RADstackshelpR/inst/extdata/bigM3.vcf.gz")
-#write.vcf(vc.4, file = "~/Desktop/RADstackshelpR/inst/extdata/bigM4.vcf.gz")
-#write.vcf(vc.5, file = "~/Desktop/RADstackshelpR/inst/extdata/bigM5.vcf.gz")
-#write.vcf(vc.6, file = "~/Desktop/RADstackshelpR/inst/extdata/bigM6.vcf.gz")
-#write.vcf(vc.7, file = "~/Desktop/RADstackshelpR/inst/extdata/bigM7.vcf.gz")
-#write.vcf(vc.8, file = "~/Desktop/RADstackshelpR/inst/extdata/bigM8.vcf.gz")
+#missing by sample
+missing.by.sample(vcfR = SNPfiltR:::vcfR.example)
+missing.by.sample(vcfR = SNPfiltR:::vcfR.example, cutoff = .7)
 
-opt.bigm<- optimize_bigM(M1 = system.file("extdata", "bigM1.vcf.gz", package = "RADstackshelpR"),
-                         M2 = system.file("extdata", "bigM2.vcf.gz", package = "RADstackshelpR"),
-                         M3 = system.file("extdata", "bigM3.vcf.gz", package = "RADstackshelpR"),
-                         M4 = system.file("extdata", "bigM4.vcf.gz", package = "RADstackshelpR"),
-                         M5 = system.file("extdata", "bigM5.vcf.gz", package = "RADstackshelpR"),
-                         M6 = system.file("extdata", "bigM6.vcf.gz", package = "RADstackshelpR"),
-                         M7 = system.file("extdata", "bigM7.vcf.gz", package = "RADstackshelpR"),
-                         M8 = system.file("extdata", "bigM8.vcf.gz", package = "RADstackshelpR"))
+#hard filter
+hard.filter.vcf(vcfR = SNPfiltR:::vcfR.example, depth = 5)
+hard.filter.vcf(vcfR = SNPfiltR:::vcfR.example, depth = 5, gq = 30)
 
-vis_loci(opt.bigm)
+#max depth
+max_depth(vcfR = SNPfiltR:::vcfR.example)
+max_depth(vcfR = SNPfiltR:::vcfR.example, maxdepth = 100)
 
-#now do n
-#write.vcf(vc.8, file = "~/Desktop/RADstackshelpR/inst/extdata/nequalsmminus1.vcf.gz")
-#write.vcf(vc.6, file = "~/Desktop/RADstackshelpR/inst/extdata/nequalsm.vcf.gz")
-#write.vcf(vc.7, file = "~/Desktop/RADstackshelpR/inst/extdata/nequalsmplus1.vcf.gz")
+#allele balance
+filter.allele.balance(vcfR = SNPfiltR:::vcfR.example)
 
-opt.n<- optimize_n(nequalsMminus1 = system.file("extdata", "nequalsmminus1.vcf.gz", package = "RADstackshelpR"),
-                   nequalsM = system.file("extdata", "nequalsm.vcf.gz", package = "RADstackshelpR"),
-                   nequalsMplus1 = system.file("extdata", "nequalsmplus1.vcf.gz", package = "RADstackshelpR"))
+#distance thin
+#this function needs work
+#must build in a fail if no distance is specified
+#must fix the issue that de novo assembled loci are not treated correctly
+distance.thin(vcfR = SNPfiltR:::vcfR.example, min.distance = 1000)
 
-vis_loci(opt.n)
+#min mac
+#this function needs work, needs to be split into min.mac function,
+#and a separate function that performs repeated clustering at different missing data cutoffs
+min_mac(vcfR = SNPfiltR:::vcfR.example)
 
 

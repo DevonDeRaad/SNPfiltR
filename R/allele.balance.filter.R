@@ -10,7 +10,7 @@
 #' @param vcfR a vcfR object
 #' @return An identical vcfR object, except that genotypes failing the allele balance filter have been converted to 'NA'
 #' @examples
-#' filter.allele.balance(vcfR=system.file("extdata","unfiltered.vcf.gz",package="SNPfiltR",mustWork=TRUE))
+#' filter.allele.balance(vcfR = SNPfiltR:::vcfR.example)
 #' @export
 filter.allele.balance <- function(vcfR){
 

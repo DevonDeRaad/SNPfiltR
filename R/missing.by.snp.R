@@ -18,7 +18,8 @@
 #' specified, SNPs falling above the missing data cutoff will be removed,
 #' and the filtered vcfR object will be returned.
 #' @examples
-#' missing.by.snp(vcfR=system.file("extdata","unfiltered.vcf.gz",package="SNPfiltR",mustWork=TRUE))
+#' missing.by.snp(vcfR = SNPfiltR:::vcfR.example)
+#' missing.by.snp(vcfR = SNPfiltR:::vcfR.example, cutoff = .6)
 #' @export
 missing.by.snp <- function(vcfR, cutoff=NULL){
 
