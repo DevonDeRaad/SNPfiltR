@@ -39,7 +39,7 @@ for (t in 1:length(levels(as.factor(vcfR@fix[,1])))){
   #always keep first SNP on the chromosome
   k[1]<-TRUE
   #loop to decide whether to keep each following SNP
-    if (length(fix.sub) < 2){ #if chrom only has 1 SNP, do nothing
+    if (length(fix.sub) == 1){ #if chrom only has 1 SNP, do nothing
     } else{
       for (i in 2:length(fix.sub)){
         #store logical indicating whether this SNP is greater than j base pairs from the previous SNP

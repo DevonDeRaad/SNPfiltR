@@ -50,7 +50,7 @@ filter.allele.balance(vcfR = SNPfiltR:::vcfR.example)
 #this function needs work
 #must build in a fail if no distance is specified
 #must fix the issue that de novo assembled loci are not treated correctly
-distance.thin(vcfR = SNPfiltR:::vcfR.example, min.distance = 100)
+fuck<-distance.thin(vcfR = SNPfiltR:::vcfR.example, min.distance = 10000)
 
 #filter biallelic
 #filter.biallelic()
