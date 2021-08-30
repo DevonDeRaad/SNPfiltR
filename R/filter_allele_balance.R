@@ -10,9 +10,9 @@
 #' @param vcfR a vcfR object
 #' @return An identical vcfR object, except that genotypes failing the allele balance filter have been converted to 'NA'
 #' @examples
-#' filter.allele.balance(vcfR = SNPfiltR:::vcfR.example)
+#' filter_allele_balance(vcfR = SNPfiltR:::vcfR.example)
 #' @export
-filter.allele.balance <- function(vcfR){
+filter_allele_balance <- function(vcfR){
 
   #extract AD from the vcf
   ad.matrix<- vcfR::extract.gt(vcfR, element='AD')

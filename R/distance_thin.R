@@ -8,9 +8,9 @@
 #' @return An identical vcfR object, except that SNPs separated by less than the
 #' specified distance have been removed from the file
 #' @examples
-#' distance.thin(vcfR = SNPfiltR:::vcfR.example, min.distance = 1000)
+#' distance_thin(vcfR = SNPfiltR:::vcfR.example, min.distance = 1000)
 #' @export
-distance.thin <- function(vcfR, min.distance=NULL){
+distance_thin <- function(vcfR, min.distance=NULL){
   if (is.null(min.distance)){
     stop("filtering distance must be provided")
   }
@@ -39,7 +39,8 @@ for (t in 1:length(levels(as.factor(vcfR@fix[,1])))){
   #always keep first SNP on the chromosome
   k[1]<-TRUE
   #loop to decide whether to keep each following SNP
-    if (length(fix.sub) < 2){ #if chrom only has 1 SNP, do nothing
+    if (length(fix.sub) < 2){
+      #if chrom only has 1 SNP, do nothing
     } else{
       for (i in 2:length(fix.sub)){
         #store logical indicating whether this SNP is greater than j base pairs from the previous SNP

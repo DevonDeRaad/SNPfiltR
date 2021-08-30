@@ -26,6 +26,6 @@ otherwise it would disproportionately remove genotypes from our deepest sequence
 (because sequencing depth is so variable between samples).
 }
 \examples{
-max_depth(vcfR=system.file("extdata","unfiltered.vcf.gz",package="SNPfiltR",mustWork=TRUE),
-maxdepth=100)
+max_depth(vcfR = SNPfiltR:::vcfR.example)
+max_depth(vcfR = SNPfiltR:::vcfR.example, maxdepth = 100)
 }

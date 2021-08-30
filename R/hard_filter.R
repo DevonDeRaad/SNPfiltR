@@ -13,10 +13,10 @@
 #' #' (e.g. 'gq = 30' would remove all genotypes with a quality score of 29 or lower)
 #' @return The vcfR object input, with the sites failing specified filters converted to 'NA'
 #' @examples
-#' hard.filter.vcf(vcfR = SNPfiltR:::vcfR.example, depth = 5)
-#' hard.filter.vcf(vcfR = SNPfiltR:::vcfR.example, depth = 5, gq = 30)
+#' hard_filter(vcfR = SNPfiltR:::vcfR.example, depth = 5)
+#' hard_filter(vcfR = SNPfiltR:::vcfR.example, depth = 5, gq = 30)
 #' @export
-hard.filter.vcf <- function(vcfR, depth=NULL, gq=NULL){
+hard_filter <- function(vcfR, depth=NULL, gq=NULL){
 
   if (!is.null(depth)) {
   #extract depth from the vcf

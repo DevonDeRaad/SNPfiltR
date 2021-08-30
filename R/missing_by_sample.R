@@ -23,10 +23,10 @@
 #' missing data in each sample. If 'cutoff' is specified, the samples falling above the missing data cutoff
 #' will be removed, and the filtered vcfR object will be returned.
 #' @examples
-#' missing.by.sample(vcfR = SNPfiltR:::vcfR.example)
-#' missing.by.sample(vcfR = SNPfiltR:::vcfR.example, cutoff = .7)
+#' missing_by_sample(vcfR = SNPfiltR:::vcfR.example)
+#' missing_by_sample(vcfR = SNPfiltR:::vcfR.example, cutoff = .7)
 #' @export
-missing.by.sample <- function(vcfR, popmap=NULL, cutoff=NULL){
+missing_by_sample <- function(vcfR, popmap=NULL, cutoff=NULL){
 
   #extract depth from the vcf
   dp<- vcfR::extract.gt(vcfR, element='DP', as.numeric=TRUE)
