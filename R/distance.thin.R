@@ -11,6 +11,14 @@
 #' distance.thin(vcfR = SNPfiltR:::vcfR.example, min.distance = 1000)
 #' @export
 distance.thin <- function(vcfR, min.distance=NULL){
+  if (is.null(min.distance)){
+    stop("filtering distance must be provided")
+  }
+
+  if (min.distance < 1){
+    stop("filtering distance must be >= 1")
+  }
+
 #set distance
 j=min.distance
 #generate all bp positions as a numeric vector
@@ -31,21 +39,25 @@ for (t in 1:length(levels(as.factor(vcfR@fix[,1])))){
   #always keep first SNP on the chromosome
   k[1]<-TRUE
   #loop to decide whether to keep each following SNP
-  for (i in 2:length(fix.sub)){
-    #store logical indicating whether this SNP is greater than j base pairs from the previous SNP
-    k[i]<- fix[i] > prev+j
-    #if it is, then we keep this SNP, making it the new 'previous' for assessing the next point.
-    #If we don't keep the SNP, we don't update the closest point
-    if (fix[i] > prev+j){
-      prev<-fix[i]
-    }
-  }
+    if (length(fix.sub) < 2){ #if chrom only has 1 SNP, do nothing
+    } else{
+      for (i in 2:length(fix.sub)){
+        #store logical indicating whether this SNP is greater than j base pairs from the previous SNP
+        k[i]<- fix[i] > prev+j
+        #if it is, then we keep this SNP, making it the new 'previous' for assessing the next point.
+        #If we don't keep the SNP, we don't update the closest point
+          if (fix[i] > prev+j){
+          prev<-fix[i]
+          } #close if statement
+      } #close for loop
+    } #close else statement
+
   #now we subset the entire chromosome by the logical vector to retain only points > j bp apart
   keep<-fix.sub[k]
   #finally, we generate a logical vector indicating whether to keep each SNP while matching the original order of the chrom
   #we paste these into a continuously built vector for each chrom
   g<-c(g, fix.sub %in% keep)
-}
+} #close for loop, start over on next chromosome
 
 #calculate total SNPs input
 z<-length(g)

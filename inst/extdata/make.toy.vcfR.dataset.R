@@ -26,6 +26,7 @@ usethis::use_data(vcfR.example, internal = TRUE, overwrite = T)
 rm(list=ls())
 
 #load and test examples
+
 #missing by snp
 missing.by.snp(vcfR = SNPfiltR:::vcfR.example)
 missing.by.snp(vcfR = SNPfiltR:::vcfR.example, cutoff = .6)
@@ -49,11 +50,20 @@ filter.allele.balance(vcfR = SNPfiltR:::vcfR.example)
 #this function needs work
 #must build in a fail if no distance is specified
 #must fix the issue that de novo assembled loci are not treated correctly
-distance.thin(vcfR = SNPfiltR:::vcfR.example, min.distance = 1000)
+distance.thin(vcfR = SNPfiltR:::vcfR.example, min.distance = 100)
+
+#filter biallelic
+#filter.biallelic()
 
 #min mac
 #this function needs work, needs to be split into min.mac function,
 #and a separate function that performs repeated clustering at different missing data cutoffs
 min_mac(vcfR = SNPfiltR:::vcfR.example)
+
+#
+#assess.clustering()
+
+
+
 
 
