@@ -39,15 +39,15 @@ for (t in 1:length(levels(as.factor(vcfR@fix[,1])))){
   #always keep first SNP on the chromosome
   k[1]<-TRUE
   #loop to decide whether to keep each following SNP
-    if (length(fix.sub) == 1){ #if chrom only has 1 SNP, do nothing
+    if (length(fix.sub) < 2){ #if chrom only has 1 SNP, do nothing
     } else{
       for (i in 2:length(fix.sub)){
         #store logical indicating whether this SNP is greater than j base pairs from the previous SNP
-        k[i]<- fix[i] > prev+j
+        k[i]<- fix.sub[i] > prev+j
         #if it is, then we keep this SNP, making it the new 'previous' for assessing the next point.
         #If we don't keep the SNP, we don't update the closest point
-          if (fix[i] > prev+j){
-          prev<-fix[i]
+          if (fix.sub[i] > prev+j){
+          prev<-fix.sub[i]
           } #close if statement
       } #close for loop
     } #close else statement
