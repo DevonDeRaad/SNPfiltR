@@ -1,37 +1,34 @@
 #' Vizualise how Minor Allele Count (MAC) affects population structure, filter for MAC
 #'
-#' This function can be run in two ways: 1) Without 'min.mac' specified. This will run DAPC for a
-#' minimum MAC of 1,2,3,4,5,10, visualize the results, and tell you how the DAPC clustering
-#' compares to your a priori population assignments, and how many SNPs are retained at each MAC cutoff.
-#' 2) With 'min.mac' specified. This will print your folded Site Frequency Spectrum (SFS) and
-#' show you where your specified min. MAC count falls. It will then return your vcfR object with SNPs
-#' falling below your min. MAC threshold removed.
-#' MAF cutoffs can be helpful in removing spurious and uninformative loci from the dataset, but also
-#' have the potential to bias downstream inferences. Linck and Battey (2019) have an excellent paper on
-#' just this topic. From the paper- "We recommend researchers using model‐based programs to describe
-#' population structure observe the following best practices: (a) duplicate analyses with nonparametric
-#' methods suchas PCA and DAPC with cross validation (b) exclude singletons (c) compare alignments with
-#' multiple assembly parameters When seeking to exclude only singletons in alignments with missing data
-#' (a ubiquitous problem for reduced‐representation library preparation methods), it is preferable to filter
-#' by the count (rather than frequency) of the minor allele, because variation in the amount of missing data
-#' across an alignment will cause a static frequency cutoff to remove different SFS classes at different sites".
-#' Based on the differences between DAPC runs and the variation in number of SNPs retained, you should
-#' be able to make an informed decision about whether to implement a MAC cutoff for your dataset.
-#' Note: previous filtering steps may have converted called genotypes to 'NAs' and resulting in invariant SNPs
-#' (MAC =0) for this reason it's a good idea to at least run min.mac(vcfR, min.mac=1).
+#' This function can be run in two ways: 1) Without 'min.mac' specified. This will return
+#' a folded site frequency spectrum (SFS), without performing any filtering on the vcf file. Or
+#' 2) With 'min.mac' specified. This will also print the folded SFS and
+#' show you where your specified min. MAC count falls. It will then return your vcfR object
+#' with SNPs falling below your min. MAC threshold removed.
+#' Note: previous filtering steps may have converted called genotypes to 'NAs' and resulting
+#' in invariant SNPs (MAC =0) for this reason it's a good idea to run min.mac(vcfR, min.mac=1)
+#' before using a SNP dataset in downstream analyses.
+#'
 #' @param vcfR a vcfR object
-#' @param min.mac an integer specifying the minimum minor allele count for a SNP to be retained (e.g. 'min.mac=3'
-#' would remove all SNPs with a MAC of 2 or less)
-#' @return if 'min.mac' is not specified, will print out DAPC results. If 'min.mac' is specified, SNPs
-#' falling below the MAC cutoff will be removed, and the filtered vcfR object will be returned.
+#' @param min.mac an integer specifying the minimum minor allele count for a
+#' SNP to be retained (e.g. 'min.mac=3' would remove all SNPs with a MAC of 2 or less)
+#' @return if 'min.mac' is not specified, the allele frequency spectrum is returned.
+#' If 'min.mac' is specified, SNPs falling below the MAC cutoff will be removed,
+#' and the filtered vcfR object will be returned.
 #' @examples
-#' min_mac(vcfR=system.file("extdata","unfiltered.vcf.gz",package="SNPfiltR",mustWork=TRUE), min.mac=2)
+#' min_mac(vcfR=system.file("extdata","unfiltered.vcf.gz",package="SNPfiltR",mustWork=TRUE))
 #' @export
 min_mac <- function(vcfR, min.mac=NULL){
 
+  #if vcfR is not class vcfR, fail gracefully
+  if (class(vcfR) != "vcfR"){
+    stop("specified vcfR object must be of class 'vcfR'")
+  }
+
   if (is.null(min.mac)){
 
-    print("no filtering cutoff provided")
+    #print message
+    print("no filtering cutoff provided, vcf will be returned unfiltered")
 
     #convert vcfR to matrix and make numeric
     gt.matrix<-vcfR::extract.gt(vcfR)
@@ -51,7 +48,12 @@ min_mac <- function(vcfR, min.mac=NULL){
     }
 
     #hist folded mac with cutoff shown
-    hist(sfs, main="folded SFS", xlab = "MAC")
+    hist(sfs,
+         main="folded SFS",
+         xlab = "MAC")
+
+    #return unfiltered vcf
+    return(vcfR)
 
   }
 
@@ -66,6 +68,7 @@ min_mac <- function(vcfR, min.mac=NULL){
 
     #calc sfs
     sfs<-rowSums(gt.matrix, na.rm = TRUE)
+
     #fold sfs
     for (i in 1:length(sfs)) {
       if (sfs[i] <= sum(!is.na(gt.matrix[i,]))){}
@@ -75,16 +78,22 @@ min_mac <- function(vcfR, min.mac=NULL){
     }
 
     #hist folded mac with cutoff shown
-    hist(sfs, main="folded SFS", xlab = "MAC")
-    abline(v=min.mac-1, col="red")
+    hist(sfs,
+         main="folded SFS",
+         xlab = "MAC")
+    abline(v=min.mac-1,
+           col="red")
 
-    #calculate % of SNPs to be removed, and print it
+    #calculate % of SNPs to be removed
     p<-round((sum(sfs < min.mac)/length(sfs))*100, 2)
+
+    #print message to user
     print(paste0(p, "% of SNPs fell below a minor allele count of ", min.mac, " and were removed from the VCF"))
 
     #filter vcfR
     vcfR <- vcfR[sfs >= min.mac,]
 
+    #return vcf object
     return(vcfR)
 
   }

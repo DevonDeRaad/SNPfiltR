@@ -19,33 +19,64 @@
 #' @export
 max_depth <- function(vcfR, maxdepth=NULL){
 
-  #extract depth from the vcf
-  dp.matrix<- vcfR::extract.gt(vcfR, element='DP', as.numeric=TRUE)
+  #if specified vcfR is not class 'vcfR', fail gracefully
+  if (class(vcfR) != "vcfR"){
+    stop("specified vcfR object must be of class 'vcfR'")
+  }
 
-  #calculate vector of depth per SNP
-  snpdepth<-rowSums(dp.matrix, na.rm = TRUE)/rowSums(is.na(dp.matrix) == FALSE)
-
+  #if maxdepth cutoff is not specified, start here
   if (is.null(maxdepth)){
+
+    #print user message
+    print("cutoff is not specified, exploratory visualization will be generated")
+
+    #extract depth from the vcf
+    dp.matrix<- vcfR::extract.gt(vcfR, element='DP', as.numeric=TRUE)
+
+    #calculate vector of depth per SNP
+    snpdepth<-rowSums(dp.matrix, na.rm = TRUE)/rowSums(is.na(dp.matrix) == FALSE)
+
+    #set plotting parameters
     par(mfrow=c(2,1))
     #plot histogram of depth
-    hist(snpdepth, xlab = "mean of the depth of all samples successfully genotyped at a given SNP",
+    hist(snpdepth,
+         xlab = "mean of the depth of all samples successfully genotyped at a given SNP",
          main="histogram showing the depth of all called SNPs")
-    abline(v=mean(snpdepth, na.rm = TRUE), col="red", lty="dashed")
+    abline(v=mean(snpdepth, na.rm = TRUE),
+           col="red",
+           lty="dashed")
 
     #zoomed in histogram
-    hist(snpdepth[snpdepth < 200], xlab = "mean of the depth of all samples successfully genotyped at a given SNP",
+    hist(snpdepth[snpdepth < 200],
+         xlab = "mean of the depth of all samples successfully genotyped at a given SNP",
          main ="distribution of SNPs below a depth of 200")
-    abline(v=mean(snpdepth, na.rm = TRUE), col="red", lty="dashed")
+    abline(v=mean(snpdepth, na.rm = TRUE),
+           col="red",
+           lty="dashed")
 
     #print
     print(paste0("dashed line indicates a mean depth across all SNPs of ",round(mean(snpdepth, na.rm = TRUE),1)))
 
   }
 
+  #if the maxdepth cutoff has been specified, start here
   else {
+
+    #print user message
+    print("maxdepth cutoff is specified, filtered vcfR object will be returned")
+
+    #extract depth from the vcf
+    dp.matrix<- vcfR::extract.gt(vcfR, element='DP', as.numeric=TRUE)
+
+    #calculate vector of depth per SNP
+    snpdepth<-rowSums(dp.matrix, na.rm = TRUE)/rowSums(is.na(dp.matrix) == FALSE)
+
     #plot the maxdepth cutoff
-    hist(snpdepth, xlab = "mean of the depth of all samples successfully genotyped at a given SNP", main ="max depth cutoff")
-    abline(v=maxdepth, col="red")
+    hist(snpdepth,
+         xlab = "mean of the depth of all samples successfully genotyped at a given SNP",
+         main ="max depth cutoff")
+    abline(v=maxdepth,
+           col="red")
 
     #calculate % of snps that fail the max depth filter
     i<-round(sum(snpdepth > maxdepth, na.rm = TRUE)/length(snpdepth)*100, 2)
@@ -55,7 +86,10 @@ max_depth <- function(vcfR, maxdepth=NULL){
     #filter vcf
     vcfR<-vcfR[snpdepth < maxdepth,]
 
+    #return vcfR
     return(vcfR)
+  #close else statement
   }
+#close function
 }
 

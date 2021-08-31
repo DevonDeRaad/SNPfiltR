@@ -29,39 +29,40 @@ rm(list=ls())
 
 #missing by snp
 missing_by_snp(vcfR = SNPfiltR:::vcfR.example)
-missing_by_snp(vcfR = SNPfiltR:::vcfR.example, cutoff = .6)
+f<-missing_by_snp(vcfR = SNPfiltR:::vcfR.example, cutoff = .6)
+missing_by_snp(vcfR = f, cutoff = .6)
 
 #missing by sample
 missing_by_sample(vcfR = SNPfiltR:::vcfR.example)
 missing_by_sample(vcfR = SNPfiltR:::vcfR.example, cutoff = .7)
 
 #hard filter
-hard_filter(vcfR = SNPfiltR:::vcfR.example, depth = 5)
-hard_filter(vcfR = SNPfiltR:::vcfR.example, depth = 5, gq = 30)
+f<-hard_filter(vcfR = SNPfiltR:::vcfR.example, depth = 5, gq = 30)
+hard_filter(vcfR = f, depth = 5, gq = 30)
 
 #max depth
 max_depth(vcfR = SNPfiltR:::vcfR.example)
-max_depth(vcfR = SNPfiltR:::vcfR.example, maxdepth = 100)
+f<-max_depth(vcfR = SNPfiltR:::vcfR.example, maxdepth = 100)
+max_depth(vcfR = f, maxdepth = 100)
 
 #allele balance
-filter_allele_balance(vcfR = SNPfiltR:::vcfR.example)
+f<-filter_allele_balance(vcfR = SNPfiltR:::vcfR.example)
+filter_allele_balance(vcfR = f)
 
 #distance thin
-#this function needs work
-#must build in a fail if no distance is specified
-#must fix the issue that de novo assembled loci are not treated correctly
-distance_thin(vcfR = SNPfiltR:::vcfR.example, min.distance = 1000)
-
+#function now works correctly
+f<-distance_thin(vcfR = SNPfiltR:::vcfR.example, min.distance = 1000)
+distance_thin(vcfR = f, min.distance = 1000)
 
 #filter biallelic
 #filter_biallelic()
 
 #min mac
-#this function needs work, needs to be split into min.mac function,
-#and a separate function that performs repeated clustering at different missing data cutoffs
+#this function now only does mac filtering
+min_mac(vcfR = SNPfiltR:::vcfR.example)
 f<-min_mac(vcfR = SNPfiltR:::vcfR.example, min.mac = 4)
-f
-f@gt
+min_mac(vcfR = f, min.mac = 4)
+
 #
 #assess_clustering()
 

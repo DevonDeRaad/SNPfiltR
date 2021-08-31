@@ -30,6 +30,11 @@
 #' @export
 assess_clustering <- function(vcfR, popmap=NULL, thresholds=NULL){
 
+  #if vcfR is not class vcfR, fail gracefully
+  if (class(vcfR) != "vcfR"){
+    stop("specified vcfR object must be of class 'vcfR'")
+  }
+
   if (is.null(popmap)){
     stop("popmap must be provided in order to compare clustering of a priori defined groups")
   }

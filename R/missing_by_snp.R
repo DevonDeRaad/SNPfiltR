@@ -23,10 +23,19 @@
 #' @export
 missing_by_snp <- function(vcfR, cutoff=NULL){
 
+  #if specified vcfR is not class 'vcfR', fail gracefully
+  if (class(vcfR) != "vcfR"){
+    stop("specified vcfR object must be of class 'vcfR'")
+  }
+
+  #if cutoff is NOT null, start here
   if (!is.null(cutoff)) {
 
+    #print user message
+    print("cutoff is specified, filtered vcfR object will be returned")
+
     #do basic vis to show cutoff
-    #extract genotype from the vcf
+    #extract genotype matrix from the vcfR object
     dp.matrix<- vcfR::extract.gt(vcfR, as.numeric=TRUE)
 
     #calculate the proportion of individuals successfully genotyped at each SNP
@@ -35,7 +44,9 @@ missing_by_snp <- function(vcfR, cutoff=NULL){
     #loop that stores a vector of # non-missing SNPs retained for each individual
     #looped over all possible completeness filter values
     #initialize df.x
-    df.x<- data.frame(filt=numeric(), missingness=numeric(), snps.retained=numeric())
+    df.x<- data.frame(filt=numeric(),
+                      missingness=numeric(),
+                      snps.retained=numeric())
     #loop
     for (i in c(.3,.5,.6,.65,.7,.75,.8,.85,.9,.95,1)){
       #subset the matrix to only snps passing a given filter level
@@ -47,28 +58,37 @@ missing_by_snp <- function(vcfR, cutoff=NULL){
       #calculate the completeness cutoff for each snp to be retained
       filt<-i
       df.x<-rbind(df.x, as.data.frame(cbind(filt, missingness, snps.retained)))
+      #close for loop
       }
 
-    #make columns numeric for plotting
+    #make necessary columns numeric for plotting
     df.x$filt<-as.numeric(as.character(df.x$filt))
     df.x$missingness<-as.numeric(as.character(df.x$missingness))
     df.x$snps.retained<-as.numeric(as.character(df.x$snps.retained))
 
     #visualize dotplot for total loci retained at each filter level
-    plot1<-ggplot2::ggplot(df.x, ggplot2::aes(x=filt)) +
+    plot1<-ggplot2::ggplot(df.x,
+                           ggplot2::aes(x=filt)
+                           )+
       ggplot2::scale_x_continuous(breaks=c(.3,.5,.6,.65,.7,.75,.8,.85,.9,.95,1))+
-      ggplot2::geom_point(ggplot2::aes(y=snps.retained)) +
-      ggplot2::theme_bw() +
-      ggplot2::labs(x = "SNP completeness cutoff", y = "total SNPs retained")+
-      ggplot2::geom_vline(xintercept = cutoff, color = "red")
+      ggplot2::geom_point(ggplot2::aes(y=snps.retained))+
+      ggplot2::theme_bw()+
+      ggplot2::labs(x = "SNP completeness cutoff",
+                    y = "total SNPs retained")+
+      ggplot2::geom_vline(xintercept = cutoff,
+                          color = "red")
 
     #visualize dotplot for missing data % at each filter level
-    plot2<-ggplot2::ggplot(df.x, ggplot2::aes(x=filt)) +
+    plot2<-ggplot2::ggplot(df.x,
+                           ggplot2::aes(x=filt)
+                           )+
       ggplot2::scale_x_continuous(breaks=c(.3,.5,.6,.65,.7,.75,.8,.85,.9,.95,1))+
-      ggplot2::geom_point(ggplot2::aes(y=missingness)) +
+      ggplot2::geom_point(ggplot2::aes(y=missingness))+
       ggplot2::theme_bw() +
-      ggplot2::labs(x = "SNP completeness cutoff", y = "total proportion missing data")+
-      ggplot2::geom_vline(xintercept = cutoff, color = "red")
+      ggplot2::labs(x = "SNP completeness cutoff",
+                    y = "total proportion missing data")+
+      ggplot2::geom_vline(xintercept = cutoff,
+                          color = "red")
 
     gridExtra::grid.arrange(plot1,plot2)
 
@@ -81,10 +101,17 @@ missing_by_snp <- function(vcfR, cutoff=NULL){
     #do filtering
     vcfR <- vcfR[miss <= 1-cutoff, ]
 
+    #return filtered vcfR
     return(vcfR)
 
+  #close if statement
   }
+
+  #if cutoff IS null
   else {
+
+    #print user message
+    print("cutoff is not specified, exploratory visualizations will be generated")
 
     ###Part 1
     #Vis to understand the interplay between retaining samples and setting a missing data cutoff
@@ -104,6 +131,7 @@ missing_by_snp <- function(vcfR, cutoff=NULL){
       #calculate the completeness cutoff for each snp to be retained
       filt<-rep(i, times= length(snps))
       df.y<-rbind(df.y, as.data.frame(cbind(filt, snps)))
+      #close for loop
       }
 
     #make columns numeric for plotting
@@ -112,10 +140,19 @@ missing_by_snp <- function(vcfR, cutoff=NULL){
 
     #visualize filtering levels as stacked histograms
     print(
-      ggplot2::ggplot(df.y, ggplot2::aes(x = snps, y = as.character(filt), fill = filt, color = filt)) +
-        ggridges::geom_density_ridges(jittered_points = TRUE, position = "raincloud", alpha = .25, cex=.5) +
+      ggplot2::ggplot(df.y,
+                      ggplot2::aes(x = snps,
+                                   y = as.character(filt),
+                                   fill = filt,
+                                   color = filt)
+                      )+
+        ggridges::geom_density_ridges(jittered_points = TRUE,
+                                      position = "raincloud",
+                                      alpha = .25,
+                                      cex=.5)+
         ggplot2::theme_classic() +
-        ggplot2::labs(x = "missing data proportion in each sample", y = "SNP completeness cutoff") +
+        ggplot2::labs(x = "missing data proportion in each sample",
+                      y = "SNP completeness cutoff")+
         ggplot2::theme(legend.position = "none")
       )
 
@@ -127,7 +164,9 @@ missing_by_snp <- function(vcfR, cutoff=NULL){
     #loop that stores a vector of # non-missing loci retained for each individual
     #looped over all possible completeness filter values
     #initialize df.x
-    df.x<- data.frame(filt=numeric(), missingness=numeric(), snps.retained=numeric())
+    df.x<- data.frame(filt=numeric(),
+                      missingness=numeric(),
+                      snps.retained=numeric())
     #loop
     for (i in c(.3,.5,.6,.65,.7,.75,.8,.85,.9,.95,1)){
       #subset the matrix to only snps passing a given filter level
@@ -147,21 +186,29 @@ missing_by_snp <- function(vcfR, cutoff=NULL){
     df.x$snps.retained<-as.numeric(as.character(df.x$snps.retained))
 
     #visualize dotplot for total loci retained at each filter level
-    plot1<-ggplot2::ggplot(df.x, ggplot2::aes(x=filt)) +
+    plot1<-ggplot2::ggplot(df.x,
+                           ggplot2::aes(x=filt)
+                           )+
       ggplot2::scale_x_continuous(breaks=c(.3,.5,.6,.65,.7,.75,.8,.85,.9,.95,1))+
-      ggplot2::geom_point(ggplot2::aes(y=snps.retained)) +
-      ggplot2::theme_bw() +
-      ggplot2::labs(x = "SNP completeness cutoff", y = "total SNPs retained")
+      ggplot2::geom_point(ggplot2::aes(y=snps.retained))+
+      ggplot2::theme_bw()+
+      ggplot2::labs(x = "SNP completeness cutoff",
+                    y = "total SNPs retained")
 
     #visualize dotplot for missing data % at each filter level
-    plot2<-ggplot2::ggplot(df.x, ggplot2::aes(x=filt)) +
+    plot2<-ggplot2::ggplot(df.x,
+                           ggplot2::aes(x=filt)
+                           )+
       ggplot2::scale_x_continuous(breaks=c(.3,.5,.6,.65,.7,.75,.8,.85,.9,.95,1))+
       ggplot2::geom_point(ggplot2::aes(y=missingness)) +
       ggplot2::theme_bw() +
-      ggplot2::labs(x = "SNP completeness cutoff", y = "total proportion missing data")
+      ggplot2::labs(x = "SNP completeness cutoff",
+                    y = "total proportion missing data")
 
+    #plot together
     gridExtra::grid.arrange(plot1,plot2)
 
+    #return
     return(df.x)
   }
 
