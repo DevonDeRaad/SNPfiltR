@@ -19,8 +19,12 @@ distance_thin <- function(vcfR, min.distance=NULL){
     stop("filtering distance must be >= 1")
   }
 
-  if (colnames(vcfR@fix[,1:2]) != c("CHROM", "POS")){
-    stop("vcfR incorrectly formatted. vcfR@fix columns 1 & 2 must be 'CHROM' and 'POS'")
+  if (colnames(vcfR@fix)[1] != "CHROM"){
+    stop("vcfR incorrectly formatted. vcfR@fix column 1 must be 'CHROM'")
+  }
+
+  if (colnames(vcfR@fix)[2] != "POS"){
+    stop("vcfR incorrectly formatted. vcfR@fix column 2 must be 'POS'")
   }
 
 #set distance
@@ -31,6 +35,10 @@ df<-as.data.frame(vcfR@fix[,1:2])
 chroms<-levels(as.factor(df$CHROM))
 #intialize empty df to hold filtering
 keep.df<-data.frame()
+#make progress bar
+pb <- txtProgressBar(min = 0, max = length(chroms), style = 3)
+#begin tracker
+pbtrack<-1
 
 #loop over each chromosome
 #for t in 1:length of the number of unique chromosomes
@@ -69,15 +77,23 @@ for (t in chroms){
   #empty df for this chrom to prepare for the next one
   chrom.df<-NULL
 
+  #update progress bar
+  setTxtProgressBar(pb, pbtrack)
+  pbtrack<-pbtrack+1 #update tracker
+
 } #close for loop, start over on next chromosome
+
+#close progress bar
+close(pb)
 
 #order the dataframe to match the order of the input vcf file
 order.df<-keep.df[match(paste(df$CHROM,df$POS), paste(keep.df$CHROM,keep.df$POS)),]
 
 #subset vcfR locus info based on the logical column from our dataframe
-vcfR@fix<-vcfR@fix[order.df$keep,]
+#vcfR@fix<-vcfR@fix[order.df$keep,]
 #subset genotypes based on logical
-vcfR@gt<-vcfR@gt[order.df$keep,]
+#vcfR@gt<-vcfR@gt[order.df$keep,]
+vcfR<-vcfR[order.df$keep,]
 
 #calculate number of total SNPs input
 z<-nrow(keep.df)

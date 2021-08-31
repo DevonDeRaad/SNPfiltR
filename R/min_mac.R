@@ -55,7 +55,7 @@ min_mac <- function(vcfR, min.mac=NULL){
 
   }
 
-else{
+  else{
 
     #convert vcfR to matrix and make numeric
     gt.matrix<-vcfR::extract.gt(vcfR)

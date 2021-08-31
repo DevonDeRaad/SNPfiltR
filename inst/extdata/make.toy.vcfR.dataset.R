@@ -50,8 +50,8 @@ filter_allele_balance(vcfR = SNPfiltR:::vcfR.example)
 #this function needs work
 #must build in a fail if no distance is specified
 #must fix the issue that de novo assembled loci are not treated correctly
-f<-distance_thin(vcfR = SNPfiltR:::vcfR.example, min.distance = 1000)
-f
+distance_thin(vcfR = SNPfiltR:::vcfR.example, min.distance = 1000)
+
 
 #filter biallelic
 #filter_biallelic()
@@ -59,8 +59,9 @@ f
 #min mac
 #this function needs work, needs to be split into min.mac function,
 #and a separate function that performs repeated clustering at different missing data cutoffs
-min_mac(vcfR = SNPfiltR:::vcfR.example, min.mac = 1)
-
+f<-min_mac(vcfR = SNPfiltR:::vcfR.example, min.mac = 4)
+f
+f@gt
 #
 #assess_clustering()
 
