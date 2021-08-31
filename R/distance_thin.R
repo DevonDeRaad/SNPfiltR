@@ -19,18 +19,25 @@ distance_thin <- function(vcfR, min.distance=NULL){
     stop("filtering distance must be >= 1")
   }
 
+  if (colnames(vcfR@fix[,1:2]) != c("CHROM", "POS")){
+    stop("vcfR incorrectly formatted. vcfR@fix columns 1 & 2 must be 'CHROM' and 'POS'")
+  }
+
 #set distance
 j=min.distance
-#generate all bp positions as a numeric vector
-fix<-as.numeric(vcfR@fix[,2])
-#intialize empty vector to hold filtering
-g<-c()
+#generate df of chrom and bp
+df<-as.data.frame(vcfR@fix[,1:2])
+#generate list of all unique chromosomes in alphabetical order
+chroms<-levels(as.factor(df$CHROM))
+#intialize empty df to hold filtering
+keep.df<-data.frame()
 
 #loop over each chromosome
-for (t in 1:length(levels(as.factor(vcfR@fix[,1])))){
-  #isolate the given chromosome
-  fix.sub<-fix[vcfR@fix[,1] == levels(as.factor(vcfR@fix[,1]))[t]]
-  #order the positions
+#for t in 1:length of the number of unique chromosomes
+for (t in chroms){
+  #isolate the SNP positions on the given chromosome
+  fix.sub<-as.numeric(df$POS[df$CHROM == t])
+  #order the positions numerically
   fix.sub<-fix.sub[order(fix.sub)]
   #set the first position
   prev<-fix.sub[1]
@@ -53,20 +60,27 @@ for (t in 1:length(levels(as.factor(vcfR@fix[,1])))){
       } #close for loop
     } #close else statement
 
-  #now we subset the entire chromosome by the logical vector to retain only points > j bp apart
-  keep<-fix.sub[k]
-  #finally, we generate a logical vector indicating whether to keep each SNP while matching the original order of the chrom
-  #we paste these into a continuously built vector for each chrom
-  g<-c(g, fix.sub %in% keep)
+  #make a dataframe with the precise info for each SNP for this chromosome
+  chrom.df<-data.frame(CHROM=rep(t, times=length(fix.sub)), POS=fix.sub, keep=k)
+
+  #now we rbind in the information for this chromosome to the overall df
+  keep.df<-rbind(keep.df,chrom.df)
+
+  #empty df for this chrom to prepare for the next one
+  chrom.df<-NULL
+
 } #close for loop, start over on next chromosome
 
-#calculate total SNPs input
-z<-length(g)
+#order the dataframe to match the order of the input vcf file
+order.df<-keep.df[match(paste(df$CHROM,df$POS), paste(keep.df$CHROM,keep.df$POS)),]
 
-#subset vcfR locus info based on logical
-vcfR@fix<-vcfR@fix[g,]
+#subset vcfR locus info based on the logical column from our dataframe
+vcfR@fix<-vcfR@fix[order.df$keep,]
 #subset genotypes based on logical
-vcfR@gt<-vcfR@gt[g,]
+vcfR@gt<-vcfR@gt[order.df$keep,]
+
+#calculate number of total SNPs input
+z<-nrow(keep.df)
 
 #calculate total SNPs retained
 p<-nrow(vcfR@fix)
