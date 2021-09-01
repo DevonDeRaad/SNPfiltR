@@ -28,6 +28,17 @@ missing_by_snp <- function(vcfR, cutoff=NULL){
     stop("specified vcfR object must be of class 'vcfR'")
   }
 
+  #if specified cutoff is not numeric fail gracefully
+  if (class(cutoff) != "numeric"){
+    stop("specified cutoff must be class 'numeric'")
+  }
+
+  #if specified cutoff is not between 0-1 fail gracefully
+  if (cutoff < 0 | cutoff > 1){
+    stop("specified cutoff must be a proportion between 0 and 1")
+  }
+
+
   #if cutoff is NOT null, start here
   if (!is.null(cutoff)) {
 

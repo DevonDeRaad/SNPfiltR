@@ -9,15 +9,18 @@
 #' specified popmap. This option is ideal for assessing the effects of missing data
 #' on clustering patterns.
 #' @param vcfR a vcfR object
-#' @param thresholds a vector specifying the filtering thresholds you want to explore
 #' @param popmap set of population assignments that will be used to color code the plots
+#' @param thresholds a vector specifying the missing data filtering thresholds to explore
+#' @param perplexity numerical value specifying the perplexity paramter during t-SNE (default: 10)
+#' @param iterations a numerical value specifying the number of iterations for t-SNE (default:1000)
+#'
 #' @return a series of plots showing the clustering of all samples in two-dimensional space
 #' @examples
 #' assess_clustering(
 #' vcfR=system.file("extdata","unfiltered.vcf.gz",package="SNPfiltR",mustWork=TRUE),
 #' thresholds=c(60,80,100))
 #' @export
-assess_clustering <- function(vcfR, popmap=NULL, thresholds=NULL){
+assess_clustering <- function(vcfR, popmap=NULL, thresholds=NULL, perplexity=NULL, iterations=NULL){
 
   #if vcfR is not class vcfR, fail gracefully
   if (class(vcfR) != "vcfR"){
@@ -34,12 +37,12 @@ assess_clustering <- function(vcfR, popmap=NULL, thresholds=NULL){
     stop("popmap must be of class 'data.frame'")
   }
 
-  #ensure naming conventions followed
+  #ensure popmap naming conventions followed
   if (colnames(popmap)[1] != "id"){
     stop("popmap must be a dataframe with column 1 named 'id'")
   }
 
-  #ensure naming conventions followed
+  #ensure popmap naming conventions followed
   if (colnames(popmap)[2] != "pop"){
     stop("popmap must be a dataframe with column 2 named 'pop'")
   }
@@ -54,13 +57,54 @@ assess_clustering <- function(vcfR, popmap=NULL, thresholds=NULL){
     stop("popmap ID's must match exactly the ID's in input vcf")
   }
 
-  #if checks pass, and thresholds not provided, start here:
+  #set perplexity to default (10), or user specified value
+  if (is.null(perplexity)){
+    w<-10
+  } else{
+    w<-perplexity
+  }
+
+  #set iterations to default (1000), or user specified value
+  if (is.null(iterations)){
+    q<-1000
+  } else{
+    q<-iterations
+  }
+
+  #run clustering with no filters
+
+  #this PCA cannot tolerate invariant SNP positions, so check for invariant SNP positions
+  #convert vcfR to matrix and make numeric
+  gt.matrix<-vcfR::extract.gt(vcfR)
+  gt.matrix[gt.matrix == "0/0"]<-0
+  gt.matrix[gt.matrix == "0/1"]<-1
+  gt.matrix[gt.matrix == "1/1"]<-2
+  class(gt.matrix) <- "numeric"
+
+  #calc sfs
+  sfs<-rowSums(gt.matrix, na.rm = TRUE)
+
+  #calc number of invariant SNPs
+  g<-sum(sfs < 1)
+
+  #If there are invariant SNPs, kill the function, and tell user that invariant SNPs aren't allowed
+  if (g != 0){
+    stop("invariant SNPs detected in input vcf. Invariant sites must be filtered prior to input")
+  }
+
+  #if checks on inputs pass, and thresholds are not specified, start here:
   if (is.null(thresholds)) {
 
-    #run clustering with no filters
-
     #convert vcfR into genlight
-    genlight<-vcfR::vcfR2genlight(vcfR)
+    gen<-vcfR::vcfR2genlight(vcfR)
+
+    #execute PCA using this genlight
+    #retain number of PC axes equivalent to the number of populations being discriminated + 2
+    pca<-adegenet::glPca(gen, nf=length(levels(as.factor(popmap$pop)))+2)
+
+    #pull pca scores out of df
+    pca.scores<-as.data.frame(pca$scores)
+    #pca.scores$pop<-popmap$pop
 
     ###############################################
     ###############################################
@@ -68,64 +112,121 @@ assess_clustering <- function(vcfR, popmap=NULL, thresholds=NULL){
     ###############################################
     ###############################################
 
-    # prepare plot labels and such
-    # this makes it so it is grouped by DAPC clusters
-    colors = rainbow(length(unique(results$grp)))
-    names(colors) = unique(results$grp)
-    ecb = function(x,y){plot(x,t='n'); text(x, labels=results$grp, col=colors[results$grp])}
-
-    # t-SNE on principal components of scaled data
-    # adjust perplexity, initial_dims
-    # can do k=3 for 3D plot
-    # should do only <50 variables
-    # can do it on pca$li (if you reduce the number of components), or on cmdsplot2$points
-    tsne_p5 = tsne(pca1$tab, epoch_callback=ecb, max_iter=5000, perplexity=5, initial_dims=5)
+    # t-SNE on PCA
+    tsne_p5<- tsne::tsne(pca.scores, max_iter=q, perplexity=w)
+    tsne.df<-as.data.frame(tsne_p5)
 
     # tSNE plot with DAPC groups
-    plot(tsne_p5, main="t-SNE perplexity=5 with DAPC optimal k and clusters", col=results$grp, pch=16)
+    #plot(tsne_p5, main="t-SNE perplexity=5 with DAPC optimal k and clusters", col=popmap$pop, pch=16)
+    ggplot(tsne.df, aes(x=V1, y=V2, color=popmap$pop)) +
+      geom_point(cex = 4, alpha=.75)+
+      theme_classic()+
+      theme(legend.position = "bottom", legend.key.size = unit(0, 'cm'),
+            legend.title = element_text(size=8), legend.text = element_text(size=6.5))
 
-    # pam clustering with optimal k from DAPC
-    for (i in 2:10){
-      print(paste(i, mean(silhouette(pam(tsne_p5, i))[, "sil_width"])))
+    #record pam clustering info
+    m=c()
+    t=1
+    for (i in 2:(length(levels(as.factor(popmap$pop)))+2)){
+      m[t]<-mean(cluster::silhouette(cluster::pam(tsne_p5, i))[, "sil_width"])
+      t=t+1
     }
-    #pam prefers same 6 groups as DAPC
-    pam(tsne_p5, 6)
 
-    # determine optimal k of tSNE via hierarchical clustering with BIC
-    # adjust G option to reasonable potential cluster values, e.g. for up to 12 clusters, G=1:12
-    tsne_p5_clust <- Mclust(tsne_p5)
-    mclust_grps_tsne_p5 <- as.numeric(tsne_p5_clust$classification)
-    max(mclust_grps_tsne_p5)
-    # t-SNE p5 with optimal k and clusters of RF via hierarchical clustering
-    plot(tsne_p5,
-         xlab="Scaling Dimension 1",
-         ylab="Scaling Dimension 2",
-         main="t-SNE p5 RF optimal K and clusters (hierarchical clustering)",
-         col=mclust_grps_tsne_p5, pch=16)
-    mclust_grps_tsne_p5
-    f<-as.data.frame(tsne_p5)
-    # tSNE with optimal k and clusters via hierarchical clustering
-    ggplot(data=f, aes(x=V1,
-                       y=V2,
-                       col=as.factor(mclust_grps_tsne_p5)))+
-      geom_point(cex=3)+
+    #make dataframe
+    pam.df<-data.frame(n.groups=2:(length(levels(as.factor(popmap$pop)))+2),
+                       likelihood=m)
+
+    #run pam best clustering scheme
+    pam.clust<-cluster::pam(tsne_p5, pam.df$n.groups[pam.df$likelihood==max(pam.df$likelihood)])
+
+    #plot pam clusters versus a priori clusters
+    ggplot(tsne.df, aes(x=V1, y=V2, color=popmap$pop, shape=as.factor(pam.clust$clustering))) +
+      geom_point(cex = 4, alpha=.75)+
       theme_classic()
 
-    cbind(rownames(pca1$tab), mclust_grps_tsne_p5)
-      #return vcfR
+    #make clean df with info
+    df<-data.frame(tsne.ax1=tsne.df$V1,
+                   tsne.ax2=tsne.df$V2,
+                   popmap.pop=popmap$pop,
+                   pam.pop=as.factor(pam.clust$clustering))
+
+      #return df
       return(vcfR)
 
       #close if statement
     }
 
-    #if thresholds are provided, run loop over all filtering thresholds here:
+#if thresholds are provided, run loop over all filtering thresholds here:
+  else{
+
+    for (i in thresholds){
+
+      #if specified cutoff is not between 0-1 fail gracefully
+      if (i < 0 | i > 1){
+        stop("specified threshold must be a proportion between 0 and 1")
+      }
+
+      #If it passes, filter vcfR based on given threshold
+      vcfR.filt<-SNPfiltR::missing_by_snp(vcfR = vcfR, cutoff = i)
+
+    #convert vcfR into genlight
+    gen<-vcfR::vcfR2genlight(vcfR.filt)
+
+    #execute PCA using this genlight
+    #retain number of PC axes equivalent to the number of populations being discriminated + 2
+    pca<-adegenet::glPca(gen, nf=length(levels(as.factor(popmap$pop)))+2)
+
+    #pull pca scores out of df
+    pca.scores<-as.data.frame(pca$scores)
+    #pca.scores$pop<-popmap$pop
+
+    ###############################################
+    ###############################################
+    # t-SNE
+    ###############################################
+    ###############################################
+
+    # t-SNE on PCA
+    tsne_p5<- tsne::tsne(pca.scores, max_iter=q, perplexity=w)
+    tsne.df<-as.data.frame(tsne_p5)
+
+    # tSNE plot with DAPC groups
+    #plot(tsne_p5, main="t-SNE perplexity=5 with DAPC optimal k and clusters", col=popmap$pop, pch=16)
+    ggplot(tsne.df, aes(x=V1, y=V2, color=popmap$pop)) +
+      geom_point(cex = 4, alpha=.75)+
+      theme_classic()+
+      theme(legend.position = "bottom", legend.key.size = unit(0, 'cm'),
+            legend.title = element_text(size=8), legend.text = element_text(size=6.5))
+
+    #record pam clustering info
+    m=c()
+    t=1
+    for (z in 2:(length(levels(as.factor(popmap$pop)))+2)){
+      m[t]<-mean(cluster::silhouette(cluster::pam(tsne_p5, z))[, "sil_width"])
+      t=t+1
+    }
+
+    #make dataframe
+    pam.df<-data.frame(n.groups=2:(length(levels(as.factor(popmap$pop)))+2),
+                       likelihood=m)
+
+    #run pam best clustering scheme
+    pam.clust<-cluster::pam(tsne_p5, pam.df$n.groups[pam.df$likelihood==max(pam.df$likelihood)])
+
+    #plot pam clusters versus a priori clusters
+    ggplot(tsne.df, aes(x=V1, y=V2, color=popmap$pop, shape=as.factor(pam.clust$clustering))) +
+      geom_point(cex = 4, alpha=.75)+
+      theme_classic()
+
+    #make clean df with info
+    df<-data.frame(tsne.ax1=tsne.df$V1,
+                   tsne.ax2=tsne.df$V2,
+                   popmap.pop=popmap$pop,
+                   pam.pop=as.factor(pam.clust$clustering))
+
+    #close for loop
+    }
+  #close else statement
   }
-  else {
-
-    #run clustering at each specified filtering level
-
-    return(vcfR)
-
-  }
-
+#close function
 }

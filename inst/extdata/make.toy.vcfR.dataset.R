@@ -19,6 +19,12 @@ vcfR.example<-vcffog[sample.int(151015, 500), c(1:20)]
 #save this vcf
 write.vcf(vcfR.example, file = "~/Downloads/SNPfilter.example.vcf.gz")
 
+#make example popmap for example vcfR
+popmap<-data.frame(id=colnames(SNPfiltR:::vcfR.example@gt)[-1], pop=sub(".*H_", "", colnames(SNPfiltR:::vcfR.example@gt)[-1]))
+
+#save this popmap as available data for the SNPfiltR package
+usethis::use_data(popmap, internal = TRUE, overwrite = T)
+
 #save this vcfR as available data for the SNPfiltR package
 #usethis::use_data(vcfR.example, internal = TRUE, overwrite = T)
 
@@ -66,7 +72,7 @@ filter_biallelic(vcfR = f)
 #min mac
 #this function now only does mac filtering
 min_mac(vcfR = SNPfiltR:::vcfR.example)
-f<-min_mac(vcfR = SNPfiltR:::vcfR.example, min.mac = 4)
+f<-min_mac(vcfR = SNPfiltR:::vcfR.example, min.mac = 1)
 min_mac(vcfR = f, min.mac = 4)
 
 #
