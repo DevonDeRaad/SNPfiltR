@@ -5,22 +5,9 @@
 #' space, coloring each sample according to a priori population assignment given in the popmap.
 #' 2) With 'thresholds' specified. This will filter your input vcf file to the specified
 #' missing data thresholds, and run a t-SNE clustering analysis for each filtering iteration.
-#'
-#' show you where your specified min. MAC count falls. It will then return your vcfR object with SNPs
-#' falling below your min. MAC threshold removed.
-#' MAF cutoffs can be helpful in removing spurious and uninformative loci from the dataset, but also
-#' have the potential to bias downstream inferences. Linck and Battey (2019) have an excellent paper on
-#' just this topic. From the paper- "We recommend researchers using model‐based programs to describe
-#' population structure observe the following best practices: (a) duplicate analyses with nonparametric
-#' methods suchas PCA and DAPC with cross validation (b) exclude singletons (c) compare alignments with
-#' multiple assembly parameters When seeking to exclude only singletons in alignments with missing data
-#' (a ubiquitous problem for reduced‐representation library preparation methods), it is preferable to filter
-#' by the count (rather than frequency) of the minor allele, because variation in the amount of missing data
-#' across an alignment will cause a static frequency cutoff to remove different SFS classes at different sites".
-#' Based on the differences between DAPC runs and the variation in number of SNPs retained, you should
-#' be able to make an informed decision about whether to implement a MAC cutoff for your dataset.
-#' Note: previous filtering steps may have converted called genotypes to 'NAs' and resulting in invariant SNPs
-#' (MAC =0) for this reason it's a good idea to at least run min.mac(vcfR, min.mac=1).
+#' For each iteration, a 2D plot will be output showing clustering according to the
+#' specified popmap. This option is ideal for assessing the effects of missing data
+#' on clustering patterns.
 #' @param vcfR a vcfR object
 #' @param thresholds a vector specifying the filtering thresholds you want to explore
 #' @param popmap set of population assignments that will be used to color code the plots
@@ -37,18 +24,37 @@ assess_clustering <- function(vcfR, popmap=NULL, thresholds=NULL){
     stop("specified vcfR object must be of class 'vcfR'")
   }
 
+  #if popmap not provided, fail gracefully
   if (is.null(popmap)){
     stop("popmap must be provided in order to compare clustering of a priori defined groups")
   }
 
+  #if popmap not formatted correctly, fail gracefully
   if (class(popmap) != "data.frame"){
     stop("popmap must be of class 'data.frame'")
   }
 
-    if (colnames(popmap)[1] != "id" | colnames(popmap)[2] != "pop"){
-      stop("popmap must be a dataframe with two columns, 'id' and 'pop'")
+  #ensure naming conventions followed
+  if (colnames(popmap)[1] != "id"){
+    stop("popmap must be a dataframe with column 1 named 'id'")
   }
 
+  #ensure naming conventions followed
+  if (colnames(popmap)[2] != "pop"){
+    stop("popmap must be a dataframe with column 2 named 'pop'")
+  }
+
+  #check that id column length in popmap matches the number of samples in the vcf file
+  if (length(popmap$id) != length(colnames(vcfR@gt))-1){
+    stop("popmap ID's must match exactly the ID's in input vcf")
+  }
+
+  #check that id's match the ids in the vcf file
+  if (all(popmap$id %in% colnames(vcfR@gt)) == FALSE){
+    stop("popmap ID's must match exactly the ID's in input vcf")
+  }
+
+  #if checks pass, and thresholds not provided, start here:
   if (is.null(thresholds)) {
 
     #run clustering with no filters
@@ -56,31 +62,56 @@ assess_clustering <- function(vcfR, popmap=NULL, thresholds=NULL){
     #convert vcfR into genlight
     genlight<-vcfR::vcfR2genlight(vcfR)
 
-    #run dapc for mac 1,2,3,4,5,10
-    for (i in c(1,2,3,4,5,10)){
+    ###############################################
+    ###############################################
+    # t-SNE
+    ###############################################
+    ###############################################
 
-      #filter genlight by given mac
-      genlight<-genlight[,sfs >= i]
-      #subset sfs vector to only samples left in the vcf
-      sfs<-sfs[sfs >= i]
+    # prepare plot labels and such
+    # this makes it so it is grouped by DAPC clusters
+    colors = rainbow(length(unique(results$grp)))
+    names(colors) = unique(results$grp)
+    ecb = function(x,y){plot(x,t='n'); text(x, labels=results$grp, col=colors[results$grp])}
 
-      #assign samples to the number of groups present in popmap, retain all PCAs
-      grp<-adegenet::find.clusters(genlight, n.pca = ncol(gt.matrix)-1, n.clust = length(levels(popmap$pop)))
+    # t-SNE on principal components of scaled data
+    # adjust perplexity, initial_dims
+    # can do k=3 for 3D plot
+    # should do only <50 variables
+    # can do it on pca$li (if you reduce the number of components), or on cmdsplot2$points
+    tsne_p5 = tsne(pca1$tab, epoch_callback=ecb, max_iter=5000, perplexity=5, initial_dims=5)
 
-      #check how well that assignment matched up to the provided popmap
-      samps<-merge(popmap, data.frame(group=grp$grp, id=labels(grp$grp)), by='id')
-      print(paste0("for ", i, " minimum MAC cutoff, compare k means clustering to popmap assignment"))
-      print(table(samps$pop, samps$group))
+    # tSNE plot with DAPC groups
+    plot(tsne_p5, main="t-SNE perplexity=5 with DAPC optimal k and clusters", col=results$grp, pch=16)
 
-      #run dapc, retain all discriminant axes, and enough PC axes to explain 75% of variance
-      dapc1<-adegenet::dapc(genlight, grp$grp, n.da = length(levels(popmap$pop))-1, pca.select = "percVar", perc.pca = 75)
+    # pam clustering with optimal k from DAPC
+    for (i in 2:10){
+      print(paste(i, mean(silhouette(pam(tsne_p5, i))[, "sil_width"])))
+    }
+    #pam prefers same 6 groups as DAPC
+    pam(tsne_p5, 6)
 
-      #plot compoplot
-      adegenet::compoplot(dapc1, legend=FALSE, show.lab =TRUE, cex.names=.4, main=paste0("min. MAC ",i,", total SNPs ",length(sfs)))
+    # determine optimal k of tSNE via hierarchical clustering with BIC
+    # adjust G option to reasonable potential cluster values, e.g. for up to 12 clusters, G=1:12
+    tsne_p5_clust <- Mclust(tsne_p5)
+    mclust_grps_tsne_p5 <- as.numeric(tsne_p5_clust$classification)
+    max(mclust_grps_tsne_p5)
+    # t-SNE p5 with optimal k and clusters of RF via hierarchical clustering
+    plot(tsne_p5,
+         xlab="Scaling Dimension 1",
+         ylab="Scaling Dimension 2",
+         main="t-SNE p5 RF optimal K and clusters (hierarchical clustering)",
+         col=mclust_grps_tsne_p5, pch=16)
+    mclust_grps_tsne_p5
+    f<-as.data.frame(tsne_p5)
+    # tSNE with optimal k and clusters via hierarchical clustering
+    ggplot(data=f, aes(x=V1,
+                       y=V2,
+                       col=as.factor(mclust_grps_tsne_p5)))+
+      geom_point(cex=3)+
+      theme_classic()
 
-      #print
-      print(paste0("DAPC with min. MAC ", i, " and ", length(sfs), " total SNPs, complete"))
-
+    cbind(rownames(pca1$tab), mclust_grps_tsne_p5)
       #return vcfR
       return(vcfR)
 

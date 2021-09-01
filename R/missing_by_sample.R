@@ -45,9 +45,11 @@ missing_by_sample <- function(vcfR, popmap=NULL, cutoff=NULL){
             if (is.null(popmap)){
                 print("No popmap provided")
             }
+
             #else, start by checking the popmap
-            #popmap must be a two column dataframe with 'id' and 'pop' columns
             else {
+
+              #popmap must be a two column dataframe with 'id' and 'pop' columns
               if (colnames(popmap)[1] != "id" | colnames(popmap)[2] != "pop"){
                 stop("popmap must be a dataframe with two columns, 'id' and 'pop'")
               }
