@@ -18,7 +18,14 @@
 #' @export
 hard_filter <- function(vcfR, depth=NULL, gq=NULL){
 
+  #if specified vcfR is not class 'vcfR', fail gracefully
+  if (class(vcfR) != "vcfR"){
+    stop("specified vcfR object must be of class 'vcfR'")
+  }
+
+  #if depth is specified, start here
   if (!is.null(depth)) {
+
   #extract depth from the vcf
   dp.matrix<- vcfR::extract.gt(vcfR, element='DP', as.numeric=TRUE)
 
@@ -30,30 +37,41 @@ hard_filter <- function(vcfR, depth=NULL, gq=NULL){
   #convert to NAs
   dp.matrix[dp.matrix < depth] <- NA
   vcfR@gt[,-1][ is.na(dp.matrix) == TRUE ] <- NA
+  #close if statement
   }
 
+  #if no depth is specified
   else{
+    #print user message
     print("no depth cutoff provided")
   }
 
+  #if gq is specified
   if (!is.null(gq)) {
+
   #extract gq from the vcf
   gq.matrix<- vcfR::extract.gt(vcfR, element='GQ', as.numeric=TRUE)
 
   #calculate the SNPs that fall below the gq filter
   j<-round((sum(gq.matrix < gq, na.rm = TRUE)/sum(!is.na(gq.matrix)))*100, 2)
+
   #report filter
   print(paste0(j,"% of genotypes fall below a genotype quality of ",gq," and were converted to NA"))
 
   #convert to NAs
   gq.matrix[gq.matrix < gq] <- NA
   vcfR@gt[,-1][ is.na(gq.matrix) == TRUE ] <- NA
+
+  #close if statement
   }
 
   else{
     print("no depth cutoff provided")
   }
 
+  #return
   return(vcfR)
+
+#close function
 }
 

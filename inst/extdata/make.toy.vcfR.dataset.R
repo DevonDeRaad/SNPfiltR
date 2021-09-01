@@ -34,7 +34,8 @@ missing_by_snp(vcfR = f, cutoff = .6)
 
 #missing by sample
 missing_by_sample(vcfR = SNPfiltR:::vcfR.example)
-missing_by_sample(vcfR = SNPfiltR:::vcfR.example, cutoff = .7)
+f<-missing_by_sample(vcfR = SNPfiltR:::vcfR.example, cutoff = .7)
+missing_by_sample(vcfR = f, cutoff = .7)
 
 #hard filter
 f<-hard_filter(vcfR = SNPfiltR:::vcfR.example, depth = 5, gq = 30)
@@ -46,6 +47,7 @@ f<-max_depth(vcfR = SNPfiltR:::vcfR.example, maxdepth = 100)
 max_depth(vcfR = f, maxdepth = 100)
 
 #allele balance
+#fix histograms
 f<-filter_allele_balance(vcfR = SNPfiltR:::vcfR.example)
 filter_allele_balance(vcfR = f)
 

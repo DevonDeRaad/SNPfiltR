@@ -14,6 +14,11 @@
 #' @export
 filter_allele_balance <- function(vcfR){
 
+  #if specified vcfR is not class 'vcfR', fail gracefully
+  if (class(vcfR) != "vcfR"){
+    stop("specified vcfR object must be of class 'vcfR'")
+  }
+
   #extract AD from the vcf
   ad.matrix<- vcfR::extract.gt(vcfR, element='AD')
   #extract GT from the vcf
@@ -31,11 +36,24 @@ filter_allele_balance <- function(vcfR){
   p<-round(sum(AB, na.rm = TRUE) / sum(is.na(AB) == FALSE)*100, 2)
   j<-round(sum(AB, na.rm = TRUE) / sum(is.na(gt.matrix) == FALSE)*100, 2)
 
+  #print to user
   print(paste0(p,"% of het genotypes (",j,"% of all genotypes) fall outside of .25 - .75 allele balance and were converted to NA"))
 
   #convert failing genotypes to NA
   vcfR@gt[,-1][AB]<-NA
 
+  #make histogram of allele balance at all het genotypes
+  hist(as.numeric(AB),
+       xlim = c(0,1),
+       ylab = "number of genotypes",
+       xlab = "Allele balance",
+       main ="allele balance distribution")
+  abline(v=c(.25,.75),
+         col="red")
+
+  #return vcfR
   return(vcfR)
+
+#close function
 }
 
