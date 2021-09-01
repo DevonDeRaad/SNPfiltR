@@ -57,7 +57,11 @@ f<-distance_thin(vcfR = SNPfiltR:::vcfR.example, min.distance = 1000)
 distance_thin(vcfR = f, min.distance = 1000)
 
 #filter biallelic
-#filter_biallelic()
+filter_biallelic(vcfR = SNPfiltR:::vcfR.example)
+vc<-read.vcfR("/Users/devder/Dropbox/Emily_Towhees/towhees/towhees_genomic/Pipmac2020.filtered.vcf")
+f<-filter_biallelic(vcfR = vc)
+filter_biallelic(vcfR = f)
+
 
 #min mac
 #this function now only does mac filtering

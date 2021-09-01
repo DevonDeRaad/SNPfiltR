@@ -17,7 +17,7 @@ filter_biallelic <- function(vcfR){
     }
 
     #store vector of number of alternate alleles at each SNP
-    v<-nchar(vcf@fix[,"ALT"])
+    v<-nchar(vcfR@fix[,"ALT"])
     #add 1 to each value to account for the reference allele
     v<-v+1
 
@@ -26,7 +26,7 @@ filter_biallelic <- function(vcfR){
          main= "distribution of alleles present in vcf",
          xlab= "number of alleles",
          ylab= "number of SNPs",
-         xlim= c(0,4))
+         xlim= c(.5,4.5))
     abline(v=2.5,
          col="red")
 
@@ -40,7 +40,7 @@ filter_biallelic <- function(vcfR){
     y<-q/p
 
     #print for user
-    print(paste0(y, "% of SNPs contained more than 2 alleles, and were removed from the VCF"))
+    print(paste0(q, " SNPs, ", round(y, 3), "% of all input SNPs, contained more than 2 alleles, and were removed from the VCF"))
 
     #filter the vcfR based on the "ALT" column
     vcfR<-vcfR[nchar(vcfR@fix[,"ALT"]) == 1,]

@@ -1,9 +1,11 @@
 #' Vizualise how missing data thresholds affect sample clustering
 #'
-#' This function can be run in two ways: 1) Without 'min.mac' specified. This will run DAPC for a
-#' minimum MAC of 1,2,3,4,5,10, visualize the results, and tell you how the DAPC clustering
-#' compares to your a priori population assignments, and how many SNPs are retained at each MAC cutoff.
-#' 2) With 'min.mac' specified. This will print your folded Site Frequency Spectrum (SFS) and
+#' This function can be run in two ways: 1) Without 'thresholds' specified. This will run t-SNE
+#' for the input vcf without filtering, and visualize the clustering of samples in two-dimensional
+#' space, coloring each sample according to a priori population assignment given in the popmap.
+#' 2) With 'thresholds' specified. This will filter your input vcf file to the specified
+#' missing data thresholds, and run a t-SNE clustering analysis for each filtering iteration.
+#'
 #' show you where your specified min. MAC count falls. It will then return your vcfR object with SNPs
 #' falling below your min. MAC threshold removed.
 #' MAF cutoffs can be helpful in removing spurious and uninformative loci from the dataset, but also
@@ -79,10 +81,13 @@ assess_clustering <- function(vcfR, popmap=NULL, thresholds=NULL){
       #print
       print(paste0("DAPC with min. MAC ", i, " and ", length(sfs), " total SNPs, complete"))
 
+      #return vcfR
       return(vcfR)
 
+      #close if statement
     }
 
+    #if thresholds are provided, run loop over all filtering thresholds here:
   }
   else {
 

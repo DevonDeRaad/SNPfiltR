@@ -31,9 +31,16 @@ filter_allele_balance <- function(vcfR){
   al1<-structure(as.numeric(gsub(",.*", "", ad.matrix)), dim=dim(ad.matrix))
   al2<-structure(as.numeric(gsub(".*,", "", ad.matrix)), dim=dim(ad.matrix))
 
-  #calculate percentage of hets failing AB filter
+  #calculate AB for each sample
+  al.bal<-al1/(al1 + al2)
+
+  #calculate logical storing whether each het genotype passes the filter
   AB<-al1/(al1 + al2) > .75 | al1/(al1 + al2) <.25
+
+  #calculate percent of het genotypes failing the filter
   p<-round(sum(AB, na.rm = TRUE) / sum(is.na(AB) == FALSE)*100, 2)
+
+  #calculate overall percentage of genotypes failing the filter
   j<-round(sum(AB, na.rm = TRUE) / sum(is.na(gt.matrix) == FALSE)*100, 2)
 
   #print to user
@@ -43,7 +50,7 @@ filter_allele_balance <- function(vcfR){
   vcfR@gt[,-1][AB]<-NA
 
   #make histogram of allele balance at all het genotypes
-  hist(as.numeric(AB),
+  hist(al.bal,
        xlim = c(0,1),
        ylab = "number of genotypes",
        xlab = "Allele balance",

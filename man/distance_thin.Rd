@@ -16,7 +16,13 @@ specified distance have been removed from the file
 \description{
 This function requires a vcfR object as input, and returns a vcfR object filtered
 to retain only SNPs greater than a specified distance apart on each scaffold.
-This type of filtering is often employed to reduce linkage amongst SNPs.
+The function starts by automatically retaining the first SNP on a given scaffold,
+and then subsequently keeping the next SNP that is greater than the specified distance away,
+until it reaches the end of the scaffold/chromosome. This function scales well with
+an increasing number of SNPs, but poorly with an increasing number of scaffolds/chromosomes.
+For this reason, there is a built in progress bar,
+to monitor potentially long-running executuions with many scaffolds.
+This type of filtering is often employed to reduce linkage among input SNPs.
 }
 \examples{
 distance_thin(vcfR = SNPfiltR:::vcfR.example, min.distance = 1000)
