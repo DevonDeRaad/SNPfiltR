@@ -80,7 +80,10 @@ assess_clustering(vcfR = SNPfiltR:::vcfR.example,
                   popmap = popmap,
                   thresholds = c(.6,.7,.8,.9))
 
-
+#
+assess_missing(vcfR = SNPfiltR:::vcfR.example,
+                  popmap = popmap,
+                  thresholds = c(.6,.7,.8,.9))
 
 
 
