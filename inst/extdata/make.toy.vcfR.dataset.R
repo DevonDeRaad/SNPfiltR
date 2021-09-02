@@ -14,7 +14,7 @@ library(SNPfiltR)
 vcffog<-read.vcfR("~/Desktop/hipposideros/n3.vcf")
 
 #subset to 500 random SNPs
-vcfR.example<-vcffog[sample.int(151015, 500), c(1:20)]
+vcfR.example<-vcffog[sample.int(151015, 500),]
 
 #save this vcf
 write.vcf(vcfR.example, file = "~/Downloads/SNPfilter.example.vcf.gz")
@@ -23,10 +23,10 @@ write.vcf(vcfR.example, file = "~/Downloads/SNPfilter.example.vcf.gz")
 popmap<-data.frame(id=colnames(SNPfiltR:::vcfR.example@gt)[-1], pop=sub(".*H_", "", colnames(SNPfiltR:::vcfR.example@gt)[-1]))
 
 #save this popmap as available data for the SNPfiltR package
-usethis::use_data(popmap, internal = TRUE, overwrite = T)
+#write.csv(popmap, "")
 
 #save this vcfR as available data for the SNPfiltR package
-#usethis::use_data(vcfR.example, internal = TRUE, overwrite = T)
+usethis::use_data(vcfR.example, internal = TRUE, overwrite = T)
 
 #clean global environment
 rm(list=ls())
@@ -75,8 +75,10 @@ min_mac(vcfR = SNPfiltR:::vcfR.example)
 f<-min_mac(vcfR = SNPfiltR:::vcfR.example, min.mac = 1)
 min_mac(vcfR = f, min.mac = 4)
 
-#
-#assess_clustering()
+#assess clustering
+assess_clustering(vcfR = SNPfiltR:::vcfR.example,
+                  popmap = popmap,
+                  thresholds = c(.6,.7,.8,.9))
 
 
 

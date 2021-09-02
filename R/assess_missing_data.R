@@ -23,13 +23,12 @@
 #' vcfR=system.file("extdata","unfiltered.vcf.gz",package="SNPfiltR",mustWork=TRUE),
 #' thresholds=c(60,80,100))
 #' @export
-assess_clustering <- function(vcfR,
+assess_missing_data <- function(vcfR,
                               popmap=NULL,
                               thresholds=NULL,
                               perplexity=NULL,
                               iterations=NULL,
-                              initial_dims=NULL,
-                              clustering=FALSE){
+                              initial_dims=NULL){
 
   #if vcfR is not class vcfR, fail gracefully
   if (class(vcfR) != "vcfR"){
@@ -128,90 +127,72 @@ assess_clustering <- function(vcfR,
     ###############################################
     ###############################################
 
-    # t-SNE on PCA
+    # t-SNE on PCA output
     tsne_p5<- tsne::tsne(pca.scores,
                          max_iter=q,
                          perplexity=w,
-                         initial_dims=p)
+                         initial_dims = p)
 
-    #save as dataframe
+    #save as data frame
     tsne.df<-as.data.frame(tsne_p5)
 
-    # tSNE plot with DAPC groups
+    #add id names from vcfR
+    tsne.df$id<-colnames(vcfR@gt)[-1]
+
+    #extract genotypes from the vcfR
+    gt<- vcfR::extract.gt(vcfR,
+                          as.numeric=TRUE)
+
+    #calculate missingness by individual
+    miss<-colSums(is.na(gt))/nrow(gt)
+
+    #add missingness to df
+    tsne.df$missing<-miss
+
+    #match order for pop from popmap into this df
+    tsne.df$pop<-popmap$pop[order(popmap$id == colnames(vcfR@gt)[-1])]
+
+    # tSNE plot with groups specified in the popmap
     #plot(tsne_p5, main="t-SNE perplexity=5 with DAPC optimal k and clusters", col=popmap$pop, pch=16)
     print(
-    ggplot2::ggplot(tsne.df,
-           ggplot2::aes(x=V1,
-               y=V2,
-               color=popmap$pop)
-           )+
-      ggplot2::geom_point(cex = 4,
-                 alpha=.75)+
-      ggplot2::theme_classic()+
-      ggplot2::theme(legend.position = "bottom",
-            legend.title = ggplot2::element_text(size=8),
-            legend.text = ggplot2::element_text(size=6.5))
+      ggplot2::ggplot(tsne.df,
+                      ggplot2::aes(x=V1,
+                                   y=V2,
+                                   color=pop)
+      )+
+        ggplot2::geom_point(cex = 4,
+                            alpha=.75)+
+        ggplot2::theme_classic()+
+        ggplot2::ggtitle(paste0("t-SNE clustering"))+
+        ggplot2::labs(color = "population\nassignment")+
+        ggplot2::theme_classic()
     )
 
-    if(clustering=TRUE){
-    #record pam clustering info
-    m=c()
-    for (z in 2:(length(levels(as.factor(popmap$pop)))+2)){
-      m[z]<-mean(cluster::silhouette(cluster::pam(tsne_p5, z))[, "sil_width"])
-    }
-    plot(m,type = "o",
-         xlab = "K",
-         ylab = "PAM silhouette",
-         main="t-SNE PAM clustering")
-
-    #make dataframe
-    pam.df<-data.frame(n.groups=2:(length(levels(as.factor(popmap$pop)))+2),
-                       likelihood=m[-1])
-
-    #run pam best clustering scheme
-    pam.clust<-cluster::pam(tsne_p5, pam.df$n.groups[pam.df$likelihood==max(pam.df$likelihood)])
-
-    #plot pam clusters versus a priori clusters
+    #plot t-SNE color coding by missing data percentage
     print(
-    ggplot2::ggplot(tsne.df,
-      ggplot2::aes(x=V1,
-               y=V2,
-               color=popmap$pop,
-               shape=as.factor(pam.clust$clustering))
-           ) +
-      ggplot2::geom_point(cex = 4,
-                 alpha=.75)+
-      ggplot2::theme_classic()
+      ggplot2::ggplot(tsne.df,
+                      ggplot2::aes(x=V1,
+                                   y=V2,
+                                   color=missing)
+      ) +
+        ggplot2::ggtitle(paste0("t-SNE clustering"))+
+        ggplot2::geom_point(cex = 4,
+                            alpha=.75)+
+        ggplot2::theme_classic()+
+        ggplot2::labs(color = "proportion\nmissing data")
     )
 
-    #make clean df with info
-    df<-data.frame(tsne.ax1=tsne.df$V1,
-                   tsne.ax2=tsne.df$V2,
-                   popmap.pop=popmap$pop,
-                   pam.pop=as.factor(pam.clust$clustering))
-
       #return df
-      return(df)
-    #close if statement (if clustering = T)
-    }
-
-    #here return df without performing clustering and replotting
-    else{
-      df<-data.frame(tsne.ax1=tsne.df$V1,
-                              tsne.ax2=tsne.df$V2,
-                              popmap.pop=popmap$pop)
-
-      #return df
-      return(df)
-
-      #close else statement
-      }
+      return(tsne.df)
 
     #close if statement if (is.null(thresholds))
-    }
+  }
 
-#if thresholds are provided, run loop over all filtering thresholds here:
+  #if thresholds are provided, run loop over all filtering thresholds here:
   else{
+
+    #open list to fill meta info
+    dfs<-list()
 
     for (i in thresholds){
 
@@ -224,101 +205,88 @@ assess_clustering <- function(vcfR,
       vcfR.filt<-SNPfiltR::missing_by_snp(vcfR = vcfR,
                                           cutoff = i)
 
-    #convert vcfR into genlight
-    gen<-vcfR::vcfR2genlight(vcfR.filt)
+      #convert vcfR into genlight
+      gen<-vcfR::vcfR2genlight(vcfR.filt)
 
-    #execute PCA using this genlight
-    #retain number of PC axes equivalent to the number of populations being discriminated + 2
-    pca<-adegenet::glPca(gen,
-                         nf=length(levels(as.factor(popmap$pop)))+2)
+      #execute PCA using this genlight
+      #retain number of PC axes equivalent to the number of populations being discriminated + 2
+      pca<-adegenet::glPca(gen,
+                           nf=length(levels(as.factor(popmap$pop)))+2)
 
-    #pull pca scores out of df
-    pca.scores<-as.data.frame(pca$scores)
+      #pull pca scores out of df
+      pca.scores<-as.data.frame(pca$scores)
 
-    ###############################################
-    ###############################################
-    # t-SNE
-    ###############################################
-    ###############################################
+      ###############################################
+      ###############################################
+      # t-SNE
+      ###############################################
+      ###############################################
 
-    # t-SNE on PCA output
-    tsne_p5<- tsne::tsne(pca.scores,
-                         max_iter=q,
-                         perplexity=w,
-                         initial_dims = p)
+      # t-SNE on PCA output
+      tsne_p5<- tsne::tsne(pca.scores,
+                           max_iter=q,
+                           perplexity=w,
+                           initial_dims = p)
 
-    #save as data frame
-    tsne.df<-as.data.frame(tsne_p5)
+      #save as data frame
+      tsne.df<-as.data.frame(tsne_p5)
 
-    # tSNE plot with groups specified in the popmap
-    #plot(tsne_p5, main="t-SNE perplexity=5 with DAPC optimal k and clusters", col=popmap$pop, pch=16)
-    print(
-    ggplot2::ggplot(tsne.df,
-      ggplot2::aes(x=V1,
-               y=V2,
-               color=popmap$pop)
-           )+
-      ggplot2::geom_point(cex = 4,
-                 alpha=.75)+
-      ggplot2::theme_classic()+
-      ggplot2::ggtitle(paste0("t-SNE ",i*100,"% SNP completeness cutoff"))+
-      ggplot2::theme(legend.position = "bottom",
-                     legend.title = ggplot2::element_text(size=8),
-                     legend.text = ggplot2::element_text(size=6.5))
-    )
+      #add id names from vcfR
+      tsne.df$id<-colnames(vcfR.filt@gt)[-1]
 
-    #record pam clustering info
-    m=c()
-    for (z in 2:(length(levels(as.factor(popmap$pop)))+2)){
-      m[z]<-mean(cluster::silhouette(cluster::pam(tsne_p5, z))[, "sil_width"])
+      #extract genotypes from the vcfR
+      gt<- vcfR::extract.gt(vcfR.filt,
+                            as.numeric=TRUE)
+
+      #calculate missingness by individual
+      miss<-colSums(is.na(gt))/nrow(gt)
+
+      #add missingness to df
+      tsne.df$missing<-miss
+
+      #match order from popmap into this df
+      tsne.df$pop<-popmap$pop[order(popmap$id == colnames(vcfR.filt@gt)[-1])]
+
+      # tSNE plot with groups specified in the popmap
+      #plot(tsne_p5, main="t-SNE perplexity=5 with DAPC optimal k and clusters", col=popmap$pop, pch=16)
+      print(
+        ggplot2::ggplot(tsne.df,
+                        ggplot2::aes(x=V1,
+                                     y=V2,
+                                     color=pop)
+        )+
+          ggplot2::geom_point(cex = 4,
+                              alpha=.75)+
+          ggplot2::theme_classic()+
+          ggplot2::ggtitle(paste0("t-SNE ",i*100,"% SNP completeness cutoff"))+
+          ggplot2::labs(color = "population\nassignment")+
+          ggplot2::theme_classic()
+      )
+
+      #plot t-SNE color coding by missing data percentage
+      print(
+        ggplot2::ggplot(tsne.df,
+                        ggplot2::aes(x=V1,
+                                     y=V2,
+                                     color=missing)
+        ) +
+          ggplot2::ggtitle(paste0("t-SNE ",i*100,"% SNP completeness cutoff"))+
+          ggplot2::geom_point(cex = 4,
+                              alpha=.75)+
+          ggplot2::labs(color = "proportion\nmissing data")+
+          ggplot2::theme_classic()
+      )
+
+      #fill list with relevant dataframe
+      dfs[[i]]<-df
+
+      #clean df object
+      df<-NULL
+
+      #close for loop
     }
-
-    #plot pam clustering info
-    plot(m,
-         type = "o",
-         xlab = "K",
-         ylab = "PAM silhouette",
-         main=paste0("t-SNE ",i*100,"% SNP completeness cutoff PAM clustering"))
-
-    #make dataframe
-    pam.df<-data.frame(n.groups=2:(length(levels(as.factor(popmap$pop)))+2),
-                       likelihood=m[-1])
-
-    #run pam best clustering scheme
-    pam.clust<-cluster::pam(tsne_p5, pam.df$n.groups[pam.df$likelihood==max(pam.df$likelihood)])
-
-    #plot pam clusters versus a priori clusters
-    print(
-    ggplot2::ggplot(tsne.df,
-      ggplot2::aes(x=V1,
-               y=V2,
-               color=popmap$pop,
-               shape=as.factor(pam.clust$clustering))
-           ) +
-      ggplot2::ggtitle(paste0("t-SNE clustering analysis ",i*100,"% SNP completeness cutoff"))+
-      ggplot2::geom_point(cex = 4,
-                 alpha=.75)+
-      ggplot2::theme_classic()
-    )
-
-    #make clean df with info
-    df<-data.frame(tsne.ax1=tsne.df$V1,
-                   tsne.ax2=tsne.df$V2,
-                   popmap.pop=popmap$pop,
-                   pam.pop=as.factor(pam.clust$clustering))
-
-    #open list to fill meta info
-    dfs<-list()
-
-    #fill list with relevant dataframe
-    dfs[[i]]<-df
-
-    #clean df object
-    df<-NULL
-
-    #close for loop
-    }
-  #close else statement
+    return(dfs)
+    #close else statement
   }
-#close function
+  #close function
 }
