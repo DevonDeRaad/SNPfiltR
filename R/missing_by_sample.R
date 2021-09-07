@@ -38,127 +38,136 @@ missing_by_sample <- function(vcfR, popmap=NULL, cutoff=NULL){
                         element='DP',
                         as.numeric=TRUE)
 
-        #if cutoff is null, start here
-        if (is.null(cutoff)){
+  #if cutoff is null, start here
+  if (is.null(cutoff)){
 
-            #if no popmap, remind user
-            if (is.null(popmap)){
-                print("No popmap provided")
-            }
-
-            #else, start by checking the popmap
-            else {
-
-              #popmap must be a two column dataframe with 'id' and 'pop' columns
-              if (colnames(popmap)[1] != "id" | colnames(popmap)[2] != "pop"){
-                stop("popmap must be a dataframe with two columns, 'id' and 'pop'")
-              }
-
-              #check that id column length in popmap matches the number of samples in the vcf file
-              if (length(popmap$id) != length(colnames(vcfR@gt))-1){
-                stop("popmap ID's must match exactly the ID's in input vcf")
-              }
-
-              #check that id's match the ids in the vcf file
-              if (all(popmap$id %in% colnames(vcfR@gt)) == FALSE){
-                stop("popmap ID's must match exactly the ID's in input vcf")
-              }
-
-                  #If checks pass, then calculate missingness by pop here and make dotplot
-                  #calculate missingness by individual
-                  miss<-colSums(is.na(dp))/nrow(dp)
-                  #calculate avg depth by individual
-                  avg.depth<-colMeans(dp, na.rm = TRUE)
-                  #store ordered column names
-                  samples<-colnames(dp)
-                  #create df
-                  df.x<-data.frame(id=samples,
-                                   missingness=miss,
-                                   avg.depth=avg.depth,
-                                   row.names = NULL)
-                  #bring in popmap
-                  df.f<-merge(df.x, popmap, by="id")
-                  #plot missingness and depth by pop
-                  plot1<-ggplot2::ggplot(df.f,
-                                         ggplot2::aes(x= reorder(pop, -missingness),
-                                                      y=missingness)
-                                         )+
-                    ggplot2::geom_violin()+
-                    ggplot2::theme_classic()+
-                    ggplot2::theme(axis.title.x = ggplot2::element_blank(),
-                                   axis.text.x = ggplot2::element_text(angle = 60, hjust = 1)
-                                   )+
-                    ggplot2::ylab("proportion missing")+
-                    ggplot2::geom_dotplot(binaxis='y', stackdir='center', dotsize=.8)
-
-                  #dotplot avg depth of sequencing
-                  plot2<-ggplot2::ggplot(df.f,
-                                         ggplot2::aes(x= reorder(pop, -missingness),
-                                                      y=avg.depth)
-                                         )+
-                    ggplot2::geom_violin()+
-                    ggplot2::theme_classic()+
-                    ggplot2::theme(axis.title.x = ggplot2::element_blank(),
-                                   axis.text.x = ggplot2::element_text(angle = 60, hjust = 1)
-                                   )+
-                    ggplot2::ylab("average depth")+
-                    ggplot2::geom_dotplot(binaxis='y',
-                                          stackdir='center',
-                                          dotsize=.8)
-
-                  #arrange plots
-                  gridExtra::grid.arrange(plot1,plot2)
-
-                #close else statement
-                }
-
-
-    #initialize dataframe
-    df.y<- data.frame(indiv=character(), snps.retained=numeric(), filt=numeric())
-    #loop
-    for (i in c(.5,.6,.7,.8,.9,1)){
-      #get vector of individuals we are looping over
-      indiv<-colnames(dp)
-      #calculate the completeness cutoff for each snp to be retained in this iteration
-      filt<-rep(i, times =ncol(dp))
-      #calculate the number of loci successfully genotyped in each sample in this iteration
-      snps.retained<-colSums(is.na(dp[(rowSums(is.na(dp))/ncol(dp) <= 1-i),]) == "FALSE")
-      #append the data from this iteration to existing df
-      df.y<-rbind(df.y, as.data.frame(cbind(indiv, filt, snps.retained)))
-      #close for loop
+    #if no popmap, remind user
+    if (is.null(popmap)){
+      print("No popmap provided")
     }
 
-    #make columns numeric for plotting
-    df.y$filt<-as.numeric(as.character(df.y$filt))
-    df.y$snps.retained<-as.numeric(as.character(df.y$snps.retained))
-    rownames(df.y)<-NULL
-    #visualize color coded by individual
-    print(
-      ggplot2::ggplot(df.y,
-                      ggplot2::aes(x=filt, y=snps.retained, color=indiv)
-                      )+
-        ggplot2::geom_point()+
-        ggplot2::ggtitle("SNPs retained by filtering scheme") +
-        ggplot2::xlab("fraction of non-missing genotypes required to retain each SNP (0-1)")+
-        ggplot2::ylab("non-missing SNPs retained per sample")+
-        ggplot2::theme_light()+
-        ggplot2::theme(legend.position="none")
-    )
+    #else, start by checking the popmap
+    else {
 
-    #calculate missingness by individual
-    miss<-colSums(is.na(dp))/nrow(dp)
-    #show plot with missingness by sample
-    dotchart(sort(miss),
-             cex=.5,
-             xlab = "proportion missing data")
-    abline(v=c(.5,.6,.7,.8,.9,1),
-           lty="dashed")
+      #popmap must be a two column dataframe with 'id' and 'pop' columns
+      if (colnames(popmap)[1] != "id" | colnames(popmap)[2] != "pop"){
+        stop("popmap must be a dataframe with two columns, 'id' and 'pop'")
+      }
 
-    #return the dataframe showing the missingness and avg depth per individual
-    return(df.y)
+      #check that id column length in popmap matches the number of samples in the vcf file
+      if (length(popmap$id) != length(colnames(vcfR@gt))-1){
+        stop("popmap ID's must match exactly the ID's in input vcf")
+      }
 
-        #close if statement for starting with null cutoff
-        }
+      #check that id's match the ids in the vcf file
+      if (all(popmap$id %in% colnames(vcfR@gt)) == FALSE){
+        stop("popmap ID's must match exactly the ID's in input vcf")
+      }
+
+      #If checks pass, then calculate missingness by pop here and make dotplot
+      #calculate missingness by individual
+      miss<-colSums(is.na(dp))/nrow(dp)
+      #calculate avg depth by individual
+      avg.depth<-colMeans(dp, na.rm = TRUE)
+      #store ordered column names
+      samples<-colnames(dp)
+      #create df
+      df.x<-data.frame(id=samples,
+                       missingness=miss,
+                       avg.depth=avg.depth,
+                       row.names = NULL)
+      #bring in popmap
+      df.f<-merge(df.x, popmap, by="id")
+      #plot missingness and depth by pop
+      plot1<-ggplot2::ggplot(df.f,
+                             ggplot2::aes(x= reorder(pop, -missingness),
+                                          y=missingness)
+      )+
+        ggplot2::geom_violin()+
+        ggplot2::theme_classic()+
+        ggplot2::theme(axis.title.x = ggplot2::element_blank(),
+                       axis.text.x = ggplot2::element_text(angle = 60, hjust = 1)
+        )+
+        ggplot2::ylab("proportion missing")+
+        ggplot2::geom_dotplot(binaxis='y', stackdir='center', dotsize=.8)
+
+      #dotplot avg depth of sequencing
+      plot2<-ggplot2::ggplot(df.f,
+                             ggplot2::aes(x= reorder(pop, -missingness),
+                                          y=avg.depth)
+      )+
+        ggplot2::geom_violin()+
+        ggplot2::theme_classic()+
+        ggplot2::theme(axis.title.x = ggplot2::element_blank(),
+                       axis.text.x = ggplot2::element_text(angle = 60, hjust = 1)
+        )+
+        ggplot2::ylab("average depth")+
+        ggplot2::geom_dotplot(binaxis='y',
+                              stackdir='center',
+                              dotsize=.8)
+
+      #arrange plots
+      gridExtra::grid.arrange(plot1,plot2)
+
+      #close else statement
+    }
+
+    #IF this loop is going to fail from low data, kick message back to user and exit
+    if(is.null(nrow(dp[(rowSums(is.na(dp))/ncol(dp) <= 0),]))){
+      print("0 SNPs achieving a 100% completeness threshold, must remove low-data samples to run this function correctly")
+      return(df.f)
+    }
+
+    #if this loop will run, do visualizations
+    else{
+      #initialize dataframe
+      df.y<- data.frame(indiv=character(), snps.retained=numeric(), filt=numeric())
+      #loop
+      for (i in c(.5,.6,.7,.8,.9,1)){
+        #get vector of individuals we are looping over
+        indiv<-colnames(dp)
+        #calculate the completeness cutoff for each snp to be retained in this iteration
+        filt<-rep(i, times =ncol(dp))
+        #calculate the number of loci successfully genotyped in each sample in this iteration
+        snps.retained<-colSums(is.na(dp[(rowSums(is.na(dp))/ncol(dp) <= 1-i),]) == "FALSE")
+        #append the data from this iteration to existing df
+        df.y<-rbind(df.y, as.data.frame(cbind(indiv, filt, snps.retained)))
+        #close for loop
+      }
+
+      #make columns numeric for plotting
+      df.y$filt<-as.numeric(as.character(df.y$filt))
+      df.y$snps.retained<-as.numeric(as.character(df.y$snps.retained))
+      rownames(df.y)<-NULL
+      #visualize color coded by individual
+      print(
+        ggplot2::ggplot(df.y,
+                        ggplot2::aes(x=filt, y=snps.retained, color=indiv)
+        )+
+          ggplot2::geom_point()+
+          ggplot2::ggtitle("SNPs retained by filtering scheme") +
+          ggplot2::xlab("fraction of non-missing genotypes required to retain each SNP (0-1)")+
+          ggplot2::ylab("non-missing SNPs retained per sample")+
+          ggplot2::theme_light()+
+          ggplot2::theme(legend.position="none")
+      )
+
+      #calculate missingness by individual
+      miss<-colSums(is.na(dp))/nrow(dp)
+      #show plot with missingness by sample
+      dotchart(sort(miss),
+               cex=.5,
+               xlab = "proportion missing data")
+      abline(v=c(.5,.6,.7,.8,.9,1),
+             lty="dashed")
+
+      #return the dataframe showing the missingness and avg depth per individual
+      return(df.y)
+
+    } #close else statement
+
+    #close if statement for starting with null cutoff
+  }
 
   #if cutoff is not null, start here
   else {
@@ -178,8 +187,9 @@ missing_by_sample <- function(vcfR, popmap=NULL, cutoff=NULL){
 
     #return vcfR object
     return(vcfR)
-  #close else statement
-  }
-#close function
-}
 
+    #close else statement
+  }
+
+  #close function
+}
