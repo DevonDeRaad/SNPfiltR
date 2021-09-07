@@ -105,6 +105,7 @@ assess_missing_data <- function(vcfR,
     stop("invariant SNPs detected in input vcf. Invariant sites must be filtered prior to input")
   }
 
+
   #if checks on inputs pass, and thresholds are not specified, start here:
   if (is.null(thresholds)) {
 
@@ -191,6 +192,32 @@ assess_missing_data <- function(vcfR,
   #if thresholds are provided, run loop over all filtering thresholds here:
   else{
 
+    #check if the specified thresholds are going to result in samples with 0 SNPs present
+    #filter vcf based on max thresholds
+    #extract genotype matrix from the vcfR object
+    dp.matrix<- vcfR::extract.gt(vcfR,
+                                 as.numeric=TRUE)
+
+    #calculate the proportion of individuals successfully genotyped at each SNP
+    miss<-rowSums(is.na(dp.matrix))/ncol(dp.matrix)
+
+    #do filtering
+    vcfR <- vcfR[miss <= 1-max(thresholds), ]
+
+    #extract depth
+    dp<- vcfR::extract.gt(vcfR,
+                          element='DP',
+                          as.numeric=TRUE)
+
+    #calculate missingness by sample
+    miss.sample<-colSums(is.na(dp))/nrow(dp)
+
+    #if
+    if(min(miss.sample < 1)){
+      stop("Suggested filtering scheme results in samples with no variable sites, clustering cannot be performed.")
+    }
+
+    #otherwise,
     #open list to fill meta info
     dfs<-list()
 

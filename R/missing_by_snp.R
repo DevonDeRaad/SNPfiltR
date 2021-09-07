@@ -47,11 +47,30 @@ missing_by_snp <- function(vcfR, cutoff=NULL){
 
     #do basic vis to show cutoff
     #extract genotype matrix from the vcfR object
-    dp.matrix<- vcfR::extract.gt(vcfR, as.numeric=TRUE)
+    dp.matrix<- vcfR::extract.gt(vcfR,
+                                 as.numeric=TRUE)
 
     #calculate the proportion of individuals successfully genotyped at each SNP
     miss<-rowSums(is.na(dp.matrix))/ncol(dp.matrix)
 
+    #IF this for loop is going to fail, alert user and skip visualizations
+    if(is.null(nrow(dp.matrix[1-miss >= 1,]))){
+      print("0 SNPs passing 100% completeness threshold, visualizations cannot be generated, returning filtered vcf")
+      #calc # of SNPs filtered
+      p<-round(sum(miss > 1-cutoff)/length(miss)*100, 2)
+
+      #report # of SNPs filtered
+      print(paste0(p,"% of SNPs fell below a completeness cutoff of ", cutoff, " and were removed from the VCF"))
+
+      #do filtering
+      vcfR <- vcfR[miss <= 1-cutoff, ]
+
+      #return filtered vcfR
+      return(vcfR)
+    }
+
+    #else, give visualizations alongside filtering
+    else{
     #loop that stores a vector of # non-missing SNPs retained for each individual
     #looped over all possible completeness filter values
     #initialize df.x
@@ -115,6 +134,8 @@ missing_by_snp <- function(vcfR, cutoff=NULL){
     #return filtered vcfR
     return(vcfR)
 
+    } #close else statement
+
   #close if statement
   }
 
@@ -127,10 +148,28 @@ missing_by_snp <- function(vcfR, cutoff=NULL){
     ###Part 1
     #Vis to understand the interplay between retaining samples and setting a missing data cutoff
     #extract genotype from the vcf
-    dp.matrix<- vcfR::extract.gt(vcfR, as.numeric=TRUE)
+    dp.matrix<- vcfR::extract.gt(vcfR,
+                                 as.numeric=TRUE)
 
     #calculate vector containing the proportion of individuals successfully genotyped at each SNP
     miss<-rowSums(is.na(dp.matrix))/ncol(dp.matrix)
+
+    #IF this for loop over filtering cutoffs is going to fail, alert user:
+    if(is.null(nrow(dp.matrix[1-miss >= 1,]))){
+      print("0 SNPs passing 100% completeness threshold, low-data samples must be removed before creating visualizations")
+      #calculate missingness by individual
+      miss<-colSums(is.na(dp))/nrow(dp)
+      samples<-colnames(dp)
+      #create df
+      df.x<-data.frame(id=samples,
+                       missingness=miss,
+                       row.names = NULL)
+      #return df
+      return(df.x)
+    }
+
+    #otherwise generate visualizations
+    else{
     #initialize df.x
     df.y<- data.frame(filt=numeric(), snps=numeric())
     #loop
@@ -142,8 +181,8 @@ missing_by_snp <- function(vcfR, cutoff=NULL){
       #calculate the completeness cutoff for each snp to be retained
       filt<-rep(i, times= length(snps))
       df.y<-rbind(df.y, as.data.frame(cbind(filt, snps)))
-      #close for loop
-      }
+    }      #close for loop
+
 
     #make columns numeric for plotting
     df.y$filt<-as.numeric(as.character(df.y$filt))
@@ -189,7 +228,7 @@ missing_by_snp <- function(vcfR, cutoff=NULL){
       #calculate the completeness cutoff for each snp to be retained
       filt<-i
       df.x<-rbind(df.x, as.data.frame(cbind(filt, missingness, snps.retained)))
-      }
+    }   #close for loop
 
     #make columns numeric for plotting
     df.x$filt<-as.numeric(as.character(df.x$filt))
@@ -221,8 +260,11 @@ missing_by_snp <- function(vcfR, cutoff=NULL){
 
     #return
     return(df.x)
-  }
 
-}
+    } #end else statement beginning with: #calculate vector containing the proportion of individuals successfully genotyped at each SNP
+
+  } #end broader else statement
+
+} #close function
 
 
