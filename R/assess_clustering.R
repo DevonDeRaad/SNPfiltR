@@ -28,8 +28,7 @@ assess_clustering <- function(vcfR,
                               thresholds=NULL,
                               perplexity=NULL,
                               iterations=NULL,
-                              initial_dims=NULL,
-                              clustering=FALSE){
+                              initial_dims=NULL){
 
   #if vcfR is not class vcfR, fail gracefully
   if (class(vcfR) != "vcfR"){
