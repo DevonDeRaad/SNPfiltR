@@ -10,8 +10,7 @@ assess_clustering(
   thresholds = NULL,
   perplexity = NULL,
   iterations = NULL,
-  initial_dims = NULL,
-  clustering = FALSE
+  initial_dims = NULL
 )
 }
 \arguments{
@@ -19,7 +18,7 @@ assess_clustering(
 
 \item{popmap}{set of population assignments that will be used to color code the plots}
 
-\item{thresholds}{a vector specifying the missing data filtering thresholds to explore}
+\item{thresholds}{optionally specify a vector of missing data filtering thresholds to explore}
 
 \item{perplexity}{numerical value specifying the perplexity paramter during t-SNE (default: 10)}
 
@@ -44,6 +43,5 @@ on clustering patterns.
 }
 \examples{
 assess_clustering(
-vcfR=system.file("extdata","unfiltered.vcf.gz",package="SNPfiltR",mustWork=TRUE),
-thresholds=c(60,80,100))
+vcfR=system.file("extdata","unfiltered.vcf.gz",package="SNPfiltR",mustWork=TRUE))
 }

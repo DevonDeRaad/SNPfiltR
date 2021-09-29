@@ -26,7 +26,7 @@ popmap<-data.frame(id=colnames(SNPfiltR:::vcfR.example@gt)[-1], pop=sub(".*H_", 
 #write.csv(popmap, "")
 
 #save this vcfR as available data for the SNPfiltR package
-usethis::use_data(vcfR.example, internal = TRUE, overwrite = T)
+#usethis::use_data(vcfR.example, internal = TRUE, overwrite = T)
 
 #clean global environment
 rm(list=ls())
@@ -83,8 +83,12 @@ assess_clustering(vcfR = SNPfiltR:::vcfR.example,
 #
 assess_missing_data(vcfR = SNPfiltR:::vcfR.example,
                   popmap = popmap,
-                  thresholds = c(.6,.7,.8,.9))
+                  thresholds = .9)
 
+#
+assess_clustering(vcfR = SNPfiltR:::vcfR.example,
+                    popmap = popmap,
+                    thresholds = .9)
 
 
 

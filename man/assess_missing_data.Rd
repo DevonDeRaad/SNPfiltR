@@ -43,6 +43,5 @@ on clustering patterns.
 }
 \examples{
 assess_clustering(
-vcfR=system.file("extdata","unfiltered.vcf.gz",package="SNPfiltR",mustWork=TRUE),
-thresholds=c(60,80,100))
+vcfR=system.file("extdata","unfiltered.vcf.gz",package="SNPfiltR",mustWork=TRUE))
 }
