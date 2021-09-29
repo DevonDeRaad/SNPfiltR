@@ -78,6 +78,9 @@ assess_missing_data_pca <- function(vcfR,
     stop("invariant SNPs detected in input vcf. Invariant sites must be filtered prior to input")
   }
 
+  #calculate missingness by individual
+  miss<-colSums(is.na(gt.matrix))/nrow(gt.matrix)
+
   ###
   ###
   ###
@@ -128,6 +131,8 @@ assess_missing_data_pca <- function(vcfR,
       #match order for pop from popmap into this df
       pca.scores$pop<-popmap$pop[order(popmap$id == colnames(vcfR@gt)[-1])]
       pca.scores$pam.clust<-pam.clust$clustering
+      #add missingness to df
+      pca.scores$missing<-miss
 
       #record percentage of variance explained in the PCA
       var_frac <- pca$eig/sum(pca$eig)
@@ -148,6 +153,23 @@ assess_missing_data_pca <- function(vcfR,
           ggplot2::theme_classic()+
           ggplot2::guides(color=ggplot2::guide_legend(title="popmap assignment"),
                           shape=ggplot2::guide_legend(title="PAM clusters"))
+      )
+
+      #plot PCA color coding by missing data percentage
+      print(
+        ggplot2::ggplot(pca.scores,
+                        ggplot2::aes(x=PC1,
+                                     y=PC2,
+                                     color=missing,
+                                     shape=pop)
+        ) +
+          ggplot2::ggtitle(paste0("PCA clustering analysis"))+
+          ggplot2::geom_point(cex = 4,
+                              alpha=.75)+
+          ggplot2::labs(color = "proportion\nmissing data")+
+          ggplot2::xlab(paste0("PC1, ", round(var_frac[1]*100, 2), "% variance explained"))+
+          ggplot2::ylab(paste0("PC2, ", round(var_frac[2]*100, 2), "% variance explained"))+
+          ggplot2::theme_classic()
       )
 
       #return df
@@ -207,6 +229,8 @@ assess_missing_data_pca <- function(vcfR,
         #match order for pop from popmap into this df
         pca.scores$pop<-popmap$pop[order(popmap$id == colnames(vcfR@gt)[-1])]
         pca.scores$pam.clust<-pam.clust$clustering
+        #add missingness to df
+        pca.scores$missing<-miss
 
         #record percentage of variance explained in the PCA
         var_frac <- pca$eig/sum(pca$eig)
@@ -227,6 +251,23 @@ assess_missing_data_pca <- function(vcfR,
             ggplot2::ylab(paste0("PC2, ", round(var_frac[2]*100, 2), "% variance explained"))+
             ggplot2::guides(color=ggplot2::guide_legend(title="popmap assignment"),
                             shape=ggplot2::guide_legend(title="PAM clusters"))
+        )
+
+        #plot PCA color coding by missing data percentage
+        print(
+          ggplot2::ggplot(pca.scores,
+                          ggplot2::aes(x=PC1,
+                                       y=PC2,
+                                       color=missing,
+                                       shape=pop)
+          ) +
+            ggplot2::ggtitle(paste0(i*100,"% SNP completeness cutoff PCA"))+
+            ggplot2::geom_point(cex = 4,
+                                alpha=.75)+
+            ggplot2::labs(color = "proportion\nmissing data")+
+            ggplot2::xlab(paste0("PC1, ", round(var_frac[1]*100, 2), "% variance explained"))+
+            ggplot2::ylab(paste0("PC2, ", round(var_frac[2]*100, 2), "% variance explained"))+
+            ggplot2::theme_classic()
         )
 
         #fill list with relevant dataframe
@@ -276,6 +317,8 @@ assess_missing_data_pca <- function(vcfR,
 
       #match order for pop from popmap into this df
       pca.scores$pop<-popmap$pop[order(popmap$id == colnames(vcfR@gt)[-1])]
+      #add missingness to df
+      pca.scores$missing<-miss
 
       #record percentage of variance explained in the PCA
       var_frac <- pca$eig/sum(pca$eig)
@@ -294,6 +337,23 @@ assess_missing_data_pca <- function(vcfR,
                               alpha=.75)+
           ggplot2::theme_classic()+
           ggplot2::guides(color=ggplot2::guide_legend(title="popmap assignment"))
+      )
+
+      #plot PCA color coding by missing data percentage
+      print(
+        ggplot2::ggplot(pca.scores,
+                        ggplot2::aes(x=PC1,
+                                     y=PC2,
+                                     color=missing,
+                                     shape=pop)
+        ) +
+          ggplot2::ggtitle("PCA clustering anlysis")+
+          ggplot2::geom_point(cex = 4,
+                              alpha=.75)+
+          ggplot2::labs(color = "proportion\nmissing data")+
+          ggplot2::xlab(paste0("PC1, ", round(var_frac[1]*100, 2), "% variance explained"))+
+          ggplot2::ylab(paste0("PC2, ", round(var_frac[2]*100, 2), "% variance explained"))+
+          ggplot2::theme_classic()
       )
 
       #return df
@@ -332,6 +392,8 @@ assess_missing_data_pca <- function(vcfR,
 
         #match order for pop from popmap into this df
         pca.scores$pop<-popmap$pop[order(popmap$id == colnames(vcfR@gt)[-1])]
+        #add missingness to df
+        pca.scores$missing<-miss
 
         #record percentage of variance explained in the PCA
         var_frac <- pca$eig/sum(pca$eig)
@@ -350,6 +412,23 @@ assess_missing_data_pca <- function(vcfR,
             ggplot2::xlab(paste0("PC1, ", round(var_frac[1]*100, 2), "% variance explained"))+
             ggplot2::ylab(paste0("PC2, ", round(var_frac[2]*100, 2), "% variance explained"))+
             ggplot2::guides(color=ggplot2::guide_legend(title="popmap assignment"))
+        )
+
+        #plot PCA color coding by missing data percentage
+        print(
+          ggplot2::ggplot(pca.scores,
+                          ggplot2::aes(x=PC1,
+                                       y=PC2,
+                                       color=missing,
+                                       shape=pop)
+          ) +
+            ggplot2::ggtitle(paste0(i*100,"% SNP completeness cutoff PCA"))+
+            ggplot2::geom_point(cex = 4,
+                                alpha=.75)+
+            ggplot2::labs(color = "proportion\nmissing data")+
+            ggplot2::xlab(paste0("PC1, ", round(var_frac[1]*100, 2), "% variance explained"))+
+            ggplot2::ylab(paste0("PC2, ", round(var_frac[2]*100, 2), "% variance explained"))+
+            ggplot2::theme_classic()
         )
 
         #fill list with relevant dataframe

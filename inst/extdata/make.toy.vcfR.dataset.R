@@ -76,17 +76,13 @@ f<-min_mac(vcfR = SNPfiltR:::vcfR.example, min.mac = 1)
 min_mac(vcfR = f, min.mac = 4)
 
 #assess clustering
-assess_clustering(vcfR = SNPfiltR:::vcfR.example,
-                  popmap = popmap,
-                  thresholds = c(.6,.7,.8,.9))
-
 #
-assess_missing_data(vcfR = SNPfiltR:::vcfR.example,
+assess_missing_data_pca(vcfR = SNPfiltR:::vcfR.example,
                   popmap = popmap,
                   thresholds = .9)
 
 #
-assess_clustering(vcfR = SNPfiltR:::vcfR.example,
+assess_missing_data_tsne(vcfR = SNPfiltR:::vcfR.example,
                     popmap = popmap,
                     thresholds = .9)
 
