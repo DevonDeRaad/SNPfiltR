@@ -198,8 +198,7 @@ assess_missing_data_tsne <- function(vcfR,
       ggplot2::ggplot(tsne.df,
                       ggplot2::aes(x=V1,
                                    y=V2,
-                                   color=missing,
-                                   shape=pop)
+                                   color=missing)
       ) +
         ggplot2::ggtitle(paste0("t-SNE clustering analysis"))+
         ggplot2::geom_point(cex = 4,
@@ -309,8 +308,7 @@ assess_missing_data_tsne <- function(vcfR,
         ggplot2::ggplot(tsne.df,
                         ggplot2::aes(x=V1,
                                      y=V2,
-                                     color=missing,
-                                     shape=pop)
+                                     color=missing)
         ) +
           ggplot2::ggtitle(paste0("t-SNE clustering analysis ",i*100,"% SNP completeness cutoff"))+
           ggplot2::geom_point(cex = 4,
@@ -399,8 +397,7 @@ assess_missing_data_tsne <- function(vcfR,
         ggplot2::ggplot(tsne.df,
                         ggplot2::aes(x=V1,
                                      y=V2,
-                                     color=missing,
-                                     shape=pop)
+                                     color=missing)
         ) +
           ggplot2::ggtitle(paste0("t-SNE clustering analysis"))+
           ggplot2::geom_point(cex = 4,
@@ -487,8 +484,7 @@ assess_missing_data_tsne <- function(vcfR,
           ggplot2::ggplot(tsne.df,
                           ggplot2::aes(x=V1,
                                        y=V2,
-                                       color=missing,
-                                       shape=pop)
+                                       color=missing)
           ) +
             ggplot2::ggtitle(paste0("t-SNE clustering analysis ",i*100,"% SNP completeness cutoff"))+
             ggplot2::geom_point(cex = 4,

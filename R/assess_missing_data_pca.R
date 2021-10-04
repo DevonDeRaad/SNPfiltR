@@ -160,8 +160,7 @@ assess_missing_data_pca <- function(vcfR,
         ggplot2::ggplot(pca.scores,
                         ggplot2::aes(x=PC1,
                                      y=PC2,
-                                     color=missing,
-                                     shape=pop)
+                                     color=missing)
         ) +
           ggplot2::ggtitle(paste0("PCA clustering analysis"))+
           ggplot2::geom_point(cex = 4,
@@ -258,8 +257,7 @@ assess_missing_data_pca <- function(vcfR,
           ggplot2::ggplot(pca.scores,
                           ggplot2::aes(x=PC1,
                                        y=PC2,
-                                       color=missing,
-                                       shape=pop)
+                                       color=missing)
           ) +
             ggplot2::ggtitle(paste0(i*100,"% SNP completeness cutoff PCA"))+
             ggplot2::geom_point(cex = 4,
@@ -344,8 +342,7 @@ assess_missing_data_pca <- function(vcfR,
         ggplot2::ggplot(pca.scores,
                         ggplot2::aes(x=PC1,
                                      y=PC2,
-                                     color=missing,
-                                     shape=pop)
+                                     color=missing)
         ) +
           ggplot2::ggtitle("PCA clustering anlysis")+
           ggplot2::geom_point(cex = 4,
@@ -419,8 +416,7 @@ assess_missing_data_pca <- function(vcfR,
           ggplot2::ggplot(pca.scores,
                           ggplot2::aes(x=PC1,
                                        y=PC2,
-                                       color=missing,
-                                       shape=pop)
+                                       color=missing)
           ) +
             ggplot2::ggtitle(paste0(i*100,"% SNP completeness cutoff PCA"))+
             ggplot2::geom_point(cex = 4,
