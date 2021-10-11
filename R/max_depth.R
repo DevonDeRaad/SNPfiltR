@@ -1,4 +1,4 @@
-#' Vizualise the distribution of mean depth across all called SNPs, and filter out SNPs with excess depth
+#' Vizualise and filter based on mean depth across all called SNPs
 #'
 #' This function can be run in two ways: 1) specify vcfR object only. This will
 #' visualize the distribution of mean depth per sample across all SNPs in your vcf file,
@@ -14,8 +14,8 @@
 #' @param maxdepth an integer specifying the maximum mean depth for a SNP to be retained
 #' @return The vcfR object input, with SNPs above the 'maxdepth' cutoff removed
 #' @examples
-#' max_depth(vcfR = SNPfiltR:::vcfR.example)
-#' max_depth(vcfR = SNPfiltR:::vcfR.example, maxdepth = 100)
+#' max_depth(vcfR = SNPfiltR::vcfR.example)
+#' max_depth(vcfR = SNPfiltR::vcfR.example, maxdepth = 100)
 #' @export
 max_depth <- function(vcfR, maxdepth=NULL){
 

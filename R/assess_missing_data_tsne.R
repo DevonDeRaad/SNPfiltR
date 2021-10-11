@@ -21,9 +21,9 @@
 
 #' @return a series of plots showing the clustering of all samples in two-dimensional space
 #' @examples
-#' assess_clustering_tsne(
-#' vcfR=system.file("extdata","unfiltered.vcf.gz",package="SNPfiltR",mustWork=TRUE),
-#' thresholds=c(60,80,100))
+#' assess_missing_data_tsne(vcfR = SNPfiltR::vcfR.example,
+#' popmap = SNPfiltR::popmap,
+#' thresholds = c(.6,.8))
 #' @export
 assess_missing_data_tsne <- function(vcfR,
                               popmap=NULL,

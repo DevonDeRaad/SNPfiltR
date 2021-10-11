@@ -1,13 +1,13 @@
 #' Remove SNPs with more than two alleles
 #'
-#' This function simply removes any SNPs from the vcf file for which more than
-#' two alleles are found within your samples. Many downstream applications require
-#' SNPs to be biallelic, so this filter is generally a good idea.
+#' This function simply removes any SNPs from the vcf file which contains more than
+#' two alleles. Many downstream applications require
+#' SNPs to be biallelic, so this filter is generally a good idea during processing.
 #'
 #' @param vcfR a vcfR object
 #' @return a vcfR object with SNPs containing more than two alleles removed
 #' @examples
-#' filter_biallelic(vcfR=system.file("extdata","unfiltered.vcf.gz",package="SNPfiltR",mustWork=TRUE))
+#' filter_biallelic(vcfR = SNPfiltR::vcfR.example)
 #' @export
 filter_biallelic <- function(vcfR){
 

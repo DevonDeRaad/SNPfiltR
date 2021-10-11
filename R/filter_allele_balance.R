@@ -2,15 +2,16 @@
 #'
 #' This function requires a vcfR object as input, and returns a vcfR object filtered
 #' to convert heterozygous sites with an allele balance falling outside of .25-.75 to 'NA'.
-#' From the [Ddocent filtering page](https://www.ddocent.com/filtering/) "Allele balance: a number between 0 and 1
-#' representing the ratio of reads showing the reference allele to all reads,
-#' considering only reads from individuals called as heterozygous, we expect that the
+#' From the [Ddocent filtering page](https://www.ddocent.com/filtering/) "Allele balance:
+#' a number between 0 and 1 representing the ratio of reads showing the reference allele to
+#' all reads, considering only reads from individuals called as heterozygous, we expect that the
 #' allele balance in our data (for real loci) should be close to 0.5".
 #'
 #' @param vcfR a vcfR object
-#' @return An identical vcfR object, except that genotypes failing the allele balance filter have been converted to 'NA'
+#' @return An identical vcfR object, except that genotypes failing the allele balance
+#' filter have been converted to 'NA'.
 #' @examples
-#' filter_allele_balance(vcfR = SNPfiltR:::vcfR.example)
+#' filter_allele_balance(vcfR = SNPfiltR::vcfR.example)
 #' @export
 filter_allele_balance <- function(vcfR){
 

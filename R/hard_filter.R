@@ -1,16 +1,18 @@
 #' Hard filter a vcf file by depth and genotype quality (gq)
 #'
 #' This function requires a vcfR object as input.
-#' There are slots for varying the n parameter across M-1, M, and M-1 (as recommended by Paris et al. 2017).
-#' After running stacks with each of the n options, plug the output vcf files into this
-#' function to visualize the effect of varying m on number of SNPs and loci built to
-#' recognize which value optimizes the n parameter for your dataset at the 'R80' cutoff (Paris et al. 2017).
+#' The user can then specify the minimum value for depth of coverage required to retain
+#' a called genotype (must be numeric).
+#' Additionally, the user can specify a minimum genotype quality required to retain
+#' a called genotype (again, must be numeric).
 #'
 #' @param vcfR a vcfR object
-#' @param depth an integer representing the minimum depth for genotype calls that you wish to retain
+#' @param depth an integer representing the minimum depth for genotype calls that you
+#' wish to retain
 #' (e.g. 'depth = 5' would remove all genotypes with a sequencing depth of 4 reads or less)
-#' @param gq an integer representing the minimum genotype quality for genotype calls that you wish to retain
-#' #' (e.g. 'gq = 30' would remove all genotypes with a quality score of 29 or lower)
+#' @param gq an integer representing the minimum genotype quality for
+#' genotype calls that you wish to retain
+#' (e.g. 'gq = 30' would remove all genotypes with a quality score of 29 or lower)
 #' @return The vcfR object input, with the sites failing specified filters converted to 'NA'
 #' @examples
 #' hard_filter(vcfR = SNPfiltR:::vcfR.example, depth = 5)
@@ -25,6 +27,10 @@ hard_filter <- function(vcfR, depth=NULL, gq=NULL){
 
   #if depth is specified, start here
   if (!is.null(depth)) {
+
+    if (is.numeric(depth) != "TRUE"){
+      stop("specified depth cutoff must be numeric")
+    }
 
   #extract depth from the vcf
   dp.matrix<- vcfR::extract.gt(vcfR, element='DP', as.numeric=TRUE)
@@ -48,6 +54,10 @@ hard_filter <- function(vcfR, depth=NULL, gq=NULL){
 
   #if gq is specified
   if (!is.null(gq)) {
+
+    if (is.numeric(gq) != "TRUE"){
+      stop("specified genotype quality cutoff must be numeric")
+    }
 
   #extract gq from the vcf
   gq.matrix<- vcfR::extract.gt(vcfR, element='GQ', as.numeric=TRUE)
