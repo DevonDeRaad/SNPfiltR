@@ -30,6 +30,11 @@ distance_thin <- function(vcfR, min.distance=NULL){
   }
 
   #logical test specifying that the minimum distance between SNPs for filtering must be at least 1 base pair or the logic doesn't work
+  if (is.numeric(min.distance) != TRUE){
+    stop("specified filtering distance must be numeric")
+  }
+
+  #logical test specifying that the minimum distance between SNPs for filtering must be at least 1 base pair or the logic doesn't work
   if (min.distance < 1){
     stop("filtering distance must be >= 1 base pair")
   }

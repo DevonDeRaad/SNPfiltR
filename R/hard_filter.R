@@ -49,7 +49,36 @@ hard_filter <- function(vcfR, depth=NULL, gq=NULL){
   #if no depth is specified
   else{
     #print user message
-    print("no depth cutoff provided")
+    print("no depth cutoff provided, exploratory visualization will be generated.")
+
+    #extract depth from the vcf
+    dp.matrix<- vcfR::extract.gt(vcfR, element='DP', as.numeric=TRUE)
+
+    #set plotting parameters
+    par(mfrow=c(2,1))
+    #plot histogram of depth
+    hist(dp.matrix,
+         xlab = "depth for a given called genotype",
+         main="histogram showing the depth distribution for all called genotypes")
+    abline(v=mean(dp.matrix, na.rm = TRUE),
+           col="red",
+           lty="dashed")
+
+    #zoomed in histogram
+    hist(dp.matrix[dp.matrix < 50],
+         xlab = "depth for a given called genotype",
+         main="histogram showing depth distribution for called genotypes with a depth < 50")
+
+    #zoomed in histogram
+    hist(dp.matrix[dp.matrix < 25],
+         xlab = "depth for a given called genotype",
+         main="histogram showing depth distribution for called genotypes with a depth < 25")
+
+    #zoomed in histogram
+    hist(dp.matrix[dp.matrix < 15],
+         xlab = "depth for a given called genotype",
+         main="histogram showing depth distribution for called genotypes with a depth < 15")
+
   }
 
   #if gq is specified
@@ -76,7 +105,21 @@ hard_filter <- function(vcfR, depth=NULL, gq=NULL){
   }
 
   else{
-    print("no depth cutoff provided")
+    print("no genotype quality cutoff provided, exploratory visualization will be generated.")
+
+    #extract gq from the vcf
+    gq.matrix<- vcfR::extract.gt(vcfR, element='GQ', as.numeric=TRUE)
+
+    #set plotting parameters
+    par(mfrow=c(2,1))
+    #plot histogram of depth
+    hist(gq.matrix,
+         xlab = "depth for a given called genotype",
+         main="histogram showing the distribution of gentoype quality for of all called genotypes")
+    abline(v=mean(gq.matrix, na.rm = TRUE),
+           col="red",
+           lty="dashed")
+
   }
 
   #return

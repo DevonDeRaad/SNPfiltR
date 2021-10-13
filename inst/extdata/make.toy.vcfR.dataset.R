@@ -52,6 +52,7 @@ f<-missing_by_sample(vcfR = SNPfiltR::vcfR.example, cutoff = .7)
 missing_by_sample(vcfR = f, cutoff = .7)
 
 #hard filter
+hard_filter(vcfR = SNPfiltR::vcfR.example)
 f<-hard_filter(vcfR = SNPfiltR::vcfR.example, depth = 5, gq = 30)
 hard_filter(vcfR = f, depth = 5, gq = 30)
 

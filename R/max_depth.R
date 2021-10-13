@@ -28,7 +28,7 @@ max_depth <- function(vcfR, maxdepth=NULL){
   if (is.null(maxdepth)){
 
     #print user message
-    print("cutoff is not specified, exploratory visualization will be generated")
+    print("cutoff is not specified, exploratory visualization will be generated.")
 
     #extract depth from the vcf
     dp.matrix<- vcfR::extract.gt(vcfR, element='DP', as.numeric=TRUE)
@@ -61,6 +61,10 @@ max_depth <- function(vcfR, maxdepth=NULL){
 
   #if the maxdepth cutoff has been specified, start here
   else {
+
+    if (is.numeric(maxdepth) != "TRUE"){
+      stop("specified max depth cutoff must be numeric")
+    }
 
     #print user message
     print("maxdepth cutoff is specified, filtered vcfR object will be returned")

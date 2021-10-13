@@ -59,6 +59,11 @@ min_mac <- function(vcfR, min.mac=NULL){
 
   else{
 
+    #if specified min.mac is not numeric, fail gracefully
+    if (class(min.mac) != "numeric"){
+      stop("specified min.mac must be numeric")
+    }
+
     #convert vcfR to matrix and make numeric
     gt.matrix<-vcfR::extract.gt(vcfR)
     gt.matrix[gt.matrix == "0/0"]<-0

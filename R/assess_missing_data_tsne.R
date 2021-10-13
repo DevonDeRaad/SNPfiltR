@@ -11,7 +11,7 @@
 #' @param vcfR a vcfR object
 #' @param popmap set of population assignments that will be used to color code the plots
 #' @param thresholds a vector specifying the missing data filtering thresholds to explore
-#' @param perplexity numerical value specifying the perplexity paramter during t-SNE (default: 10)
+#' @param perplexity numerical value specifying the perplexity paramter during t-SNE (default: 5)
 #' @param iterations a numerical value specifying the number of iterations for t-SNE
 #' (default: 1000)
 #' @param initial_dims a numerical value specifying the number of
@@ -23,7 +23,7 @@
 #' @examples
 #' assess_missing_data_tsne(vcfR = SNPfiltR::vcfR.example,
 #' popmap = SNPfiltR::popmap,
-#' thresholds = c(.6,.8))
+#' thresholds = .8)
 #' @export
 assess_missing_data_tsne <- function(vcfR,
                               popmap=NULL,
@@ -68,9 +68,9 @@ assess_missing_data_tsne <- function(vcfR,
     stop("popmap ID's must match exactly the ID's in input vcf")
   }
 
-  #set perplexity to default (10), or user specified value
+  #set perplexity to default (5), or user specified value
   if (is.null(perplexity)){
-    w<-10
+    w<-5
   } else{
     w<-perplexity
   }
@@ -145,18 +145,19 @@ assess_missing_data_tsne <- function(vcfR,
     ###############################################
 
     # t-SNE on PCA
-    tsne_p5<- tsne::tsne(pca.scores,
+    tsne_p5<- Rtsne::Rtsne(pca.scores,
                          max_iter=q,
                          perplexity=w,
                          initial_dims=p)
 
     #save as dataframe
     tsne.df<-as.data.frame(tsne_p5)
+    tsne.df<-tsne.df[,c("Y.1","Y.2")]
 
     #record pam clustering info
     m=c()
     for (z in 2:(length(levels(as.factor(popmap$pop)))+2)){
-      m[z]<-mean(cluster::silhouette(cluster::pam(tsne_p5, z))[, "sil_width"])
+      m[z]<-mean(cluster::silhouette(cluster::pam(tsne.df, z))[, "sil_width"])
     }
 
     #plot pam clustering info
@@ -171,7 +172,7 @@ assess_missing_data_tsne <- function(vcfR,
                        likelihood=m[-1])
 
     #run pam best clustering scheme
-    pam.clust<-cluster::pam(tsne_p5, pam.df$n.groups[pam.df$likelihood==max(pam.df$likelihood)])
+    pam.clust<-cluster::pam(tsne.df, pam.df$n.groups[pam.df$likelihood==max(pam.df$likelihood)])
 
     #match order for pop from popmap into this df
     tsne.df$pop<-popmap$pop[order(popmap$id == colnames(vcfR@gt)[-1])]
@@ -182,8 +183,8 @@ assess_missing_data_tsne <- function(vcfR,
     #plot pam clusters versus a priori clusters
     print(
       ggplot2::ggplot(tsne.df,
-                      ggplot2::aes(x=V1,
-                                   y=V2,
+                      ggplot2::aes(x=Y.1,
+                                   y=Y.2,
                                    color=pop,
                                    shape=as.factor(pam.clust))
       ) +
@@ -196,8 +197,8 @@ assess_missing_data_tsne <- function(vcfR,
     #plot t-SNE color coding by missing data percentage
     print(
       ggplot2::ggplot(tsne.df,
-                      ggplot2::aes(x=V1,
-                                   y=V2,
+                      ggplot2::aes(x=Y.1,
+                                   y=Y.2,
                                    color=missing)
       ) +
         ggplot2::ggtitle(paste0("t-SNE clustering analysis"))+
@@ -208,8 +209,8 @@ assess_missing_data_tsne <- function(vcfR,
     )
 
     #make clean df with info
-    df<-data.frame(tsne.ax1=tsne.df$V1,
-                   tsne.ax2=tsne.df$V2,
+    df<-data.frame(tsne.ax1=tsne.df$Y.1,
+                   tsne.ax2=tsne.df$Y.2,
                    popmap.pop=popmap$pop,
                    pam.pop=as.factor(pam.clust$clustering),
                    missing=tsne.df$missing)
@@ -255,18 +256,19 @@ assess_missing_data_tsne <- function(vcfR,
       ###############################################
 
       # t-SNE on PCA output
-      tsne_p5<- tsne::tsne(pca.scores,
+      tsne_p5<- Rtsne::Rtsne(pca.scores,
                            max_iter=q,
                            perplexity=w,
                            initial_dims = p)
 
-      #save as data frame
+      #save as dataframe
       tsne.df<-as.data.frame(tsne_p5)
+      tsne.df<-tsne.df[,c("Y.1","Y.2")]
 
       #record pam clustering info
       m=c()
       for (z in 2:(length(levels(as.factor(popmap$pop)))+2)){
-        m[z]<-mean(cluster::silhouette(cluster::pam(tsne_p5, z))[, "sil_width"])
+        m[z]<-mean(cluster::silhouette(cluster::pam(tsne.df, z))[, "sil_width"])
       }
 
       #plot pam clustering info
@@ -281,7 +283,7 @@ assess_missing_data_tsne <- function(vcfR,
                          likelihood=m[-1])
 
       #run pam best clustering scheme
-      pam.clust<-cluster::pam(tsne_p5, pam.df$n.groups[pam.df$likelihood==max(pam.df$likelihood)])
+      pam.clust<-cluster::pam(tsne.df, pam.df$n.groups[pam.df$likelihood==max(pam.df$likelihood)])
 
       #match order for pop from popmap into this df
       tsne.df$pop<-popmap$pop[order(popmap$id == colnames(vcfR.filt@gt)[-1])]
@@ -292,8 +294,8 @@ assess_missing_data_tsne <- function(vcfR,
       #plot pam clusters versus a priori clusters
       print(
         ggplot2::ggplot(tsne.df,
-                        ggplot2::aes(x=V1,
-                                     y=V2,
+                        ggplot2::aes(x=Y.1,
+                                     y=Y.2,
                                      color=pop,
                                      shape=as.factor(pam.clust))
         ) +
@@ -306,8 +308,8 @@ assess_missing_data_tsne <- function(vcfR,
       #plot t-SNE color coding by missing data percentage
       print(
         ggplot2::ggplot(tsne.df,
-                        ggplot2::aes(x=V1,
-                                     y=V2,
+                        ggplot2::aes(x=Y.1,
+                                     y=Y.2,
                                      color=missing)
         ) +
           ggplot2::ggtitle(paste0("t-SNE clustering analysis ",i*100,"% SNP completeness cutoff"))+
@@ -365,13 +367,14 @@ assess_missing_data_tsne <- function(vcfR,
       ###############################################
 
       # t-SNE on PCA
-      tsne_p5<- tsne::tsne(pca.scores,
+      tsne_p5<- Rtsne::Rtsne(pca.scores,
                            max_iter=q,
                            perplexity=w,
                            initial_dims=p)
 
       #save as dataframe
       tsne.df<-as.data.frame(tsne_p5)
+      tsne.df<-tsne.df[,c("Y.1","Y.2")]
 
       #match order for pop from popmap into this df
       tsne.df$pop<-popmap$pop[order(popmap$id == colnames(vcfR@gt)[-1])]
@@ -382,8 +385,8 @@ assess_missing_data_tsne <- function(vcfR,
       #plot pam clusters versus a priori clusters
       print(
         ggplot2::ggplot(tsne.df,
-                        ggplot2::aes(x=V1,
-                                     y=V2,
+                        ggplot2::aes(x=Y.1,
+                                     y=Y.2,
                                      color=pop)
         ) +
           ggplot2::ggtitle(paste0("t-SNE clustering analysis"))+
@@ -395,8 +398,8 @@ assess_missing_data_tsne <- function(vcfR,
       #plot t-SNE color coding by missing data percentage
       print(
         ggplot2::ggplot(tsne.df,
-                        ggplot2::aes(x=V1,
-                                     y=V2,
+                        ggplot2::aes(x=Y.1,
+                                     y=Y.2,
                                      color=missing)
         ) +
           ggplot2::ggtitle(paste0("t-SNE clustering analysis"))+
@@ -407,8 +410,8 @@ assess_missing_data_tsne <- function(vcfR,
       )
 
       #make clean df with info
-      df<-data.frame(tsne.ax1=tsne.df$V1,
-                     tsne.ax2=tsne.df$V2,
+      df<-data.frame(tsne.ax1=tsne.df$Y.1,
+                     tsne.ax2=tsne.df$Y.2,
                      popmap.pop=popmap$pop)
 
       #return
@@ -452,13 +455,14 @@ assess_missing_data_tsne <- function(vcfR,
         ###############################################
 
         # t-SNE on PCA output
-        tsne_p5<- tsne::tsne(pca.scores,
+        tsne_p5<- Rtsne::Rtsne(pca.scores,
                              max_iter=q,
                              perplexity=w,
                              initial_dims = p)
 
-        #save as data frame
+        #save as dataframe
         tsne.df<-as.data.frame(tsne_p5)
+        tsne.df<-tsne.df[,c("Y.1","Y.2")]
 
         #match order for pop from popmap into this df
         tsne.df$pop<-popmap$pop[order(popmap$id == colnames(vcfR.filt@gt)[-1])]
@@ -469,8 +473,8 @@ assess_missing_data_tsne <- function(vcfR,
         #plot pam clusters versus a priori clusters
         print(
           ggplot2::ggplot(tsne.df,
-                          ggplot2::aes(x=V1,
-                                       y=V2,
+                          ggplot2::aes(x=Y.1,
+                                       y=Y.2,
                                        color=pop)
           ) +
             ggplot2::ggtitle(paste0("t-SNE clustering analysis ",i*100,"% SNP completeness cutoff"))+
@@ -482,8 +486,8 @@ assess_missing_data_tsne <- function(vcfR,
         #plot t-SNE color coding by missing data percentage
         print(
           ggplot2::ggplot(tsne.df,
-                          ggplot2::aes(x=V1,
-                                       y=V2,
+                          ggplot2::aes(x=Y.1,
+                                       y=Y.2,
                                        color=missing)
           ) +
             ggplot2::ggtitle(paste0("t-SNE clustering analysis ",i*100,"% SNP completeness cutoff"))+

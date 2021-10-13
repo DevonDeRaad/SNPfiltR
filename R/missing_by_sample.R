@@ -175,6 +175,11 @@ missing_by_sample <- function(vcfR, popmap=NULL, cutoff=NULL){
   #if cutoff is not null, start here
   else {
 
+    #if specified cutoff is not between 0-1 fail gracefully
+    if (cutoff < 0 | cutoff > 1){
+      stop("specified cutoff must be a proportion between 0 and 1")
+    }
+
     #calculate missingness by individual
     miss<-colSums(is.na(dp))/nrow(dp)
     #vis plot to show where cutoff was set
