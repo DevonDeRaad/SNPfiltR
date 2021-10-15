@@ -1,3 +1,7 @@
 ^SNPfiltR\.Rproj$
 ^\.Rproj\.user$
 ^data-raw$
+^doc$
+^Meta$
+^README.Rmd$
+^vignettes/scrub-jay-example-vignette.Rmd$

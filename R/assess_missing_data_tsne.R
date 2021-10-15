@@ -151,8 +151,8 @@ assess_missing_data_tsne <- function(vcfR,
                          initial_dims=p)
 
     #save as dataframe
-    tsne.df<-as.data.frame(tsne_p5)
-    tsne.df<-tsne.df[,c("Y.1","Y.2")]
+    tsne.df<-as.data.frame(tsne_p5$Y)
+    tsne.df<-tsne.df[,c("V1","V2")]
 
     #record pam clustering info
     m=c()
@@ -183,8 +183,8 @@ assess_missing_data_tsne <- function(vcfR,
     #plot pam clusters versus a priori clusters
     print(
       ggplot2::ggplot(tsne.df,
-                      ggplot2::aes(x=Y.1,
-                                   y=Y.2,
+                      ggplot2::aes(x=V1,
+                                   y=V2,
                                    color=pop,
                                    shape=as.factor(pam.clust))
       ) +
@@ -197,8 +197,8 @@ assess_missing_data_tsne <- function(vcfR,
     #plot t-SNE color coding by missing data percentage
     print(
       ggplot2::ggplot(tsne.df,
-                      ggplot2::aes(x=Y.1,
-                                   y=Y.2,
+                      ggplot2::aes(x=V1,
+                                   y=V2,
                                    color=missing)
       ) +
         ggplot2::ggtitle(paste0("t-SNE clustering analysis"))+
@@ -209,8 +209,8 @@ assess_missing_data_tsne <- function(vcfR,
     )
 
     #make clean df with info
-    df<-data.frame(tsne.ax1=tsne.df$Y.1,
-                   tsne.ax2=tsne.df$Y.2,
+    df<-data.frame(tsne.ax1=tsne.df$V1,
+                   tsne.ax2=tsne.df$V2,
                    popmap.pop=popmap$pop,
                    pam.pop=as.factor(pam.clust$clustering),
                    missing=tsne.df$missing)
@@ -262,8 +262,8 @@ assess_missing_data_tsne <- function(vcfR,
                            initial_dims = p)
 
       #save as dataframe
-      tsne.df<-as.data.frame(tsne_p5)
-      tsne.df<-tsne.df[,c("Y.1","Y.2")]
+      tsne.df<-as.data.frame(tsne_p5$Y)
+      tsne.df<-tsne.df[,c("V1","V2")]
 
       #record pam clustering info
       m=c()
@@ -294,8 +294,8 @@ assess_missing_data_tsne <- function(vcfR,
       #plot pam clusters versus a priori clusters
       print(
         ggplot2::ggplot(tsne.df,
-                        ggplot2::aes(x=Y.1,
-                                     y=Y.2,
+                        ggplot2::aes(x=V1,
+                                     y=V2,
                                      color=pop,
                                      shape=as.factor(pam.clust))
         ) +
@@ -308,8 +308,8 @@ assess_missing_data_tsne <- function(vcfR,
       #plot t-SNE color coding by missing data percentage
       print(
         ggplot2::ggplot(tsne.df,
-                        ggplot2::aes(x=Y.1,
-                                     y=Y.2,
+                        ggplot2::aes(x=V1,
+                                     y=V2,
                                      color=missing)
         ) +
           ggplot2::ggtitle(paste0("t-SNE clustering analysis ",i*100,"% SNP completeness cutoff"))+
@@ -342,7 +342,7 @@ assess_missing_data_tsne <- function(vcfR,
   ###
   ###
 
-  #If clustering has been turned off, just make PCAs colored by popmap
+  #If clustering has been turned off, just make PCAs colored by popmap and missing data
   if (clustering == FALSE){
 
     #if checks on inputs pass, and clustering == TRUE, and thresholds are not specified, start here:
@@ -373,8 +373,8 @@ assess_missing_data_tsne <- function(vcfR,
                            initial_dims=p)
 
       #save as dataframe
-      tsne.df<-as.data.frame(tsne_p5)
-      tsne.df<-tsne.df[,c("Y.1","Y.2")]
+      tsne.df<-as.data.frame(tsne_p5$Y)
+      tsne.df<-tsne.df[,c("V1","V2")]
 
       #match order for pop from popmap into this df
       tsne.df$pop<-popmap$pop[order(popmap$id == colnames(vcfR@gt)[-1])]
@@ -385,8 +385,8 @@ assess_missing_data_tsne <- function(vcfR,
       #plot pam clusters versus a priori clusters
       print(
         ggplot2::ggplot(tsne.df,
-                        ggplot2::aes(x=Y.1,
-                                     y=Y.2,
+                        ggplot2::aes(x=V1,
+                                     y=V2,
                                      color=pop)
         ) +
           ggplot2::ggtitle(paste0("t-SNE clustering analysis"))+
@@ -398,8 +398,8 @@ assess_missing_data_tsne <- function(vcfR,
       #plot t-SNE color coding by missing data percentage
       print(
         ggplot2::ggplot(tsne.df,
-                        ggplot2::aes(x=Y.1,
-                                     y=Y.2,
+                        ggplot2::aes(x=V1,
+                                     y=V2,
                                      color=missing)
         ) +
           ggplot2::ggtitle(paste0("t-SNE clustering analysis"))+
@@ -410,8 +410,8 @@ assess_missing_data_tsne <- function(vcfR,
       )
 
       #make clean df with info
-      df<-data.frame(tsne.ax1=tsne.df$Y.1,
-                     tsne.ax2=tsne.df$Y.2,
+      df<-data.frame(tsne.ax1=tsne.df$V1,
+                     tsne.ax2=tsne.df$V2,
                      popmap.pop=popmap$pop)
 
       #return
@@ -461,8 +461,8 @@ assess_missing_data_tsne <- function(vcfR,
                              initial_dims = p)
 
         #save as dataframe
-        tsne.df<-as.data.frame(tsne_p5)
-        tsne.df<-tsne.df[,c("Y.1","Y.2")]
+        tsne.df<-as.data.frame(tsne_p5$Y)
+        tsne.df<-tsne.df[,c("V1","V2")]
 
         #match order for pop from popmap into this df
         tsne.df$pop<-popmap$pop[order(popmap$id == colnames(vcfR.filt@gt)[-1])]
@@ -473,8 +473,8 @@ assess_missing_data_tsne <- function(vcfR,
         #plot pam clusters versus a priori clusters
         print(
           ggplot2::ggplot(tsne.df,
-                          ggplot2::aes(x=Y.1,
-                                       y=Y.2,
+                          ggplot2::aes(x=V1,
+                                       y=V2,
                                        color=pop)
           ) +
             ggplot2::ggtitle(paste0("t-SNE clustering analysis ",i*100,"% SNP completeness cutoff"))+
@@ -486,8 +486,8 @@ assess_missing_data_tsne <- function(vcfR,
         #plot t-SNE color coding by missing data percentage
         print(
           ggplot2::ggplot(tsne.df,
-                          ggplot2::aes(x=Y.1,
-                                       y=Y.2,
+                          ggplot2::aes(x=V1,
+                                       y=V2,
                                        color=missing)
           ) +
             ggplot2::ggtitle(paste0("t-SNE clustering analysis ",i*100,"% SNP completeness cutoff"))+

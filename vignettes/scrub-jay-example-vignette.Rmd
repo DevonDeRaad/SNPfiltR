@@ -1,0 +1,54 @@
+---
+title: "scrub-jay-example-vignette"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{scrub-jay-example-vignette}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(SNPfiltR)
+library(vcfR)
+```
+
+# Optional Step 0: 
+
+### Do quality control per sample before performing SNP calling. I have written an [RMarkdown script](https://github.com/DevonDeRaad/RADstackshelpR/blob/master/inst/extdata/fastqcr.Rmd) that uses the R package [fastqcr](https://github.com/kassambara/fastqcr) to generate a report visualizing the quality and quantity of sequencing for each sample, and recommending a subset of samples to be immediately dropped before parameter optimization (specifically useful for RADseq data). The only modification necessary for this script is the path to the folder containing the input .fastq.gz files and the path to your desired output folder. An example report generated using this script can be seen [here](https://devonderaad.github.io/RADstackshelpR/articles/quality.control.vignette.html). Because the fastq.gz files for your experiment may be large and handled remotely, an example bash script for executing this RMarkdown file as a job on a high performance computing cluster is available [here](https://github.com/DevonDeRaad/RADstackshelpR/blob/master/inst/extdata/RMarkdown.qc.submit.script.sh).
+
+### For this dataset, I chose to skip this step and do all of the per sample quality filtering in R. I started below by reading in the vcf file
+
+```{r, results='hide'}
+#read in vcf as vcfR
+vcfR <- read.vcfR("~/Desktop/aph.data/populations.snps.vcf")
+```
+
+
+```{r}
+
+### check the metadata present in your vcf
+vcfR
+
+#generate popmap file. Two column popmap with the same format as stacks, and the columns must be named 'id' and 'pop'
+popmap<-data.frame(id=colnames(vcfR@gt)[2:length(colnames(vcfR@gt))],pop=substr(colnames(vcfR@gt)[2:length(colnames(vcfR@gt))], 3,11))
+```
+
+# Step 1: Implement quality filters that don't involve missing data. This is because removing low data samples will alter percentage/quantile based missing data cutoffs, so we wait to implement those until after deciding on our final set of samples for downstream analysis
+
+### Note: I like to start with a completely unfiltered vcf file, in order to implement a cohesive, fully documentable filtering pipeline in R. However, if I have a very large unfiltered vcf file that I would like to work with in Rstudio, I sometimes perform hard filtering, or implement some conservative percentage based filters (e.g., remove all SNPs above 90% missing data) via command-line calls to the program VCFtools, in order to reduce the size of the starting vcf that I need to read into Rstudio. Just be aware that once you drop low data samples, your previously enforced (per SNP or locus) missing data % will no longer be accurate. VCFtools has faster implementations of some of the same filters implemented here, and really shines with large datasets. The R-based implementations of these filters in SNPfiltR offers interactive visualization in a cohesive R-based pipeline, but be aware that reading in excessively large files to Rstudio (typically, > 1 Gb in my experience) can cause R to hang and crash. Luckily, I have found that variant sites only vcf files for most reduced-representation genomic datasets are under this size, and can be handled efficiently using Rstudio on a personal computer.
+
+### Note: Jon Puritz has an excellent filtering tutorial that is focused specifically on filtering RADseq data: datahttps://www.ddocent.com/filtering/ Multiple functions in SNPfiltR were generated in order to follow the guidelines and suggestions laid out in e can follow these guidelines for hard filtering (he suggests minimum depth=3, gq =30), and can implement suggested filters like allele balance and max depth, here in R using SNPfiltR.
+
+### start by visualizing the distributions of 
+```{r}
+
+```
+
+
