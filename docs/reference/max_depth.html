@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Vizualise the distribution of mean depth across all called SNPs, and filter out SNPs with excess depth — max_depth • SNPfiltR</title>
+<title>Vizualise and filter based on mean depth across all called SNPs — max_depth • SNPfiltR</title>
 
 
 <!-- jquery -->
@@ -39,7 +39,7 @@
 
 
 
-<meta property="og:title" content="Vizualise the distribution of mean depth across all called SNPs, and filter out SNPs with excess depth — max_depth" />
+<meta property="og:title" content="Vizualise and filter based on mean depth across all called SNPs — max_depth" />
 <meta property="og:description" content="This function can be run in two ways: 1) specify vcfR object only. This will
 visualize the distribution of mean depth per sample across all SNPs in your vcf file,
 and will not alter your vcf file. 2) specify vcfR object, and set 'maxdepth' = 'integer value'.
@@ -126,7 +126,7 @@ otherwise it would disproportionately remove genotypes from our deepest sequence
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Vizualise the distribution of mean depth across all called SNPs, and filter out SNPs with excess depth</h1>
+    <h1>Vizualise and filter based on mean depth across all called SNPs</h1>
     
     <div class="hidden name"><code>max_depth.Rd</code></div>
     </div>
@@ -163,9 +163,15 @@ otherwise it would disproportionately remove genotypes from our deepest sequence
     <p>The vcfR object input, with SNPs above the 'maxdepth' cutoff removed</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>max_depth</span><span class='op'>(</span>vcfR <span class='op'>=</span> <span class='fu'>SNPfiltR</span><span class='fu'>:::</span><span class='va'><a href='vcfR.example.html'>vcfR.example</a></span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='error'>Error in max_depth(vcfR = SNPfiltR:::vcfR.example): object 'vcfR.example' not found</span></div><div class='input'><span class='fu'>max_depth</span><span class='op'>(</span>vcfR <span class='op'>=</span> <span class='fu'>SNPfiltR</span><span class='fu'>:::</span><span class='va'><a href='vcfR.example.html'>vcfR.example</a></span>, maxdepth <span class='op'>=</span> <span class='fl'>100</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='error'>Error in max_depth(vcfR = SNPfiltR:::vcfR.example, maxdepth = 100): object 'vcfR.example' not found</span></div></pre>
+    <pre class="examples"><div class='input'><span class='fu'>max_depth</span><span class='op'>(</span>vcfR <span class='op'>=</span> <span class='fu'>SNPfiltR</span><span class='fu'>::</span><span class='va'><a href='vcfR.example.html'>vcfR.example</a></span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] "cutoff is not specified, exploratory visualization will be generated."</div><div class='img'><img src='max_depth-1.png' alt='' width='700' height='433' /></div><div class='output co'>#&gt; [1] "dashed line indicates a mean depth across all SNPs of 47"</div><div class='input'><span class='fu'>max_depth</span><span class='op'>(</span>vcfR <span class='op'>=</span> <span class='fu'>SNPfiltR</span><span class='fu'>::</span><span class='va'><a href='vcfR.example.html'>vcfR.example</a></span>, maxdepth <span class='op'>=</span> <span class='fl'>100</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] "maxdepth cutoff is specified, filtered vcfR object will be returned"</div><div class='output co'>#&gt; [1] "17% of SNPs were above a mean depth of 100 and were removed from the vcf"</div><div class='output co'>#&gt; ***** Object of Class vcfR *****
+#&gt; 20 samples
+#&gt; 1 CHROMs
+#&gt; 415 variants
+#&gt; Object size: 0.5 Mb
+#&gt; 44.22 percent missing data
+#&gt; *****        *****         *****</div><div class='img'><img src='max_depth-2.png' alt='' width='700' height='433' /></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

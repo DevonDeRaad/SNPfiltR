@@ -40,11 +40,11 @@
 
 
 <meta property="og:title" content="Vizualise how missing data thresholds affect sample clustering — assess_missing_data_pca" />
-<meta property="og:description" content="This function can be run in two ways: 1) Without 'thresholds' specified. This will run t-SNE
+<meta property="og:description" content="This function can be run in two ways: 1) Without 'thresholds' specified. This will run a PCA
 for the input vcf without filtering, and visualize the clustering of samples in two-dimensional
 space, coloring each sample according to a priori population assignment given in the popmap.
 2) With 'thresholds' specified. This will filter your input vcf file to the specified
-missing data thresholds, and run a t-SNE clustering analysis for each filtering iteration.
+missing data thresholds, and run a PCA for each filtering iteration.
 For each iteration, a 2D plot will be output showing clustering according to the
 specified popmap. This option is ideal for assessing the effects of missing data
 on clustering patterns." />
@@ -131,11 +131,11 @@ on clustering patterns." />
     </div>
 
     <div class="ref-description">
-    <p>This function can be run in two ways: 1) Without 'thresholds' specified. This will run t-SNE
+    <p>This function can be run in two ways: 1) Without 'thresholds' specified. This will run a PCA
 for the input vcf without filtering, and visualize the clustering of samples in two-dimensional
 space, coloring each sample according to a priori population assignment given in the popmap.
 2) With 'thresholds' specified. This will filter your input vcf file to the specified
-missing data thresholds, and run a t-SNE clustering analysis for each filtering iteration.
+missing data thresholds, and run a PCA for each filtering iteration.
 For each iteration, a 2D plot will be output showing clustering according to the
 specified popmap. This option is ideal for assessing the effects of missing data
 on clustering patterns.</p>
@@ -175,9 +175,55 @@ clustering on the output? (default = TRUE, max clusters = # of levels in popmap 
     <p>a series of plots showing the clustering of all samples in two-dimensional space</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>assess_clustering_pca</span><span class='op'>(</span>
-vcfR<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"extdata"</span>,<span class='st'>"unfiltered.vcf.gz"</span>,package<span class='op'>=</span><span class='st'>"SNPfiltR"</span>,mustWork<span class='op'>=</span><span class='cn'>TRUE</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='error'>Error in assess_clustering_pca(vcfR = system.file("extdata", "unfiltered.vcf.gz",     package = "SNPfiltR", mustWork = TRUE)): could not find function "assess_clustering_pca"</span></div></pre>
+    <pre class="examples"><div class='input'><span class='fu'>assess_missing_data_pca</span><span class='op'>(</span>vcfR <span class='op'>=</span> <span class='fu'>SNPfiltR</span><span class='fu'>::</span><span class='va'><a href='vcfR.example.html'>vcfR.example</a></span>,
+popmap <span class='op'>=</span> <span class='fu'>SNPfiltR</span><span class='fu'>::</span><span class='va'><a href='popmap.html'>popmap</a></span>,
+thresholds <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>.6</span>,<span class='fl'>.8</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] "cutoff is specified, filtered vcfR object will be returned"</div><div class='output co'>#&gt; [1] "41% of SNPs fell below a completeness cutoff of 0.6 and were removed from the VCF"</div><div class='output co'>#&gt; <span class='message'>Loading required namespace: adegenet</span></div><div class='output co'>#&gt; <span class='message'>Registered S3 method overwritten by 'spdep':</span>
+#&gt; <span class='message'>  method   from</span>
+#&gt; <span class='message'>  plot.mst ape </span></div><div class='img'><img src='assess_missing_data_pca-1.png' alt='' width='700' height='433' /></div><div class='img'><img src='assess_missing_data_pca-2.png' alt='' width='700' height='433' /></div><div class='img'><img src='assess_missing_data_pca-3.png' alt='' width='700' height='433' /></div><div class='img'><img src='assess_missing_data_pca-4.png' alt='' width='700' height='433' /></div><div class='output co'>#&gt; [1] "cutoff is specified, filtered vcfR object will be returned"</div><div class='img'><img src='assess_missing_data_pca-5.png' alt='' width='700' height='433' /></div><div class='output co'>#&gt; [1] "65.8% of SNPs fell below a completeness cutoff of 0.8 and were removed from the VCF"</div><div class='img'><img src='assess_missing_data_pca-6.png' alt='' width='700' height='433' /></div><div class='img'><img src='assess_missing_data_pca-7.png' alt='' width='700' height='433' /></div><div class='img'><img src='assess_missing_data_pca-8.png' alt='' width='700' height='433' /></div><div class='output co'>#&gt; [[1]]
+#&gt;                               PC1        PC2         PC3         PC4
+#&gt; A_californica_333849   0.10800467 -1.2622614 -0.42913167 -1.13151863
+#&gt; A_californica_333854   0.47446425 -1.1533207 -2.26034905  0.45898145
+#&gt; A_californica_333855   0.31057095 -0.6114347 -0.53888701  0.03297997
+#&gt; A_californica_333857  -0.09160947 -1.2527296 -1.03787951  0.49691720
+#&gt; A_californica_333860   0.31699182 -1.2567801 -1.66576508 -0.51892606
+#&gt; A_insularis_334031     2.51293154  1.5614888  0.21023053 -0.02197561
+#&gt; A_insularis_334032     2.53405901  1.5742992  0.21769383 -0.02632204
+#&gt; A_insularis_334033     2.52944312  1.5797358  0.21738596 -0.02494461
+#&gt; A_insularis_334034     2.51293154  1.5614888  0.21023053 -0.02197561
+#&gt; A_insularis_334037     2.45672207  1.4675647  0.19492725 -0.05306105
+#&gt; A_woodhouseii_334133  -0.11270777 -1.4035531  1.03565181 -2.05153710
+#&gt; A_woodhouseii_334134  -0.11083554 -1.7646661  1.02457015 -0.84479977
+#&gt; A_woodhouseii_334142  -0.64811300 -1.9080613  1.80936813  0.69078503
+#&gt; A_woodhouseii_334148   0.17183657 -1.2793948  0.51634289  0.97760683
+#&gt; A_woodhouseii_334153   0.15434163 -1.2415592  0.91025765  1.80226270
+#&gt; A_coerulescens_396256 -3.60420998  1.5810313  0.03232586 -0.19298249
+#&gt; A_coerulescens_396259 -1.99266201  0.6537738 -0.29845116  0.46722091
+#&gt; A_coerulescens_396262 -0.15117477 -0.1794463 -0.22073088  0.04413322
+#&gt; A_coerulescens_396263 -3.38747070  1.3321107  0.05360827  0.10676121
+#&gt; A_coerulescens_396264 -3.98351395  2.0017141  0.01860152 -0.18960558
+#&gt;                               PC5         PC6          pop pam.clust missing
+#&gt; A_californica_333849   0.77809865  1.88515106  californica         1   0.168
+#&gt; A_californica_333854  -0.30240921 -0.65007850  californica         1   0.304
+#&gt; A_californica_333855   1.86150801 -1.07424934  californica         1   0.344
+#&gt; A_californica_333857  -0.25739454  0.33591027  californica         1   0.200
+#&gt; A_californica_333860  -0.26400332  0.04207691  californica         1   0.314
+#&gt; A_insularis_334031    -0.04572244  0.05381709    insularis         2   0.264
+#&gt; A_insularis_334032    -0.04493868  0.04805338    insularis         2   0.194
+#&gt; A_insularis_334033    -0.04685803  0.05007695    insularis         2   0.206
+#&gt; A_insularis_334034    -0.04572244  0.05381709    insularis         2   0.260
+#&gt; A_insularis_334037    -0.02363185  0.03106438    insularis         2   0.300
+#&gt; A_woodhouseii_334133  -0.11209490 -0.64744433  woodhouseii         1   0.278
+#&gt; A_woodhouseii_334134  -1.48562119 -0.65435725  woodhouseii         1   0.568
+#&gt; A_woodhouseii_334142   1.25368265  0.34508479  woodhouseii         1   0.322
+#&gt; A_woodhouseii_334148  -0.59943809  0.16093514  woodhouseii         1   0.600
+#&gt; A_woodhouseii_334153  -0.34449347 -0.19867999  woodhouseii         1   0.388
+#&gt; A_coerulescens_396256  0.01596914 -0.01426633 coerulescens         3   0.474
+#&gt; A_coerulescens_396259 -0.08067753  0.35280180 coerulescens         3   0.700
+#&gt; A_coerulescens_396262  0.04434716 -0.09654030 coerulescens         1   0.964
+#&gt; A_coerulescens_396263 -0.73964893  0.81626021 coerulescens         3   0.534
+#&gt; A_coerulescens_396264  0.43904901 -0.83943304 coerulescens         3   0.232
+#&gt; </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

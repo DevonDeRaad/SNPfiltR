@@ -47,8 +47,9 @@ and then subsequently keeping the next SNP that is greater than the specified di
 until it reaches the end of the scaffold/chromosome. This function scales well with
 an increasing number of SNPs, but poorly with an increasing number of scaffolds/chromosomes.
 For this reason, there is a built in progress bar,
-to monitor potentially long-running executuions with many scaffolds.
-This type of filtering is often employed to reduce linkage among input SNPs." />
+to monitor potentially long-running executions with many scaffolds.
+This type of filtering is often employed to reduce linkage among input SNPs,
+especially for downstream input to programs like structure, which require unlinked SNPs." />
 
 
 
@@ -139,8 +140,9 @@ and then subsequently keeping the next SNP that is greater than the specified di
 until it reaches the end of the scaffold/chromosome. This function scales well with
 an increasing number of SNPs, but poorly with an increasing number of scaffolds/chromosomes.
 For this reason, there is a built in progress bar,
-to monitor potentially long-running executuions with many scaffolds.
-This type of filtering is often employed to reduce linkage among input SNPs.</p>
+to monitor potentially long-running executions with many scaffolds.
+This type of filtering is often employed to reduce linkage among input SNPs,
+especially for downstream input to programs like structure, which require unlinked SNPs.</p>
     </div>
 
     <pre class="usage"><span class='fu'>distance_thin</span><span class='op'>(</span><span class='va'>vcfR</span>, min.distance <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></pre>
@@ -152,6 +154,11 @@ This type of filtering is often employed to reduce linkage among input SNPs.</p>
       <th>vcfR</th>
       <td><p>a vcfR object</p></td>
     </tr>
+    <tr>
+      <th>min.distance</th>
+      <td><p>a numeric value representing the smallest distance (in base-pairs)
+allowed between SNPs after distance thinning</p></td>
+    </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
@@ -160,8 +167,15 @@ This type of filtering is often employed to reduce linkage among input SNPs.</p>
 specified distance have been removed from the file</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>distance_thin</span><span class='op'>(</span>vcfR <span class='op'>=</span> <span class='fu'>SNPfiltR</span><span class='fu'>:::</span><span class='va'><a href='vcfR.example.html'>vcfR.example</a></span>, min.distance <span class='op'>=</span> <span class='fl'>1000</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='error'>Error in distance_thin(vcfR = SNPfiltR:::vcfR.example, min.distance = 1000): object 'vcfR.example' not found</span></div></pre>
+    <pre class="examples"><div class='input'><span class='fu'>distance_thin</span><span class='op'>(</span>vcfR <span class='op'>=</span> <span class='fu'>SNPfiltR</span><span class='fu'>::</span><span class='va'><a href='vcfR.example.html'>vcfR.example</a></span>, min.distance <span class='op'>=</span> <span class='fl'>1000</span><span class='op'>)</span>
+</div><div class='output co'>#&gt;   |                                                                              |                                                                      |   0%  |                                                                              |======================================================================| 100%
+#&gt; [1] "367 out of 500 input SNPs were not located within 1000 base-pairs of another SNP and were retained despite filtering"</div><div class='output co'>#&gt; ***** Object of Class vcfR *****
+#&gt; 20 samples
+#&gt; 1 CHROMs
+#&gt; 367 variants
+#&gt; Object size: 0.5 Mb
+#&gt; 41.61 percent missing data
+#&gt; *****        *****         *****</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

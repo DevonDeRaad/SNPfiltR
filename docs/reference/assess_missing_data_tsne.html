@@ -168,7 +168,7 @@ on clustering patterns.</p>
     </tr>
     <tr>
       <th>perplexity</th>
-      <td><p>numerical value specifying the perplexity paramter during t-SNE (default: 10)</p></td>
+      <td><p>numerical value specifying the perplexity paramter during t-SNE (default: 5)</p></td>
     </tr>
     <tr>
       <th>iterations</th>
@@ -178,8 +178,11 @@ on clustering patterns.</p>
     <tr>
       <th>initial_dims</th>
       <td><p>a numerical value specifying the number of
-initial_dimensions for t-SNE (default: 5)
-@param clustering use partitioning around medoids (PAM) to do unsupervised
+initial_dimensions for t-SNE (default: 5)</p></td>
+    </tr>
+    <tr>
+      <th>clustering</th>
+      <td><p>use partitioning around medoids (PAM) to do unsupervised
 clustering on the output? (default = TRUE, max clusters = # of levels in popmap + 2)</p></td>
     </tr>
     </table>
@@ -189,10 +192,32 @@ clustering on the output? (default = TRUE, max clusters = # of levels in popmap 
     <p>a series of plots showing the clustering of all samples in two-dimensional space</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>assess_clustering_tsne</span><span class='op'>(</span>
-vcfR<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"extdata"</span>,<span class='st'>"unfiltered.vcf.gz"</span>,package<span class='op'>=</span><span class='st'>"SNPfiltR"</span>,mustWork<span class='op'>=</span><span class='cn'>TRUE</span><span class='op'>)</span>,
-thresholds<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>60</span>,<span class='fl'>80</span>,<span class='fl'>100</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='error'>Error in assess_clustering_tsne(vcfR = system.file("extdata", "unfiltered.vcf.gz",     package = "SNPfiltR", mustWork = TRUE), thresholds = c(60,     80, 100)): could not find function "assess_clustering_tsne"</span></div></pre>
+    <pre class="examples"><div class='input'><span class='fu'>assess_missing_data_tsne</span><span class='op'>(</span>vcfR <span class='op'>=</span> <span class='fu'>SNPfiltR</span><span class='fu'>::</span><span class='va'><a href='vcfR.example.html'>vcfR.example</a></span>,
+popmap <span class='op'>=</span> <span class='fu'>SNPfiltR</span><span class='fu'>::</span><span class='va'><a href='popmap.html'>popmap</a></span>,
+thresholds <span class='op'>=</span> <span class='fl'>.8</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] "cutoff is specified, filtered vcfR object will be returned"</div><div class='img'><img src='assess_missing_data_tsne-1.png' alt='' width='700' height='433' /></div><div class='output co'>#&gt; [1] "65.8% of SNPs fell below a completeness cutoff of 0.8 and were removed from the VCF"</div><div class='img'><img src='assess_missing_data_tsne-2.png' alt='' width='700' height='433' /></div><div class='img'><img src='assess_missing_data_tsne-3.png' alt='' width='700' height='433' /></div><div class='img'><img src='assess_missing_data_tsne-4.png' alt='' width='700' height='433' /></div><div class='output co'>#&gt; [[1]]
+#&gt;            V1          V2          pop pam.clust missing
+#&gt; 1  -21.817034   51.960294  californica         1   0.168
+#&gt; 2  -16.604207   31.230375  californica         1   0.304
+#&gt; 3  -21.391474   61.365407  californica         1   0.344
+#&gt; 4  -11.075735   40.963542  californica         1   0.200
+#&gt; 5  -21.526845   39.252405  californica         1   0.314
+#&gt; 6    1.206668 -105.562559    insularis         2   0.264
+#&gt; 7   -5.192100 -120.478404    insularis         2   0.194
+#&gt; 8    4.147520 -117.999175    insularis         2   0.206
+#&gt; 9   10.105444 -110.305773    insularis         2   0.260
+#&gt; 10  -7.109449 -110.573486    insularis         2   0.300
+#&gt; 11  12.157778   43.207582  woodhouseii         1   0.278
+#&gt; 12  15.862556   51.311318  woodhouseii         1   0.568
+#&gt; 13  -1.177286   77.461613  woodhouseii         1   0.322
+#&gt; 14   3.044428   62.186027  woodhouseii         1   0.600
+#&gt; 15   6.393167   69.598685  woodhouseii         1   0.388
+#&gt; 16  20.494783   -2.318659 coerulescens         1   0.474
+#&gt; 17  10.839123    4.778829 coerulescens         1   0.700
+#&gt; 18  -8.959113   50.966253 coerulescens         1   0.964
+#&gt; 19  11.146261   -5.405786 coerulescens         1   0.534
+#&gt; 20  19.455516  -11.638488 coerulescens         1   0.232
+#&gt; </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

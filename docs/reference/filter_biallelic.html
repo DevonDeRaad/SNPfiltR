@@ -40,9 +40,9 @@
 
 
 <meta property="og:title" content="Remove SNPs with more than two alleles — filter_biallelic" />
-<meta property="og:description" content="This function simply removes any SNPs from the vcf file for which more than
-two alleles are found within your samples. Many downstream applications require
-SNPs to be biallelic, so this filter is generally a good idea." />
+<meta property="og:description" content="This function simply removes any SNPs from the vcf file which contains more than
+two alleles. Many downstream applications require
+SNPs to be biallelic, so this filter is generally a good idea during processing." />
 
 
 
@@ -126,9 +126,9 @@ SNPs to be biallelic, so this filter is generally a good idea." />
     </div>
 
     <div class="ref-description">
-    <p>This function simply removes any SNPs from the vcf file for which more than
-two alleles are found within your samples. Many downstream applications require
-SNPs to be biallelic, so this filter is generally a good idea.</p>
+    <p>This function simply removes any SNPs from the vcf file which contains more than
+two alleles. Many downstream applications require
+SNPs to be biallelic, so this filter is generally a good idea during processing.</p>
     </div>
 
     <pre class="usage"><span class='fu'>filter_biallelic</span><span class='op'>(</span><span class='va'>vcfR</span><span class='op'>)</span></pre>
@@ -147,8 +147,14 @@ SNPs to be biallelic, so this filter is generally a good idea.</p>
     <p>a vcfR object with SNPs containing more than two alleles removed</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>filter_biallelic</span><span class='op'>(</span>vcfR<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"extdata"</span>,<span class='st'>"unfiltered.vcf.gz"</span>,package<span class='op'>=</span><span class='st'>"SNPfiltR"</span>,mustWork<span class='op'>=</span><span class='cn'>TRUE</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='error'>Error in system.file("extdata", "unfiltered.vcf.gz", package = "SNPfiltR",     mustWork = TRUE): no file found</span></div></pre>
+    <pre class="examples"><div class='input'><span class='fu'>filter_biallelic</span><span class='op'>(</span>vcfR <span class='op'>=</span> <span class='fu'>SNPfiltR</span><span class='fu'>::</span><span class='va'><a href='vcfR.example.html'>vcfR.example</a></span><span class='op'>)</span>
+</div><div class='img'><img src='filter_biallelic-1.png' alt='' width='700' height='433' /></div><div class='output co'>#&gt; [1] "0 SNPs, 0% of all input SNPs, contained more than 2 alleles, and were removed from the VCF"</div><div class='output co'>#&gt; ***** Object of Class vcfR *****
+#&gt; 20 samples
+#&gt; 1 CHROMs
+#&gt; 500 variants
+#&gt; Object size: 0.7 Mb
+#&gt; 38.07 percent missing data
+#&gt; *****        *****         *****</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

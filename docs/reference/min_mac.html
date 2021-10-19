@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Vizualise how Minor Allele Count (MAC) affects population structure, filter for MAC — min_mac • SNPfiltR</title>
+<title>Vizualise, filter based on Minor Allele Count (MAC) — min_mac • SNPfiltR</title>
 
 
 <!-- jquery -->
@@ -39,14 +39,14 @@
 
 
 
-<meta property="og:title" content="Vizualise how Minor Allele Count (MAC) affects population structure, filter for MAC — min_mac" />
+<meta property="og:title" content="Vizualise, filter based on Minor Allele Count (MAC) — min_mac" />
 <meta property="og:description" content="This function can be run in two ways: 1) Without 'min.mac' specified. This will return
 a folded site frequency spectrum (SFS), without performing any filtering on the vcf file. Or
 2) With 'min.mac' specified. This will also print the folded SFS and
 show you where your specified min. MAC count falls. It will then return your vcfR object
 with SNPs falling below your min. MAC threshold removed.
-Note: previous filtering steps may have converted called genotypes to 'NAs' and resulting
-in invariant SNPs (MAC =0) for this reason it's a good idea to run min.mac(vcfR, min.mac=1)
+Note: previous filtering steps (especially removing samples) may have resulted
+in invariant SNPs (MAC =0). For this reason it's a good idea to run min_mac(vcfR, min.mac=1)
 before using a SNP dataset in downstream analyses." />
 
 
@@ -125,7 +125,7 @@ before using a SNP dataset in downstream analyses." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Vizualise how Minor Allele Count (MAC) affects population structure, filter for MAC</h1>
+    <h1>Vizualise, filter based on Minor Allele Count (MAC)</h1>
     
     <div class="hidden name"><code>min_mac.Rd</code></div>
     </div>
@@ -136,8 +136,8 @@ a folded site frequency spectrum (SFS), without performing any filtering on the 
 2) With 'min.mac' specified. This will also print the folded SFS and
 show you where your specified min. MAC count falls. It will then return your vcfR object
 with SNPs falling below your min. MAC threshold removed.
-Note: previous filtering steps may have converted called genotypes to 'NAs' and resulting
-in invariant SNPs (MAC =0) for this reason it's a good idea to run min.mac(vcfR, min.mac=1)
+Note: previous filtering steps (especially removing samples) may have resulted
+in invariant SNPs (MAC =0). For this reason it's a good idea to run min_mac(vcfR, min.mac=1)
 before using a SNP dataset in downstream analyses.</p>
     </div>
 
@@ -164,8 +164,14 @@ If 'min.mac' is specified, SNPs falling below the MAC cutoff will be removed,
 and the filtered vcfR object will be returned.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>min_mac</span><span class='op'>(</span>vcfR<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"extdata"</span>,<span class='st'>"unfiltered.vcf.gz"</span>,package<span class='op'>=</span><span class='st'>"SNPfiltR"</span>,mustWork<span class='op'>=</span><span class='cn'>TRUE</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='error'>Error in system.file("extdata", "unfiltered.vcf.gz", package = "SNPfiltR",     mustWork = TRUE): no file found</span></div></pre>
+    <pre class="examples"><div class='input'><span class='fu'>min_mac</span><span class='op'>(</span>vcfR<span class='op'>=</span><span class='fu'>SNPfiltR</span><span class='fu'>::</span><span class='va'><a href='vcfR.example.html'>vcfR.example</a></span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] "no filtering cutoff provided, vcf will be returned unfiltered"</div><div class='img'><img src='min_mac-1.png' alt='' width='700' height='433' /></div><div class='output co'>#&gt; ***** Object of Class vcfR *****
+#&gt; 20 samples
+#&gt; 1 CHROMs
+#&gt; 500 variants
+#&gt; Object size: 0.7 Mb
+#&gt; 38.07 percent missing data
+#&gt; *****        *****         *****</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

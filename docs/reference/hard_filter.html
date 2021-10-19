@@ -41,10 +41,10 @@
 
 <meta property="og:title" content="Hard filter a vcf file by depth and genotype quality (gq) — hard_filter" />
 <meta property="og:description" content="This function requires a vcfR object as input.
-There are slots for varying the n parameter across M-1, M, and M-1 (as recommended by Paris et al. 2017).
-After running stacks with each of the n options, plug the output vcf files into this
-function to visualize the effect of varying m on number of SNPs and loci built to
-recognize which value optimizes the n parameter for your dataset at the 'R80' cutoff (Paris et al. 2017)." />
+The user can then specify the minimum value for depth of coverage required to retain
+a called genotype (must be numeric).
+Additionally, the user can specify a minimum genotype quality required to retain
+a called genotype (again, must be numeric)." />
 
 
 
@@ -129,10 +129,10 @@ recognize which value optimizes the n parameter for your dataset at the 'R80' cu
 
     <div class="ref-description">
     <p>This function requires a vcfR object as input.
-There are slots for varying the n parameter across M-1, M, and M-1 (as recommended by Paris et al. 2017).
-After running stacks with each of the n options, plug the output vcf files into this
-function to visualize the effect of varying m on number of SNPs and loci built to
-recognize which value optimizes the n parameter for your dataset at the 'R80' cutoff (Paris et al. 2017).</p>
+The user can then specify the minimum value for depth of coverage required to retain
+a called genotype (must be numeric).
+Additionally, the user can specify a minimum genotype quality required to retain
+a called genotype (again, must be numeric).</p>
     </div>
 
     <pre class="usage"><span class='fu'>hard_filter</span><span class='op'>(</span><span class='va'>vcfR</span>, depth <span class='op'>=</span> <span class='cn'>NULL</span>, gq <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></pre>
@@ -146,13 +146,15 @@ recognize which value optimizes the n parameter for your dataset at the 'R80' cu
     </tr>
     <tr>
       <th>depth</th>
-      <td><p>an integer representing the minimum depth for genotype calls that you wish to retain
+      <td><p>an integer representing the minimum depth for genotype calls that you
+wish to retain
 (e.g. 'depth = 5' would remove all genotypes with a sequencing depth of 4 reads or less)</p></td>
     </tr>
     <tr>
       <th>gq</th>
-      <td><p>an integer representing the minimum genotype quality for genotype calls that you wish to retain
-#' (e.g. 'gq = 30' would remove all genotypes with a quality score of 29 or lower)</p></td>
+      <td><p>an integer representing the minimum genotype quality for
+genotype calls that you wish to retain
+(e.g. 'gq = 30' would remove all genotypes with a quality score of 29 or lower)</p></td>
     </tr>
     </table>
 
@@ -161,9 +163,23 @@ recognize which value optimizes the n parameter for your dataset at the 'R80' cu
     <p>The vcfR object input, with the sites failing specified filters converted to 'NA'</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>hard_filter</span><span class='op'>(</span>vcfR <span class='op'>=</span> <span class='fu'>SNPfiltR</span><span class='fu'>:::</span><span class='va'><a href='vcfR.example.html'>vcfR.example</a></span>, depth <span class='op'>=</span> <span class='fl'>5</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='error'>Error in hard_filter(vcfR = SNPfiltR:::vcfR.example, depth = 5): object 'vcfR.example' not found</span></div><div class='input'><span class='fu'>hard_filter</span><span class='op'>(</span>vcfR <span class='op'>=</span> <span class='fu'>SNPfiltR</span><span class='fu'>:::</span><span class='va'><a href='vcfR.example.html'>vcfR.example</a></span>, depth <span class='op'>=</span> <span class='fl'>5</span>, gq <span class='op'>=</span> <span class='fl'>30</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='error'>Error in hard_filter(vcfR = SNPfiltR:::vcfR.example, depth = 5, gq = 30): object 'vcfR.example' not found</span></div></pre>
+    <pre class="examples"><div class='input'><span class='fu'>hard_filter</span><span class='op'>(</span>vcfR <span class='op'>=</span> <span class='fu'>SNPfiltR</span><span class='fu'>::</span><span class='va'><a href='vcfR.example.html'>vcfR.example</a></span>, depth <span class='op'>=</span> <span class='fl'>5</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] "28.81% of genotypes fall below a read depth of 5 and were converted to NA"
+#&gt; [1] "no genotype quality cutoff provided, exploratory visualization will be generated."</div><div class='output co'>#&gt; ***** Object of Class vcfR *****
+#&gt; 20 samples
+#&gt; 1 CHROMs
+#&gt; 500 variants
+#&gt; Object size: 0.6 Mb
+#&gt; 55.91 percent missing data
+#&gt; *****        *****         *****</div><div class='input'><span class='fu'>hard_filter</span><span class='op'>(</span>vcfR <span class='op'>=</span> <span class='fu'>SNPfiltR</span><span class='fu'>::</span><span class='va'><a href='vcfR.example.html'>vcfR.example</a></span>, depth <span class='op'>=</span> <span class='fl'>5</span>, gq <span class='op'>=</span> <span class='fl'>30</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] "28.81% of genotypes fall below a read depth of 5 and were converted to NA"
+#&gt; [1] "3.81% of genotypes fall below a genotype quality of 30 and were converted to NA"</div><div class='output co'>#&gt; ***** Object of Class vcfR *****
+#&gt; 20 samples
+#&gt; 1 CHROMs
+#&gt; 500 variants
+#&gt; Object size: 0.6 Mb
+#&gt; 57.59 percent missing data
+#&gt; *****        *****         *****</div><div class='img'><img src='hard_filter-1.png' alt='' width='700' height='433' /></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
