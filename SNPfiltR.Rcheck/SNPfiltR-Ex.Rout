@@ -1,0 +1,502 @@
+
+R version 4.1.1 (2021-08-10) -- "Kick Things"
+Copyright (C) 2021 The R Foundation for Statistical Computing
+Platform: x86_64-apple-darwin17.0 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> pkgname <- "SNPfiltR"
+> source(file.path(R.home("share"), "R", "examples-header.R"))
+> options(warn = 1)
+> library('SNPfiltR')
+> 
+> base::assign(".oldSearch", base::search(), pos = 'CheckExEnv')
+> base::assign(".old_wd", base::getwd(), pos = 'CheckExEnv')
+> cleanEx()
+> nameEx("assess_missing_data_pca")
+> ### * assess_missing_data_pca
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: assess_missing_data_pca
+> ### Title: Vizualise how missing data thresholds affect sample clustering
+> ### Aliases: assess_missing_data_pca
+> 
+> ### ** Examples
+> 
+> assess_missing_data_pca(vcfR = SNPfiltR::vcfR.example,
++ popmap = SNPfiltR::popmap,
++ thresholds = c(.6,.8))
+[1] "cutoff is specified, filtered vcfR object will be returned"
+[1] "41% of SNPs fell below a completeness cutoff of 0.6 and were removed from the VCF"
+Loading required namespace: adegenet
+[1] "cutoff is specified, filtered vcfR object will be returned"
+[1] "65.8% of SNPs fell below a completeness cutoff of 0.8 and were removed from the VCF"
+[[1]]
+                              PC1        PC2         PC3         PC4
+A_californica_333849   0.10800467 -1.2622614 -0.42913167 -1.13151863
+A_californica_333854   0.47446425 -1.1533207 -2.26034905  0.45898145
+A_californica_333855   0.31057095 -0.6114347 -0.53888701  0.03297997
+A_californica_333857  -0.09160947 -1.2527296 -1.03787951  0.49691720
+A_californica_333860   0.31699182 -1.2567801 -1.66576508 -0.51892606
+A_insularis_334031     2.51293154  1.5614888  0.21023053 -0.02197561
+A_insularis_334032     2.53405901  1.5742992  0.21769383 -0.02632204
+A_insularis_334033     2.52944312  1.5797358  0.21738596 -0.02494461
+A_insularis_334034     2.51293154  1.5614888  0.21023053 -0.02197561
+A_insularis_334037     2.45672207  1.4675647  0.19492725 -0.05306105
+A_woodhouseii_334133  -0.11270777 -1.4035531  1.03565181 -2.05153710
+A_woodhouseii_334134  -0.11083554 -1.7646661  1.02457015 -0.84479977
+A_woodhouseii_334142  -0.64811300 -1.9080613  1.80936813  0.69078503
+A_woodhouseii_334148   0.17183657 -1.2793948  0.51634289  0.97760683
+A_woodhouseii_334153   0.15434163 -1.2415592  0.91025765  1.80226270
+A_coerulescens_396256 -3.60420998  1.5810313  0.03232586 -0.19298249
+A_coerulescens_396259 -1.99266201  0.6537738 -0.29845116  0.46722091
+A_coerulescens_396262 -0.15117477 -0.1794463 -0.22073088  0.04413322
+A_coerulescens_396263 -3.38747070  1.3321107  0.05360827  0.10676121
+A_coerulescens_396264 -3.98351395  2.0017141  0.01860152 -0.18960558
+                              PC5         PC6          pop pam.clust missing
+A_californica_333849   0.77809865  1.88515106  californica         1   0.168
+A_californica_333854  -0.30240921 -0.65007850  californica         1   0.304
+A_californica_333855   1.86150801 -1.07424934  californica         1   0.344
+A_californica_333857  -0.25739454  0.33591027  californica         1   0.200
+A_californica_333860  -0.26400332  0.04207691  californica         1   0.314
+A_insularis_334031    -0.04572244  0.05381709    insularis         2   0.264
+A_insularis_334032    -0.04493868  0.04805338    insularis         2   0.194
+A_insularis_334033    -0.04685803  0.05007695    insularis         2   0.206
+A_insularis_334034    -0.04572244  0.05381709    insularis         2   0.260
+A_insularis_334037    -0.02363185  0.03106438    insularis         2   0.300
+A_woodhouseii_334133  -0.11209490 -0.64744433  woodhouseii         1   0.278
+A_woodhouseii_334134  -1.48562119 -0.65435725  woodhouseii         1   0.568
+A_woodhouseii_334142   1.25368265  0.34508479  woodhouseii         1   0.322
+A_woodhouseii_334148  -0.59943809  0.16093514  woodhouseii         1   0.600
+A_woodhouseii_334153  -0.34449347 -0.19867999  woodhouseii         1   0.388
+A_coerulescens_396256  0.01596914 -0.01426633 coerulescens         3   0.474
+A_coerulescens_396259 -0.08067753  0.35280180 coerulescens         3   0.700
+A_coerulescens_396262  0.04434716 -0.09654030 coerulescens         1   0.964
+A_coerulescens_396263 -0.73964893  0.81626021 coerulescens         3   0.534
+A_coerulescens_396264  0.43904901 -0.83943304 coerulescens         3   0.232
+
+> 
+> 
+> 
+> cleanEx()
+> nameEx("assess_missing_data_tsne")
+> ### * assess_missing_data_tsne
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: assess_missing_data_tsne
+> ### Title: Vizualise how missing data thresholds affect sample clustering
+> ### Aliases: assess_missing_data_tsne
+> 
+> ### ** Examples
+> 
+> assess_missing_data_tsne(vcfR = SNPfiltR::vcfR.example,
++ popmap = SNPfiltR::popmap,
++ thresholds = .8)
+[1] "cutoff is specified, filtered vcfR object will be returned"
+[1] "65.8% of SNPs fell below a completeness cutoff of 0.8 and were removed from the VCF"
+[[1]]
+            V1          V2          pop pam.clust missing
+1    32.874811   42.743932  californica         1   0.168
+2    -1.003518   33.473038  californica         1   0.304
+3    30.893945   30.664695  californica         1   0.344
+4     6.705433   45.515435  californica         1   0.200
+5    10.995782   32.986379  californica         1   0.314
+6   -92.254039 -108.215354    insularis         2   0.264
+7  -104.575273 -105.062005    insularis         2   0.194
+8  -103.290288 -125.293393    insularis         2   0.206
+9   -91.639213 -120.813013    insularis         2   0.260
+10 -110.796692 -115.635827    insularis         2   0.300
+11   41.298190   59.461371  woodhouseii         1   0.278
+12   36.245600   70.036733  woodhouseii         1   0.568
+13   -2.128248   84.354698  woodhouseii         1   0.322
+14   10.881692   68.711761  woodhouseii         1   0.600
+15   10.472489   78.991164  woodhouseii         1   0.388
+16   83.412075   -5.769945 coerulescens         1   0.474
+17   73.712904    6.795540 coerulescens         1   0.700
+18   18.830229   49.613719 coerulescens         1   0.964
+19   70.969312   -5.793424 coerulescens         1   0.534
+20   78.394806  -16.765504 coerulescens         1   0.232
+
+> 
+> 
+> 
+> cleanEx()
+> nameEx("distance_thin")
+> ### * distance_thin
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: distance_thin
+> ### Title: Filter a vcf file based on distance between SNPs on a given
+> ###   scaffold
+> ### Aliases: distance_thin
+> 
+> ### ** Examples
+> 
+> distance_thin(vcfR = SNPfiltR::vcfR.example, min.distance = 1000)
+  |                                                                              |                                                                      |   0%  |                                                                              |======================================================================| 100%
+[1] "367 out of 500 input SNPs were not located within 1000 base-pairs of another SNP and were retained despite filtering"
+***** Object of Class vcfR *****
+20 samples
+1 CHROMs
+367 variants
+Object size: 0.5 Mb
+41.61 percent missing data
+*****        *****         *****
+> 
+> 
+> 
+> cleanEx()
+> nameEx("filter_allele_balance")
+> ### * filter_allele_balance
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: filter_allele_balance
+> ### Title: Filter out heterozygous genotypes failing an allele balance
+> ###   check
+> ### Aliases: filter_allele_balance
+> 
+> ### ** Examples
+> 
+> filter_allele_balance(vcfR = SNPfiltR::vcfR.example)
+[1] "13.24% of het genotypes (1.05% of all genotypes) fall outside of .25 - .75 allele balance and were converted to NA"
+***** Object of Class vcfR *****
+20 samples
+1 CHROMs
+500 variants
+Object size: 0.7 Mb
+38.72 percent missing data
+*****        *****         *****
+> 
+> 
+> 
+> cleanEx()
+> nameEx("filter_biallelic")
+> ### * filter_biallelic
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: filter_biallelic
+> ### Title: Remove SNPs with more than two alleles
+> ### Aliases: filter_biallelic
+> 
+> ### ** Examples
+> 
+> filter_biallelic(vcfR = SNPfiltR::vcfR.example)
+[1] "0 SNPs, 0% of all input SNPs, contained more than 2 alleles, and were removed from the VCF"
+***** Object of Class vcfR *****
+20 samples
+1 CHROMs
+500 variants
+Object size: 0.7 Mb
+38.07 percent missing data
+*****        *****         *****
+> 
+> 
+> 
+> cleanEx()
+> nameEx("hard_filter")
+> ### * hard_filter
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: hard_filter
+> ### Title: Hard filter a vcf file by depth and genotype quality (gq)
+> ### Aliases: hard_filter
+> 
+> ### ** Examples
+> 
+> hard_filter(vcfR = SNPfiltR::vcfR.example, depth = 5)
+[1] "28.81% of genotypes fall below a read depth of 5 and were converted to NA"
+[1] "no genotype quality cutoff provided, exploratory visualization will be generated."
+***** Object of Class vcfR *****
+20 samples
+1 CHROMs
+500 variants
+Object size: 0.6 Mb
+55.91 percent missing data
+*****        *****         *****
+> hard_filter(vcfR = SNPfiltR::vcfR.example, depth = 5, gq = 30)
+[1] "28.81% of genotypes fall below a read depth of 5 and were converted to NA"
+[1] "3.81% of genotypes fall below a genotype quality of 30 and were converted to NA"
+***** Object of Class vcfR *****
+20 samples
+1 CHROMs
+500 variants
+Object size: 0.6 Mb
+57.59 percent missing data
+*****        *****         *****
+> 
+> 
+> 
+> cleanEx()
+> nameEx("max_depth")
+> ### * max_depth
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: max_depth
+> ### Title: Vizualise and filter based on mean depth across all called SNPs
+> ### Aliases: max_depth
+> 
+> ### ** Examples
+> 
+> max_depth(vcfR = SNPfiltR::vcfR.example)
+[1] "cutoff is not specified, exploratory visualization will be generated."
+[1] "dashed line indicates a mean depth across all SNPs of 47"
+> max_depth(vcfR = SNPfiltR::vcfR.example, maxdepth = 100)
+[1] "maxdepth cutoff is specified, filtered vcfR object will be returned"
+[1] "17% of SNPs were above a mean depth of 100 and were removed from the vcf"
+***** Object of Class vcfR *****
+20 samples
+1 CHROMs
+415 variants
+Object size: 0.5 Mb
+44.22 percent missing data
+*****        *****         *****
+> 
+> 
+> 
+> cleanEx()
+> nameEx("min_mac")
+> ### * min_mac
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: min_mac
+> ### Title: Vizualise, filter based on Minor Allele Count (MAC)
+> ### Aliases: min_mac
+> 
+> ### ** Examples
+> 
+> min_mac(vcfR=SNPfiltR::vcfR.example)
+[1] "no filtering cutoff provided, vcf will be returned unfiltered"
+***** Object of Class vcfR *****
+20 samples
+1 CHROMs
+500 variants
+Object size: 0.7 Mb
+38.07 percent missing data
+*****        *****         *****
+> 
+> 
+> 
+> cleanEx()
+> nameEx("missing_by_sample")
+> ### * missing_by_sample
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: missing_by_sample
+> ### Title: Vizualise missing data per sample, remove samples above a
+> ###   missing data cutoff
+> ### Aliases: missing_by_sample
+> 
+> ### ** Examples
+> 
+> missing_by_sample(vcfR = SNPfiltR::vcfR.example)
+[1] "No popmap provided"
+                    indiv filt snps.retained
+1    A_californica_333849  0.5           334
+2    A_californica_333854  0.5           307
+3    A_californica_333855  0.5           295
+4    A_californica_333857  0.5           324
+5    A_californica_333860  0.5           300
+6      A_insularis_334031  0.5           313
+7      A_insularis_334032  0.5           330
+8      A_insularis_334033  0.5           327
+9      A_insularis_334034  0.5           314
+10     A_insularis_334037  0.5           317
+11   A_woodhouseii_334133  0.5           312
+12   A_woodhouseii_334134  0.5           208
+13   A_woodhouseii_334142  0.5           300
+14   A_woodhouseii_334148  0.5           190
+15   A_woodhouseii_334153  0.5           285
+16  A_coerulescens_396256  0.5           247
+17  A_coerulescens_396259  0.5           143
+18  A_coerulescens_396262  0.5            18
+19  A_coerulescens_396263  0.5           215
+20  A_coerulescens_396264  0.5           313
+21   A_californica_333849  0.6           291
+22   A_californica_333854  0.6           275
+23   A_californica_333855  0.6           268
+24   A_californica_333857  0.6           284
+25   A_californica_333860  0.6           275
+26     A_insularis_334031  0.6           281
+27     A_insularis_334032  0.6           291
+28     A_insularis_334033  0.6           285
+29     A_insularis_334034  0.6           278
+30     A_insularis_334037  0.6           282
+31   A_woodhouseii_334133  0.6           281
+32   A_woodhouseii_334134  0.6           199
+33   A_woodhouseii_334142  0.6           275
+34   A_woodhouseii_334148  0.6           182
+35   A_woodhouseii_334153  0.6           259
+36  A_coerulescens_396256  0.6           237
+37  A_coerulescens_396259  0.6           138
+38  A_coerulescens_396262  0.6            18
+39  A_coerulescens_396263  0.6           211
+40  A_coerulescens_396264  0.6           280
+41   A_californica_333849  0.7           244
+42   A_californica_333854  0.7           234
+43   A_californica_333855  0.7           238
+44   A_californica_333857  0.7           238
+45   A_californica_333860  0.7           236
+46     A_insularis_334031  0.7           238
+47     A_insularis_334032  0.7           245
+48     A_insularis_334033  0.7           238
+49     A_insularis_334034  0.7           240
+50     A_insularis_334037  0.7           237
+51   A_woodhouseii_334133  0.7           239
+52   A_woodhouseii_334134  0.7           192
+53   A_woodhouseii_334142  0.7           241
+54   A_woodhouseii_334148  0.7           171
+55   A_woodhouseii_334153  0.7           230
+56  A_coerulescens_396256  0.7           218
+57  A_coerulescens_396259  0.7           135
+58  A_coerulescens_396262  0.7            18
+59  A_coerulescens_396263  0.7           199
+60  A_coerulescens_396264  0.7           235
+61   A_californica_333849  0.8           170
+62   A_californica_333854  0.8           170
+63   A_californica_333855  0.8           168
+64   A_californica_333857  0.8           171
+65   A_californica_333860  0.8           170
+66     A_insularis_334031  0.8           170
+67     A_insularis_334032  0.8           171
+68     A_insularis_334033  0.8           170
+69     A_insularis_334034  0.8           170
+70     A_insularis_334037  0.8           171
+71   A_woodhouseii_334133  0.8           171
+72   A_woodhouseii_334134  0.8           158
+73   A_woodhouseii_334142  0.8           171
+74   A_woodhouseii_334148  0.8           151
+75   A_woodhouseii_334153  0.8           169
+76  A_coerulescens_396256  0.8           166
+77  A_coerulescens_396259  0.8           115
+78  A_coerulescens_396262  0.8            18
+79  A_coerulescens_396263  0.8           156
+80  A_coerulescens_396264  0.8           170
+81   A_californica_333849  0.9            94
+82   A_californica_333854  0.9            94
+83   A_californica_333855  0.9            94
+84   A_californica_333857  0.9            94
+85   A_californica_333860  0.9            94
+86     A_insularis_334031  0.9            94
+87     A_insularis_334032  0.9            94
+88     A_insularis_334033  0.9            94
+89     A_insularis_334034  0.9            94
+90     A_insularis_334037  0.9            94
+91   A_woodhouseii_334133  0.9            94
+92   A_woodhouseii_334134  0.9            93
+93   A_woodhouseii_334142  0.9            94
+94   A_woodhouseii_334148  0.9            94
+95   A_woodhouseii_334153  0.9            94
+96  A_coerulescens_396256  0.9            94
+97  A_coerulescens_396259  0.9            90
+98  A_coerulescens_396262  0.9            16
+99  A_coerulescens_396263  0.9            94
+100 A_coerulescens_396264  0.9            94
+101  A_californica_333849  1.0            11
+102  A_californica_333854  1.0            11
+103  A_californica_333855  1.0            11
+104  A_californica_333857  1.0            11
+105  A_californica_333860  1.0            11
+106    A_insularis_334031  1.0            11
+107    A_insularis_334032  1.0            11
+108    A_insularis_334033  1.0            11
+109    A_insularis_334034  1.0            11
+110    A_insularis_334037  1.0            11
+111  A_woodhouseii_334133  1.0            11
+112  A_woodhouseii_334134  1.0            11
+113  A_woodhouseii_334142  1.0            11
+114  A_woodhouseii_334148  1.0            11
+115  A_woodhouseii_334153  1.0            11
+116 A_coerulescens_396256  1.0            11
+117 A_coerulescens_396259  1.0            11
+118 A_coerulescens_396262  1.0            11
+119 A_coerulescens_396263  1.0            11
+120 A_coerulescens_396264  1.0            11
+> missing_by_sample(vcfR = SNPfiltR::vcfR.example, cutoff = .7)
+[1] "1 samples are above a 0.7 missing data cutoff, and were removed from VCF"
+***** Object of Class vcfR *****
+19 samples
+1 CHROMs
+500 variants
+Object size: 0.7 Mb
+35 percent missing data
+*****        *****         *****
+> 
+> 
+> 
+> cleanEx()
+> nameEx("missing_by_snp")
+> ### * missing_by_snp
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: missing_by_snp
+> ### Title: Vizualise missing data per SNP, remove SNPs above a missing data
+> ###   cutoff
+> ### Aliases: missing_by_snp
+> 
+> ### ** Examples
+> 
+> missing_by_snp(vcfR = SNPfiltR::vcfR.example)
+[1] "cutoff is not specified, exploratory visualizations will be generated"
+Picking joint bandwidth of 0.0903
+   filt missingness snps.retained
+1  0.30  0.28741007           417
+2  0.50  0.21399417           343
+3  0.60  0.17118644           295
+4  0.65  0.14907063           269
+5  0.70  0.12938776           245
+6  0.75  0.11585903           227
+7  0.80  0.09698492           199
+8  0.85  0.08011696           171
+9  0.90  0.06082090           134
+10 0.95  0.04414894            94
+11 1.00  0.00000000            11
+> missing_by_snp(vcfR = SNPfiltR::vcfR.example, cutoff = .6)
+[1] "cutoff is specified, filtered vcfR object will be returned"
+[1] "41% of SNPs fell below a completeness cutoff of 0.6 and were removed from the VCF"
+***** Object of Class vcfR *****
+20 samples
+1 CHROMs
+295 variants
+Object size: 0.5 Mb
+17.12 percent missing data
+*****        *****         *****
+> 
+> 
+> 
+> ### * <FOOTER>
+> ###
+> cleanEx()
+> options(digits = 7L)
+> base::cat("Time elapsed: ", proc.time() - base::get("ptime", pos = 'CheckExEnv'),"\n")
+Time elapsed:  5.326 0.326 5.95 0.002 0.006 
+> grDevices::dev.off()
+null device 
+          1 
+> ###
+> ### Local variables: ***
+> ### mode: outline-minor ***
+> ### outline-regexp: "\\(> \\)?### [*]+" ***
+> ### End: ***
+> quit('no')

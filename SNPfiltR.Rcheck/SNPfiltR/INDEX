@@ -1,0 +1,23 @@
+assess_missing_data_pca
+                        Vizualise how missing data thresholds affect
+                        sample clustering
+assess_missing_data_tsne
+                        Vizualise how missing data thresholds affect
+                        sample clustering
+distance_thin           Filter a vcf file based on distance between
+                        SNPs on a given scaffold
+filter_allele_balance   Filter out heterozygous genotypes failing an
+                        allele balance check
+filter_biallelic        Remove SNPs with more than two alleles
+hard_filter             Hard filter a vcf file by depth and genotype
+                        quality (gq)
+max_depth               Vizualise and filter based on mean depth across
+                        all called SNPs
+min_mac                 Vizualise, filter based on Minor Allele Count
+                        (MAC)
+missing_by_sample       Vizualise missing data per sample, remove
+                        samples above a missing data cutoff
+missing_by_snp          Vizualise missing data per SNP, remove SNPs
+                        above a missing data cutoff
+popmap                  Popmap for example scrub-jay vcfR file
+vcfR.example            Example scrub-jay vcfR file
