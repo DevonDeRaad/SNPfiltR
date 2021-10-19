@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2021) (preloaded format=pdflatex 2021.8.7)  19 OCT 2021 14:52
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2021) (preloaded format=pdflatex 2021.8.7)  19 OCT 2021 17:00
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -272,8 +272,8 @@ File: l3backend-pdftex.def 2021-03-18 L3 backend support: PDF output (pdfTeX)
 \l__color_backend_stack_int=\count271
 \l__pdf_internal_box=\box51
 )
-(/private/var/folders/k7/j81frcg973z7cz2y5cqz33kw0000gn/T/Rtmp6ewYIP/Rd2pdf6674
-5871361e/Rd2.aux)
+(/private/var/folders/k7/j81frcg973z7cz2y5cqz33kw0000gn/T/RtmpGMAYs7/Rd2pdf8138
+5e4b61da/Rd2.aux)
 \openout1 = `Rd2.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 8.
@@ -326,10 +326,10 @@ LaTeX Info: Redefining \ref on input line 8.
 LaTeX Info: Redefining \pageref on input line 8.
 LaTeX Info: Redefining \nameref on input line 8.
 
-(/private/var/folders/k7/j81frcg973z7cz2y5cqz33kw0000gn/T/Rtmp6ewYIP/Rd2pdf6674
-5871361e/Rd2.out)
-(/private/var/folders/k7/j81frcg973z7cz2y5cqz33kw0000gn/T/Rtmp6ewYIP/Rd2pdf6674
-5871361e/Rd2.out)
+(/private/var/folders/k7/j81frcg973z7cz2y5cqz33kw0000gn/T/RtmpGMAYs7/Rd2pdf8138
+5e4b61da/Rd2.out)
+(/private/var/folders/k7/j81frcg973z7cz2y5cqz33kw0000gn/T/RtmpGMAYs7/Rd2pdf8138
+5e4b61da/Rd2.out)
 \@outlinefile=\write4
 \openout4 = `Rd2.out'.
 
@@ -339,26 +339,26 @@ LaTeX Font Info:    Trying to load font information for TS1+ptm on input line 2
 (/usr/local/texlive/2021/texmf-dist/tex/latex/psnfss/ts1ptm.fd
 File: ts1ptm.fd 2001/06/04 font definitions for TS1/ptm.
 )
-LaTeX Font Info:    Trying to load font information for T1+zi4 on input line 42
+LaTeX Font Info:    Trying to load font information for T1+zi4 on input line 43
 .
 
 (/usr/local/texlive/2021/texmf-dist/tex/latex/inconsolata/t1zi4.fd
 File: t1zi4.fd 2018/01/14 T1/zi4 (Inconsolata)
 )
 LaTeX Font Info:    Font shape `T1/zi4/m/n' will be
-(Font)              scaled to size 10.0pt on input line 42.
+(Font)              scaled to size 10.0pt on input line 43.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <7> on input line 42.
+(Font)              <7> on input line 43.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <5> on input line 42.
-LaTeX Font Info:    Trying to load font information for T1+phv on input line 45
+(Font)              <5> on input line 43.
+LaTeX Font Info:    Trying to load font information for T1+phv on input line 46
 .
 
 (/usr/local/texlive/2021/texmf-dist/tex/latex/psnfss/t1phv.fd
 File: t1phv.fd 2020/03/25 scalable font definitions for T1/phv.
 )
-(/private/var/folders/k7/j81frcg973z7cz2y5cqz33kw0000gn/T/Rtmp6ewYIP/Rd2pdf6674
-5871361e/Rd2.toc [1
+(/private/var/folders/k7/j81frcg973z7cz2y5cqz33kw0000gn/T/RtmpGMAYs7/Rd2pdf8138
+5e4b61da/Rd2.toc [1
 
 
 {/usr/local/texlive/2021/texmf-var/fonts/map/pdftex/updmap/pdftex.map}])
@@ -366,15 +366,15 @@ File: t1phv.fd 2020/03/25 scalable font definitions for T1/phv.
 \openout5 = `Rd2.toc'.
 
 LaTeX Font Info:    Font shape `T1/zi4/m/n' will be
-(Font)              scaled to size 9.0pt on input line 89.
+(Font)              scaled to size 9.0pt on input line 90.
  [2] [3] [4] [5] [6] [7] [8]
-(/private/var/folders/k7/j81frcg973z7cz2y5cqz33kw0000gn/T/Rtmp6ewYIP/Rd2pdf6674
-5871361e/Rd2.ind [9] [10
+(/private/var/folders/k7/j81frcg973z7cz2y5cqz33kw0000gn/T/RtmpGMAYs7/Rd2pdf8138
+5e4b61da/Rd2.ind [9] [10
 
 
 ])
-(/private/var/folders/k7/j81frcg973z7cz2y5cqz33kw0000gn/T/Rtmp6ewYIP/Rd2pdf6674
-5871361e/Rd2.aux)
+(/private/var/folders/k7/j81frcg973z7cz2y5cqz33kw0000gn/T/RtmpGMAYs7/Rd2pdf8138
+5e4b61da/Rd2.aux)
 Package rerunfilecheck Info: File `Rd2.out' has not changed.
 (rerunfilecheck)             Checksum: 244F07AFD34FE377CDE20C2E69680135;1707.
  ) 
@@ -395,7 +395,7 @@ live/2021/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/local/texlive/2021/
 texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/local/texlive/2021/texmf-dist
 /fonts/type1/urw/times/utmr8a.pfb></usr/local/texlive/2021/texmf-dist/fonts/typ
 e1/urw/times/utmri8a.pfb>
-Output written on Rd2.pdf (10 pages, 102705 bytes).
+Output written on Rd2.pdf (10 pages, 102861 bytes).
 PDF statistics:
  258 PDF objects out of 1000 (max. 8388607)
  236 compressed objects within 3 object streams

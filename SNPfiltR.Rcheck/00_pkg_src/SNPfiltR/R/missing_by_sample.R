@@ -29,7 +29,15 @@
 #' missing_by_sample(vcfR = SNPfiltR::vcfR.example)
 #' missing_by_sample(vcfR = SNPfiltR::vcfR.example, cutoff = .7)
 #' @export
-missing_by_sample <- function(vcfR, popmap=NULL, cutoff=NULL){
+missing_by_sample <- function(vcfR,
+                              popmap=NULL,
+                              cutoff=NULL){
+
+  #bind global variables
+  pop<- NULL
+  missingness<- NULL
+
+
 
   #if specified vcfR is not class 'vcfR', fail gracefully
   if (class(vcfR) != "vcfR"){
@@ -83,7 +91,7 @@ missing_by_sample <- function(vcfR, popmap=NULL, cutoff=NULL){
       df.f<-merge(df.x, popmap, by="id")
       #plot missingness and depth by pop
       plot1<-ggplot2::ggplot(df.f,
-                             ggplot2::aes(x= reorder(pop, -missingness),
+                             ggplot2::aes(x= stats::reorder(pop, -missingness),
                                           y=missingness)
       )+
         ggplot2::geom_violin()+
@@ -96,7 +104,7 @@ missing_by_sample <- function(vcfR, popmap=NULL, cutoff=NULL){
 
       #dotplot avg depth of sequencing
       plot2<-ggplot2::ggplot(df.f,
-                             ggplot2::aes(x= reorder(pop, -missingness),
+                             ggplot2::aes(x= stats::reorder(pop, -missingness),
                                           y=avg.depth)
       )+
         ggplot2::geom_violin()+
@@ -158,10 +166,10 @@ missing_by_sample <- function(vcfR, popmap=NULL, cutoff=NULL){
       #calculate missingness by individual
       miss<-colSums(is.na(dp))/nrow(dp)
       #show plot with missingness by sample
-      dotchart(sort(miss),
+      graphics::dotchart(sort(miss),
                cex=.5,
                xlab = "proportion missing data")
-      abline(v=c(.5,.6,.7,.8,.9,1),
+      graphics::abline(v=c(.5,.6,.7,.8,.9,1),
              lty="dashed")
 
       #return the dataframe showing the missingness and avg depth per individual
@@ -183,9 +191,9 @@ missing_by_sample <- function(vcfR, popmap=NULL, cutoff=NULL){
     #calculate missingness by individual
     miss<-colSums(is.na(dp))/nrow(dp)
     #vis plot to show where cutoff was set
-    dotchart(sort(miss),
+    graphics::dotchart(sort(miss),
              cex=.5)
-    abline(v=cutoff,
+    graphics::abline(v=cutoff,
            col="red")
 
     #print

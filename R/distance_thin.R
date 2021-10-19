@@ -19,7 +19,8 @@
 #' @examples
 #' distance_thin(vcfR = SNPfiltR::vcfR.example, min.distance = 1000)
 #' @export
-distance_thin <- function(vcfR, min.distance=NULL){
+distance_thin <- function(vcfR,
+                          min.distance=NULL){
 
   #if vcfR is not class vcfR, fail gracefully
   if (class(vcfR) != "vcfR"){
@@ -64,7 +65,7 @@ chroms<-levels(as.factor(df$CHROM))
 keep.df<-data.frame()
 
 #make progress bar
-pb <- txtProgressBar(min = 0, max = length(chroms), style = 3)
+pb <- utils::txtProgressBar(min = 0, max = length(chroms), style = 3)
 
 #begin tracker
 pbtrack<-1
@@ -120,7 +121,7 @@ for (t in chroms){
   chrom.df<-NULL
 
   #update progress bar
-  setTxtProgressBar(pb, pbtrack)
+  utils::setTxtProgressBar(pb, pbtrack)
 
   #update tracker
   pbtrack<-pbtrack+1

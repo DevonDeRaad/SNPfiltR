@@ -18,7 +18,9 @@
 #' hard_filter(vcfR = SNPfiltR::vcfR.example, depth = 5)
 #' hard_filter(vcfR = SNPfiltR::vcfR.example, depth = 5, gq = 30)
 #' @export
-hard_filter <- function(vcfR, depth=NULL, gq=NULL){
+hard_filter <- function(vcfR,
+                        depth=NULL,
+                        gq=NULL){
 
   #if specified vcfR is not class 'vcfR', fail gracefully
   if (class(vcfR) != "vcfR"){
@@ -56,14 +58,14 @@ hard_filter <- function(vcfR, depth=NULL, gq=NULL){
 
     #set plotting parameters
     #plot histogram of depth
-    hist(dp.matrix,
+    graphics::hist(dp.matrix,
          xlab = "genotype depth")
-    abline(v=mean(dp.matrix, na.rm = TRUE),
+    graphics::abline(v=mean(dp.matrix, na.rm = TRUE),
            col="red",
            lty="dashed")
 
     #zoomed in histogram
-    hist(dp.matrix[dp.matrix < 25],
+    graphics::hist(dp.matrix[dp.matrix < 25],
          xlab = "genotype depth")
 
   }
@@ -98,11 +100,11 @@ hard_filter <- function(vcfR, depth=NULL, gq=NULL){
     gq.matrix<- vcfR::extract.gt(vcfR, element='GQ', as.numeric=TRUE)
 
     #set plotting parameters
-    par(mfrow=c(2,1))
+    graphics::par(mfrow=c(2,1))
     #plot histogram of depth
-    hist(gq.matrix,
+    graphics::hist(gq.matrix,
          xlab = "genotype quality")
-    abline(v=mean(gq.matrix, na.rm = TRUE),
+    graphics::abline(v=mean(gq.matrix, na.rm = TRUE),
            col="red",
            lty="dashed")
 

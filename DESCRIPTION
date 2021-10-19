@@ -19,7 +19,7 @@ Description: Offers a handful of useful wrapper functions which can be used
 	(Knaus and Grünwald) (<doi:10.1111/1755-0998.12549>). Similarly,
 	each function returns a newly filtered vcfR object, which can be
 	written in standard vcf output using the function vcfR::write.vcf().
-License: MIT
+License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
@@ -31,7 +31,10 @@ Imports:
 	cluster,
 	adegenet,
 	gridExtra,
-	ggridges
+	ggridges,
+	stats,
+	graphics,
+	utils
 Depends: 
     R (>= 2.10)
 Suggests: 

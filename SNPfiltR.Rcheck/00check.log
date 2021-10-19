@@ -17,9 +17,7 @@
 * checking installed package size ... OK
 * checking package directory ... OK
 * checking ‘build’ directory ... OK
-* checking DESCRIPTION meta-information ... NOTE
-License components which are templates and need '+ file LICENSE':
-  MIT
+* checking DESCRIPTION meta-information ... OK
 * checking top-level files ... OK
 * checking for left-over files ... OK
 * checking index information ... OK
@@ -35,44 +33,7 @@ License components which are templates and need '+ file LICENSE':
 * checking S3 generic/method consistency ... OK
 * checking replacement functions ... OK
 * checking foreign function calls ... OK
-* checking R code for possible problems ... NOTE
-assess_missing_data_pca: no visible binding for global variable ‘PC1’
-assess_missing_data_pca: no visible binding for global variable ‘PC2’
-assess_missing_data_pca: no visible binding for global variable ‘pop’
-assess_missing_data_tsne: no visible binding for global variable ‘V1’
-assess_missing_data_tsne: no visible binding for global variable ‘V2’
-assess_missing_data_tsne: no visible binding for global variable ‘pop’
-distance_thin: no visible global function definition for
-  ‘txtProgressBar’
-distance_thin: no visible global function definition for
-  ‘setTxtProgressBar’
-filter_allele_balance: no visible global function definition for ‘hist’
-filter_allele_balance: no visible global function definition for
-  ‘abline’
-filter_biallelic: no visible global function definition for ‘hist’
-filter_biallelic: no visible global function definition for ‘abline’
-hard_filter: no visible global function definition for ‘hist’
-hard_filter: no visible global function definition for ‘abline’
-hard_filter: no visible global function definition for ‘par’
-max_depth: no visible global function definition for ‘par’
-max_depth: no visible global function definition for ‘hist’
-max_depth: no visible global function definition for ‘abline’
-min_mac: no visible global function definition for ‘hist’
-min_mac: no visible global function definition for ‘abline’
-missing_by_sample: no visible global function definition for ‘reorder’
-missing_by_sample: no visible binding for global variable ‘pop’
-missing_by_sample: no visible binding for global variable ‘missingness’
-missing_by_sample: no visible global function definition for ‘dotchart’
-missing_by_sample: no visible global function definition for ‘abline’
-missing_by_snp: no visible binding for global variable ‘dp’
-Undefined global functions or variables:
-  PC1 PC2 V1 V2 abline dotchart dp hist missingness par pop reorder
-  setTxtProgressBar txtProgressBar
-Consider adding
-  importFrom("graphics", "abline", "dotchart", "hist", "par")
-  importFrom("stats", "reorder")
-  importFrom("utils", "setTxtProgressBar", "txtProgressBar")
-to your NAMESPACE file.
+* checking R code for possible problems ... OK
 * checking Rd files ... OK
 * checking Rd metadata ... OK
 * checking Rd cross-references ... OK
@@ -95,4 +56,4 @@ to your NAMESPACE file.
 * checking re-building of vignette outputs ... OK
 * checking PDF version of manual ... OK
 * DONE
-Status: 2 NOTEs
+Status: OK

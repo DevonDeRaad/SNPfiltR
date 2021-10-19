@@ -22,12 +22,12 @@ filter_biallelic <- function(vcfR){
     v<-v+1
 
     #make histogram showing the distribution of number of alleles across all SNPs
-    hist(v,
+    graphics::hist(v,
          main= "distribution of alleles present in vcf",
          xlab= "number of alleles",
          ylab= "number of SNPs",
          xlim= c(.5,4.5))
-    abline(v=2.5,
+    graphics::abline(v=2.5,
          col="red")
 
     #number of input SNPs

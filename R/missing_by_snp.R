@@ -21,7 +21,11 @@
 #' missing_by_snp(vcfR = SNPfiltR::vcfR.example)
 #' missing_by_snp(vcfR = SNPfiltR::vcfR.example, cutoff = .6)
 #' @export
-missing_by_snp <- function(vcfR, cutoff=NULL){
+missing_by_snp <- function(vcfR,
+                           cutoff=NULL){
+
+  #bind global variables
+  dp<- NULL
 
   #if specified vcfR is not class 'vcfR', fail gracefully
   if (class(vcfR) != "vcfR"){

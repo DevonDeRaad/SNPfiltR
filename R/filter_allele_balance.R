@@ -51,12 +51,12 @@ filter_allele_balance <- function(vcfR){
   vcfR@gt[,-1][AB]<-NA
 
   #make histogram of allele balance at all het genotypes
-  hist(al.bal,
+  graphics::hist(al.bal,
        xlim = c(0,1),
        ylab = "number of genotypes",
        xlab = "Allele balance",
        main ="allele balance distribution")
-  abline(v=c(.25,.75),
+  graphics::abline(v=c(.25,.75),
          col="red")
 
   #return vcfR

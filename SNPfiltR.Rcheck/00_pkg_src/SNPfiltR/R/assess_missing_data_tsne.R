@@ -33,6 +33,11 @@ assess_missing_data_tsne <- function(vcfR,
                               initial_dims=NULL,
                               clustering=TRUE){
 
+  #bind global variables
+  V1<- NULL
+  V2<- NULL
+  pop<- NULL
+
   #if vcfR is not class vcfR, fail gracefully
   if (class(vcfR) != "vcfR"){
     stop("specified vcfR object must be of class 'vcfR'")

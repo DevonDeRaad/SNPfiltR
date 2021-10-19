@@ -18,7 +18,8 @@
 #' @examples
 #' min_mac(vcfR=SNPfiltR::vcfR.example)
 #' @export
-min_mac <- function(vcfR, min.mac=NULL){
+min_mac <- function(vcfR,
+                    min.mac=NULL){
 
   #if vcfR is not class vcfR, fail gracefully
   if (class(vcfR) != "vcfR"){
@@ -48,7 +49,7 @@ min_mac <- function(vcfR, min.mac=NULL){
     }
 
     #hist folded mac with cutoff shown
-    hist(sfs,
+    graphics::hist(sfs,
          main="folded SFS",
          xlab = "MAC")
 
@@ -83,10 +84,10 @@ min_mac <- function(vcfR, min.mac=NULL){
     }
 
     #hist folded mac with cutoff shown
-    hist(sfs,
+    graphics::hist(sfs,
          main="folded SFS",
          xlab = "MAC")
-    abline(v=min.mac-1,
+    graphics::abline(v=min.mac-1,
            col="red")
 
     #calculate % of SNPs to be removed

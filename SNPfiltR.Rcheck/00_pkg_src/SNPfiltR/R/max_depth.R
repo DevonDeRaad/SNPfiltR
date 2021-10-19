@@ -17,7 +17,8 @@
 #' max_depth(vcfR = SNPfiltR::vcfR.example)
 #' max_depth(vcfR = SNPfiltR::vcfR.example, maxdepth = 100)
 #' @export
-max_depth <- function(vcfR, maxdepth=NULL){
+max_depth <- function(vcfR,
+                      maxdepth=NULL){
 
   #if specified vcfR is not class 'vcfR', fail gracefully
   if (class(vcfR) != "vcfR"){
@@ -37,20 +38,20 @@ max_depth <- function(vcfR, maxdepth=NULL){
     snpdepth<-rowSums(dp.matrix, na.rm = TRUE)/rowSums(is.na(dp.matrix) == FALSE)
 
     #set plotting parameters
-    par(mfrow=c(2,1))
+    graphics::par(mfrow=c(2,1))
     #plot histogram of depth
-    hist(snpdepth,
+    graphics::hist(snpdepth,
          xlab = "mean of the depth of all samples successfully genotyped at a given SNP",
          main="histogram showing the depth of all called SNPs")
-    abline(v=mean(snpdepth, na.rm = TRUE),
+    graphics::abline(v=mean(snpdepth, na.rm = TRUE),
            col="red",
            lty="dashed")
 
     #zoomed in histogram
-    hist(snpdepth[snpdepth < 200],
+    graphics::hist(snpdepth[snpdepth < 200],
          xlab = "mean of the depth of all samples successfully genotyped at a given SNP",
          main ="distribution of SNPs below a depth of 200")
-    abline(v=mean(snpdepth, na.rm = TRUE),
+    graphics::abline(v=mean(snpdepth, na.rm = TRUE),
            col="red",
            lty="dashed")
 
@@ -76,10 +77,10 @@ max_depth <- function(vcfR, maxdepth=NULL){
     snpdepth<-rowSums(dp.matrix, na.rm = TRUE)/rowSums(is.na(dp.matrix) == FALSE)
 
     #plot the maxdepth cutoff
-    hist(snpdepth,
+    graphics::hist(snpdepth,
          xlab = "mean of the depth of all samples successfully genotyped at a given SNP",
          main ="max depth cutoff")
-    abline(v=maxdepth,
+    graphics::abline(v=maxdepth,
            col="red")
 
     #calculate % of snps that fail the max depth filter
