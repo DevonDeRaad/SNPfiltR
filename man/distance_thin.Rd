@@ -21,9 +21,10 @@ and then subsequently keeping the next SNP that is greater than the specified di
 until it reaches the end of the scaffold/chromosome. This function scales well with
 an increasing number of SNPs, but poorly with an increasing number of scaffolds/chromosomes.
 For this reason, there is a built in progress bar,
-to monitor potentially long-running executuions with many scaffolds.
-This type of filtering is often employed to reduce linkage among input SNPs.
+to monitor potentially long-running executions with many scaffolds.
+This type of filtering is often employed to reduce linkage among input SNPs,
+especially for downstream input to programs like structure, which require unlinked SNPs.
 }
 \examples{
-distance_thin(vcfR = SNPfiltR:::vcfR.example, min.distance = 1000)
+distance_thin(vcfR = SNPfiltR::vcfR.example, min.distance = 1000)
 }

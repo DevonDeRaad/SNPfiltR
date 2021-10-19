@@ -146,4 +146,3 @@ vcfR
 #write out vcf
 vcfR::write.vcf(vcfR, file = "~/Downloads/scrub.jay.example.filtered.vcf.gz")
 ```
-

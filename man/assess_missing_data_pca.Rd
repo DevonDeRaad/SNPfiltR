@@ -25,16 +25,17 @@ clustering on the output? (default = TRUE, max clusters = # of levels in popmap 
 a series of plots showing the clustering of all samples in two-dimensional space
 }
 \description{
-This function can be run in two ways: 1) Without 'thresholds' specified. This will run t-SNE
+This function can be run in two ways: 1) Without 'thresholds' specified. This will run a PCA
 for the input vcf without filtering, and visualize the clustering of samples in two-dimensional
 space, coloring each sample according to a priori population assignment given in the popmap.
 2) With 'thresholds' specified. This will filter your input vcf file to the specified
-missing data thresholds, and run a t-SNE clustering analysis for each filtering iteration.
+missing data thresholds, and run a PCA for each filtering iteration.
 For each iteration, a 2D plot will be output showing clustering according to the
 specified popmap. This option is ideal for assessing the effects of missing data
 on clustering patterns.
 }
 \examples{
-assess_clustering_pca(
-vcfR=system.file("extdata","unfiltered.vcf.gz",package="SNPfiltR",mustWork=TRUE))
+assess_missing_data_pca(vcfR = SNPfiltR::vcfR.example,
+popmap = SNPfiltR::popmap,
+thresholds = c(.6,.8))
 }

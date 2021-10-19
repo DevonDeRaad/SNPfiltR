@@ -2,7 +2,7 @@
 % Please edit documentation in R/min_mac.R
 \name{min_mac}
 \alias{min_mac}
-\title{Vizualise how Minor Allele Count (MAC) affects population structure, filter for MAC}
+\title{Vizualise, filter based on Minor Allele Count (MAC)}
 \usage{
 min_mac(vcfR, min.mac = NULL)
 }
@@ -23,10 +23,10 @@ a folded site frequency spectrum (SFS), without performing any filtering on the 
 2) With 'min.mac' specified. This will also print the folded SFS and
 show you where your specified min. MAC count falls. It will then return your vcfR object
 with SNPs falling below your min. MAC threshold removed.
-Note: previous filtering steps may have converted called genotypes to 'NAs' and resulting
-in invariant SNPs (MAC =0) for this reason it's a good idea to run min.mac(vcfR, min.mac=1)
+Note: previous filtering steps (especially removing samples) may have resulted
+in invariant SNPs (MAC =0). For this reason it's a good idea to run min_mac(vcfR, min.mac=1)
 before using a SNP dataset in downstream analyses.
 }
 \examples{
-min_mac(vcfR=system.file("extdata","unfiltered.vcf.gz",package="SNPfiltR",mustWork=TRUE))
+min_mac(vcfR=SNPfiltR::vcfR.example)
 }

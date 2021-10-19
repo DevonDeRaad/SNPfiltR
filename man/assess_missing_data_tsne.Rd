@@ -21,7 +21,7 @@ assess_missing_data_tsne(
 
 \item{thresholds}{a vector specifying the missing data filtering thresholds to explore}
 
-\item{perplexity}{numerical value specifying the perplexity paramter during t-SNE (default: 10)}
+\item{perplexity}{numerical value specifying the perplexity paramter during t-SNE (default: 5)}
 
 \item{iterations}{a numerical value specifying the number of iterations for t-SNE
 (default: 1000)}
@@ -45,7 +45,7 @@ specified popmap. This option is ideal for assessing the effects of missing data
 on clustering patterns.
 }
 \examples{
-assess_clustering_tsne(
-vcfR=system.file("extdata","unfiltered.vcf.gz",package="SNPfiltR",mustWork=TRUE),
-thresholds=c(60,80,100))
+assess_missing_data_tsne(vcfR = SNPfiltR::vcfR.example,
+popmap = SNPfiltR::popmap,
+thresholds = .8)
 }

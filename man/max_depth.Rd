@@ -2,7 +2,7 @@
 % Please edit documentation in R/max_depth.R
 \name{max_depth}
 \alias{max_depth}
-\title{Vizualise the distribution of mean depth across all called SNPs, and filter out SNPs with excess depth}
+\title{Vizualise and filter based on mean depth across all called SNPs}
 \usage{
 max_depth(vcfR, maxdepth = NULL)
 }
@@ -26,6 +26,6 @@ otherwise it would disproportionately remove genotypes from our deepest sequence
 (because sequencing depth is so variable between samples).
 }
 \examples{
-max_depth(vcfR = SNPfiltR:::vcfR.example)
-max_depth(vcfR = SNPfiltR:::vcfR.example, maxdepth = 100)
+max_depth(vcfR = SNPfiltR::vcfR.example)
+max_depth(vcfR = SNPfiltR::vcfR.example, maxdepth = 100)
 }

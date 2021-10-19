@@ -30,6 +30,6 @@ specified. This option will show you the dotplots with the cutoff you set,
 and then remove SNPs above the missing data cutoff.
 }
 \examples{
-missing_by_snp(vcfR = SNPfiltR:::vcfR.example)
-missing_by_snp(vcfR = SNPfiltR:::vcfR.example, cutoff = .6)
+missing_by_snp(vcfR = SNPfiltR::vcfR.example)
+missing_by_snp(vcfR = SNPfiltR::vcfR.example, cutoff = .6)
 }
