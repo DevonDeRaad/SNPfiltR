@@ -8,3 +8,6 @@
 ^vignettes/scrub-jay-example-vignette.Rmd$
 ^README\.Rmd$
 ^LICENSE\.md$
+^README_files$
+^pkgdown$
+^man/figures/unnamed-chunk-*$
