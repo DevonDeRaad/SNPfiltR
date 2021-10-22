@@ -9,7 +9,7 @@ library(rhub)
 devtools::build()
 
 #now test package build on the same operating systems that CRAN uses, by pointing this function to the built tarball for the package
-cran_prep <- check_for_cran(path = "/Users/devder/Desktop/SNPfiltR_0.0.0.9000.tar.gz")
+cran_prep <- check_for_cran(path = "/Users/devder/Desktop/SNPfiltR_0.1.0.tar.gz")
 
 #now run cran_summary to ensure that the package is ready for CRAN submission
 cran_prep$cran_summary()

@@ -5,9 +5,10 @@
 ^docs$
 ^Meta$
 ^README.Rmd$
-^vignettes/scrub-jay-example-vignette.Rmd$
+^vignettes/scrub-jay-RADseq-vignette.Rmd$
 ^README\.Rmd$
 ^LICENSE\.md$
 ^README_files$
 ^pkgdown$
 ^man/figures/.*.png$
+^vignettes/scrub-jay-UCE-vignette.Rmd$

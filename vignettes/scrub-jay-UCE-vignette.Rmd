@@ -1,0 +1,284 @@
+---
+title: "scrub-jay-UCE-vignette"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{bird-UCE-vignette}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+This is an example of filtering SNPs derived from sequencing UCE's ([ultra-conserved elements](https://www.ultraconserved.org/)) for 28 bird toe-pad samples. This filtering example starts with the unfiltered vcf file that I downloaded from the publicly available repository associated with the paper [Sequence capture of ultraconserved elements from bird museum specimens](https://onlinelibrary.wiley.com/doi/full/10.1111/1755-0998.12466). This small next-generation dataset can be easily handled in Rstudio on a personal laptop, and is ideal for showing off the interactive functionality of SNPfiltR. Because these samples come from degraded DNA (avian toepads), and contain varying levels of contamination (according to the paper) they are also ideal for showing the necessity of stringent filtering protocols both by sample and by SNP.
+
+# Optional Step 0: 
+
+Do quality control per sample before performing SNP calling. I have written an [RMarkdown script](https://github.com/DevonDeRaad/RADstackshelpR/blob/master/inst/extdata/fastqcr.Rmd) that uses the R package [fastqcr](https://github.com/kassambara/fastqcr) to generate a report visualizing the quality and quantity of sequencing for each sample, and recommending a subset of samples to be immediately dropped before parameter optimization (specifically useful for RADseq data). The only modification necessary for this script is the path to the folder containing the input .fastq.gz files and the path to your desired output folder. An example report generated using this script can be seen [here](https://devonderaad.github.io/RADstackshelpR/articles/quality.control.vignette.html). Because the fastq.gz files for your experiment may be large and handled remotely, an example bash script for executing this RMarkdown file as a job on a high performance computing cluster is available [here](https://github.com/DevonDeRaad/RADstackshelpR/blob/master/inst/extdata/RMarkdown.qc.submit.script.sh).
+
+#### Because I downloaded this publicly available vcf, I was unable to perform quality control before assembly. This is no problem, because we can effectively perform sample quality control here in R using SNPfiltR. I started by reading in the vcf file using the vcfR package:
+
+# Step 1:
+### Read in vcf file using [vcfR](https://knausb.github.io/vcfR_documentation/)
+
+```{r}
+library(SNPfiltR)
+library(vcfR)
+```
+
+```{r, results='hide'}
+#read in vcf as vcfR
+vcfR <- read.vcfR("~/Downloads/doi_10.5061_dryad.qh8sh__v1/wesj-toepads-rawSNPS-Q30.vcf")
+```
+
+```{r}
+#check out metadata for the vcf file
+vcfR
+
+#generate popmap file. Two column popmap with the same format as stacks, and the columns must be named 'id' and 'pop'
+popmap<-data.frame(id=colnames(vcfR@gt)[2:length(colnames(vcfR@gt))],pop=substr(colnames(vcfR@gt)[2:length(colnames(vcfR@gt))], 3,11))
+popmap$pop<-c("ca","wood","ca","ca","ca","wood","wood","ca","wood","wood","sumi","ca","sumi",
+              "wood","wood","sumi","sumi","wood","ca","ca","wood","ca","sumi","ca","ca",
+              "ca","ca","hybrid")
+```
+
+# Step 2:
+### Implement quality filters that don't involve missing data. This is because removing low data samples will alter percentage/quantile based missing data cutoffs, so we wait to implement those until after deciding on our final set of samples for downstream analysis
+
+### Note:
+Jon Puritz has an excellent filtering tutorial that is focused specifically on [filtering RADseq data](https://www.ddocent.com/filtering/) Multiple functions in SNPfiltR were generated in order to follow the guidelines and suggestions laid out in this tutorial. We can follow these guidelines for hard filtering (he suggests minimum depth=3, gq =30), and can implement suggested filters like allele balance and max depth, here in R using SNPfiltR.
+
+#### start by visualizing the distributions of depth of sequencing and genotype quality among called genotypes, then set appropriate cutoffs for both values for this dataset.
+```{r, fig.height=4, fig.width=6, dpi=150}
+#visualize distributions
+hard_filter(vcfR=vcfR)
+
+#hard filter to minimum depth of 5, and minimum genotype quality of 30
+vcfR<-hard_filter(vcfR=vcfR, depth = 3, gq = 20)
+
+#remove loci with > 2 alleles
+vcfR<-filter_biallelic(vcfR)
+```
+
+#### Then use this function to filter for allele balance
+
+From the [Ddocent SNP filtering tutorial](https://www.ddocent.com/filtering/) "Allele balance: a number between 0 and 1 representing the ratio of reads showing the reference allele to all reads, considering only reads from individuals called as heterozygous, we expect that the allele balance in our data (for real loci) should be close to 0.5"
+
+#### the SNPfiltR allele balance function will convert heterozygous genotypes to missing if they fall outside of the .25-.75 range.
+```{r, fig.height=4, fig.width=6, dpi=150}
+#execute allele balance filter
+vcfR<-filter_allele_balance(vcfR)
+```
+
+Now we can execute a max depth filter (super high depth loci are likely multiple loci stuck together into a single paralogous locus).
+
+### Note:
+This filter is applied 'per SNP' rather than 'per genotype' otherwise we would simply be removing most of the genotypes from our deepest sequenced samples (because sequencing depth is so variable between samples). By filtering per SNP, we remove the SNPs with outlier depth values, which are most likely to be spuriously mapped/built paralagous loci.
+```{r, fig.height=4, fig.width=6, dpi=150}
+#visualize and pick appropriate max depth cutoff
+max_depth(vcfR)
+#filter vcf by the max depth cutoff you chose
+vcfR<-max_depth(vcfR, maxdepth = 150)
+```
+
+### Note:
+It may be a good idea to additionally filter out SNPs that are significantly out of HWE if you have a really good idea of what the population structure in your sample looks like and good sample sizes in each pop. For this dataset, which is highly structured (many isolated island pops) with species boundaries that are in flux, I am not going to use a HWE filter, because I don't feel comfortable confidently identifying populations in which we can expect HWE. Many other programs (such as VCFtools) can filter according to HWE if desired.
+
+```{r}
+#remove invariant SNPs generated during the genotype filtering steps
+vcfR<-min_mac(vcfR, min.mac = 1)
+#check vcfR to see how many SNPs we have left
+vcfR
+```
+# Step 3:
+### Set arbitrary cutoff for missing data allowed per sample.
+
+Determining which samples and SNPs to retain is always project specific, and is contingent on sampling, biology of the focal taxa, sequencing idiosyncrasies, etc. SNPfiltR contains functions designed to simply and easily generate exploratory visualizations that will allow you to make informed decisions about which samples and SNPs are of sufficient quality to retain for downstream analyses, but there is never a single correct option for these cutoffs. In my experience, the best thing to do is to look at your data, look at what effects some reasonable cutoffs would have on your data, and pick one that works for you. Then as you continue to analyze your data, make sure that your arbitrary filtering decisions are not driving the patterns you see, and iteratively update your filtering approach if you are concerned about the effects previous filtering choices are having on downstream results.
+
+### We will start by determining which samples contain too few sequences to be used in downstream analyses, by visualizing missing data per sample
+
+```{r, fig.height=4, fig.width=6, dpi=150, results='hide'}
+#run function to visualize samples
+miss<-missing_by_sample(vcfR=vcfR, popmap = popmap)
+```
+
+#### we can see that there are about 7 samples with really high levels of missing data. One approach would be to simply drop these samples, and continue on with only the high quality samples. Because they retained all samples (except one) in the paper, we will continue on and see if we can salvage all samples via stringent filtering.
+
+```{r}
+#assess whether missing data is driving clustering patterns among the retained samples
+clust<-assess_missing_data_pca(vcfR=vcfR, popmap = popmap, thresholds = c(.75,.8,.85), clustering = FALSE)
+
+#proportion missing data seems to be driving PC2
+#but the effect seems to be somewhat mitigated above 80% completeness threshold per SNP
+#except for that single terrible sample (144749) which was actually dropped in the paper due to contamination concerns. We will drop it and see if that makes the situation better
+
+#drop potentially contaminated sample with low data
+vcfR <- vcfR[,colnames(vcfR@gt) != "wesj-144749"]
+#subset popmap to only include retained individuals
+popmap<-popmap[popmap$id %in% colnames(vcfR@gt),]
+
+#remove invariant sites, which arise from dropping samples
+vcfR<-min_mac(vcfR, min.mac = 1)
+
+#re-assess whether missing data is driving clustering patterns after dropping terrible sample
+clust<-assess_missing_data_pca(vcfR=vcfR, popmap = popmap, thresholds = c(.75,.8,.85), clustering = FALSE)
+
+#clustering still not great, but at least doesn't seem to be as driven by missing data patterns now
+```
+
+# Step 4:
+### Set arbitrary cutoff for missing data allowed per SNP.
+
+#### We can visualize the effect that typical missing data cutoffs will have on both the number of SNPs retained and the total missing data in our entire dataset.We want to choose a cutoff that minimizes the overall missing data in the dataset, while maximizing the total number of loci retained.
+
+### Note: 
+This filter interacts with the above filter, where we dropped low data samples. A good rule of thumb is that individual samples shouldn't be above 50% missing data after applying a per-SNP missing data cutoff. So if we are retaining specific low data samples out of necessity or project design, we may have to set a more stringent per-SNP missing data cutoff, at the expense of the total number of SNPs retained for downstream analyses. We can again use the assess_missing_data_pca() function to determine whether all retained samples contain enough data at our chosen cutoff in order to be assigned accurately to their species group.
+```{r, fig.height=4, fig.width=6, dpi=150}
+#visualize missing data by SNP and the effect of various cutoffs on the missingness of each sample
+missing_by_snp(vcfR)
+
+#try using t-SNE, a machine learning algorithm, for dimensionality reduction and visualization of sample clustering in two-dimensional space
+#verify that missing data is not driving clustering patterns among the retained samples at some reasonable thresholds
+miss<-assess_missing_data_tsne(vcfR=vcfR, popmap = popmap, thresholds = c(.75,.85), clustering = FALSE, iterations = 5000, perplexity = 3)
+```
+
+#### missing data is not driving the patterns of clustering here, but there are really strange and messy patterns
+#the paper talks about contamination between samples on the sequencing lane, and it seems that although the species generally cluster, there are contamination issues preventing clean inference
+
+#### according to the paper, there are legitimately two groups in woodhouseii (interior US and northern Mexico), but californica should all cluster together.
+
+```{r}
+#choose a value that retains an acceptable amount of missing data in each sample, and maximizes SNPs retained while minimizing overall missing data, and filter vcf
+vcfR<-missing_by_snp(vcfR, cutoff = .85)
+
+#check how many SNPs and samples are left
+vcfR
+```
+
+# Step 5:
+### investigate the effect of a minor allele count (MAC) cutoff on downstream inferences. 
+
+#### MAC/MAF cutoffs can be helpful in removing spurious and uninformative loci from the dataset, but also have the potential to bias downstream inferences. Linck and Battey (2019) have an excellent paper on just this topic. From the paper-
+
+"We recommend researchers using model‐based programs to describe population structure observe the following best practices:
+(a) duplicate analyses with nonparametric methods suchas PCA and DAPC with cross validation
+(b) exclude singletons
+(c) compare alignments with multiple assembly parameters
+When seeking to exclude only singletons in alignments with missing data (a ubiquitous problem for reduced‐representation library preparation methods), it is preferable to filter by the count (rather than frequency) of the minor allele, because variation in the amount of missing data across an alignment will cause a static frequency cutoff to remove different SFS classes at different sites""
+
+#### Our package contains a convenient wrapper functions that can filter based on minor allele count (MAC) and streamline investigation of the effects of various filtering parameters on sample clustering patterns.
+```{r, fig.height=4, fig.width=6, dpi=150}
+#investigate clustering patterns with and without a minor allele cutoff
+#use min.mac() to investigate the effect of multiple cutoffs
+vcfR.mac<-min_mac(vcfR = vcfR, min.mac = 2)
+
+#assess clustering without MAC cutoff
+miss<-assess_missing_data_tsne(vcfR, popmap, clustering = FALSE, iterations = 5000, perplexity = 3)
+
+#assess clustering with MAC cutoff
+miss<-assess_missing_data_tsne(vcfR.mac, popmap, clustering = FALSE, iterations = 5000, perplexity = 3)
+
+#singletons don't seem to be biasing the datset, so I will keep them in for now
+```
+
+#### try thinning the dataset to one SNP per locus, a common approach for UCE's
+
+```{r}
+#linkage filter vcf to thin SNPs to one per 10kb
+vcfR.thin<-distance_thin(vcfR, min.distance = 10000)
+
+#assess clustering on the thinned dataset
+miss<-assess_missing_data_tsne(vcfR.thin, popmap, clustering = FALSE, iterations = 5000, perplexity = 3)
+
+#Wow, thinning to one SNP per locus totally removed the contamination issues we were seeing, and resulted in clean clustering patterns using t-SNE
+```
+
+#### See if this thinned datset results in clean PCA clustering
+```{r}
+#try using PCA clustering
+miss<-assess_missing_data_pca(vcfR.thin, popmap, clustering=FALSE)
+```
+
+#### We can clearly see here that a single sample with too much missing data ruins PC1. Interesting to note that the same amount of missing data that is tolerable for tsne analysis results in a completely wonky PCA. Let's check out what removing the single worst missing data outlier does to fix this problem.
+
+```{r}
+#remove missing data outlier
+missing_by_sample(vcfR.thin)
+vcfR.thin<-missing_by_sample(vcfR.thin, cutoff = .6)
+#subset popmap
+popmap<-popmap[popmap$id %in% colnames(vcfR.thin@gt),]
+#remove invariant sites
+vcfR.thin<-min_mac(vcfR.thin, min.mac = 1)
+
+#recluster
+miss<-assess_missing_data_pca(vcfR.thin, popmap, clustering=FALSE)
+
+#missing data still driving PC2
+```
+
+#### missing data is still driving patterns of clustering in a PCA, let's go back to visualizing missing data by sample
+
+```{r}
+miss<-missing_by_sample(vcfR.thin)
+```
+
+#### We can see that there are 4-5 samples with a lot of missing data still even after all of our stringent filtering cutoffs, to the point that it is driving clustering patterns in a PCA. This highlights the relative nature of SNP filtering protocols. If your goal is to perform t-SNE clustering, you may be able to retain all of the samples. Meanwhile, if you want to use PCA for clustering, you would want to drop the seven samples with low-data identified at the beginning of our filtering exploration (Step 3).
+
+#### Remove the five remaining low data samples
+```{r}
+#set cutoff
+vcfR.thin.drop<-missing_by_sample(vcfR.thin, cutoff = .25)
+#subset popmap
+popmap<-popmap[popmap$id %in% colnames(vcfR.thin.drop@gt),]
+#remove invariant sites
+vcfR.thin.drop<-min_mac(vcfR.thin.drop, min.mac = 1)
+
+#recluster
+miss<-assess_missing_data_pca(vcfR.thin.drop, popmap, clustering=FALSE)
+```
+
+#### PCA clustering now looks much better
+
+#### let's compare overall depth and genotype quality from the two datasets (with and without dropping 5+ samples) using some excellent functions from vcfR
+
+```{r, fig.height=4, fig.width=6, dpi=150}
+#plot depth per snp and per sample for the filtered, thinned dataset
+dp <- extract.gt(vcfR.thin, element = "DP", as.numeric=TRUE)
+heatmap.bp(dp, rlabels = FALSE)
+
+#plot depth per snp and per sample for the filtered, thinned dataset with samples dropped
+dp <- extract.gt(vcfR.thin.drop, element = "DP", as.numeric=TRUE)
+heatmap.bp(dp, rlabels = FALSE)
+```
+
+```{r, fig.height=4, fig.width=6, dpi=150}
+#plot depth per snp and per sample for the filtered, thinned dataset
+dp <- extract.gt(vcfR.thin, element = "GQ", as.numeric=TRUE)
+heatmap.bp(dp, rlabels = FALSE)
+
+#plot depth per snp and per sample for the filtered, thinned dataset with samples dropped
+dp <- extract.gt(vcfR.thin.drop, element = "GQ", as.numeric=TRUE)
+heatmap.bp(dp, rlabels = FALSE)
+```
+
+#### We can see that these five problematic samples have low depth of sequencing, low quality on called genotypes, and high amounts of missing data. Retaining these samples may be possible depending on which analyses you wish to perform. The paper [Sequence capture of ultraconserved elements from bird museum specimens](https://onlinelibrary.wiley.com/doi/full/10.1111/1755-0998.12466) showed that some analyses such as creating a SNAPP species tree worked quite well despite these poor quality samples, while other analyses such as STRUCTURE were sensitive to the high missing data and potential contamination in these low quality samples. Regardless of your goals, SNPfiltR allows you to quickly document your preliminary analyses and filtering decisions as you investigate your SNP dataset.
+
+# Step 6:
+### Write out vcf files for downstream analyses.
+
+### Note:
+#### The function vcfR::write.vcf() automatically writes a gzipped vcf file, so be sure to add the suffix .gz to the name of your output file.
+
+#### Write out the filtered, thinned vcf, with and without extra samples dropped, for use in downstream analyses
+```{r, fig.height=4, fig.width=6, dpi=150}
+#write out vcf with all SNPs
+#vcfR::write.vcf(vcfR.thin, "~/Downloads/aphelocoma.uce.filtered.thinned.vcf.gz")
+
+#write out thinned vcf
+#vcfR::write.vcf(vcfR.thin.drop, "~/Downloads/aphelocoma.uce.filtered.thinned.drop.vcf.gz")
+```
+
