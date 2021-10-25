@@ -3,6 +3,7 @@
 ^data-raw$
 ^doc$
 ^docs$
+^paper$
 ^Meta$
 ^README.Rmd$
 ^vignettes/scrub-jay-RADseq-vignette.Rmd$
@@ -12,3 +13,4 @@
 ^pkgdown$
 ^man/figures/.*.png$
 ^vignettes/scrub-jay-UCE-vignette.Rmd$
+^cran-comments.md$
