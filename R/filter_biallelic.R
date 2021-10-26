@@ -40,7 +40,7 @@ filter_biallelic <- function(vcfR){
     y<-q/p
 
     #print for user
-    print(paste0(q, " SNPs, ", round(y, 3), "% of all input SNPs, contained more than 2 alleles, and were removed from the VCF"))
+    message(q, " SNPs, ", round(y, 3), "% of all input SNPs, contained more than 2 alleles, and were removed from the VCF")
 
     #filter the vcfR based on the "ALT" column
     vcfR<-vcfR[nchar(vcfR@fix[,"ALT"]) == 1,]

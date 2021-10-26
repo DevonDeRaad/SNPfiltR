@@ -65,9 +65,6 @@ vcfR<-filter_allele_balance(vcfR)
 #max_depth(vcfR)
 #not running here to save space on visualizations
 
-#reset plotting window
-par(mfrow = c(1,1))
-
 #filter vcf by the max depth cutoff you chose
 vcfR<-max_depth(vcfR, maxdepth = 100)
 

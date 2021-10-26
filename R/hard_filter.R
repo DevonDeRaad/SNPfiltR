@@ -40,7 +40,7 @@ hard_filter <- function(vcfR,
   #calculate the SNPs that fall below the depth filter
   i<-round((sum(dp.matrix < depth, na.rm = TRUE)/sum(!is.na(dp.matrix)))*100, 2)
   #report filter
-  print(paste0(i,"% of genotypes fall below a read depth of ",depth," and were converted to NA"))
+  message(i,"% of genotypes fall below a read depth of ",depth," and were converted to NA")
 
   #convert to NAs
   dp.matrix[dp.matrix < depth] <- NA
@@ -51,7 +51,7 @@ hard_filter <- function(vcfR,
   #if no depth is specified
   else{
     #print user message
-    print("no depth cutoff provided, exploratory visualization will be generated.")
+    message("no depth cutoff provided, exploratory visualization will be generated.")
 
     #extract depth from the vcf
     dp.matrix<- vcfR::extract.gt(vcfR, element='DP', as.numeric=TRUE)
@@ -84,7 +84,7 @@ hard_filter <- function(vcfR,
   j<-round((sum(gq.matrix < gq, na.rm = TRUE)/sum(!is.na(gq.matrix)))*100, 2)
 
   #report filter
-  print(paste0(j,"% of genotypes fall below a genotype quality of ",gq," and were converted to NA"))
+  message(j,"% of genotypes fall below a genotype quality of ",gq," and were converted to NA")
 
   #convert to NAs
   gq.matrix[gq.matrix < gq] <- NA
@@ -94,14 +94,12 @@ hard_filter <- function(vcfR,
   }
 
   else{
-    print("no genotype quality cutoff provided, exploratory visualization will be generated.")
+    message("no genotype quality cutoff provided, exploratory visualization will be generated.")
 
     #extract gq from the vcf
     gq.matrix<- vcfR::extract.gt(vcfR, element='GQ', as.numeric=TRUE)
 
-    #set plotting parameters
-    graphics::par(mfrow=c(2,1))
-    #plot histogram of depth
+    #plot histogram of gq
     graphics::hist(gq.matrix,
          xlab = "genotype quality")
     graphics::abline(v=mean(gq.matrix, na.rm = TRUE),

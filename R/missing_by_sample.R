@@ -54,7 +54,7 @@ missing_by_sample <- function(vcfR,
 
     #if no popmap, remind user
     if (is.null(popmap)){
-      print("No popmap provided")
+      message("No popmap provided")
     }
 
     #else, start by checking the popmap
@@ -125,7 +125,7 @@ missing_by_sample <- function(vcfR,
 
     #IF this loop is going to fail from low data, kick message back to user and exit
     if(is.null(nrow(dp[(rowSums(is.na(dp))/ncol(dp) <= 0),]))){
-      print("0 SNPs achieving a 100% completeness threshold, must remove low-data samples to run this function correctly")
+      message("0 SNPs achieving a 100% completeness threshold, must remove low-data samples to run this function correctly")
       return(df.f)
     }
 
@@ -197,7 +197,7 @@ missing_by_sample <- function(vcfR,
            col="red")
 
     #print
-    print(paste0(length(labels(miss)[miss > cutoff])," samples are above a ",cutoff," missing data cutoff, and were removed from VCF"))
+    message(length(labels(miss)[miss > cutoff])," samples are above a ",cutoff," missing data cutoff, and were removed from VCF")
     #drop those individuals from vcfR
     vcfR@gt <- vcfR@gt[,!(colnames(vcfR@gt) %in% labels(miss)[miss > cutoff])]
 

@@ -31,13 +31,13 @@ popmap$pop<-gsub("_.*", "", popmap$pop)
 popmap$pop<-as.factor(popmap$pop)
 
 #save this popmap as available data for the SNPfiltR package
-usethis::use_data(popmap,vcfR.example, internal = FALSE, overwrite = T)
+#usethis::use_data(popmap,vcfR.example, internal = FALSE, overwrite = T)
 
 #save this vcfR as available data for the SNPfiltR package
-usethis::use_data(vcfR.example, internal = TRUE, overwrite = F)
+#usethis::use_data(vcfR.example, internal = TRUE, overwrite = F)
 
 #clean global environment
-rm(list=ls())
+#rm(list=ls())
 
 #load and test examples
 

@@ -47,7 +47,7 @@ missing_by_snp <- function(vcfR,
     }
 
     #print user message
-    print("cutoff is specified, filtered vcfR object will be returned")
+    message("cutoff is specified, filtered vcfR object will be returned")
 
     #do basic vis to show cutoff
     #extract genotype matrix from the vcfR object
@@ -59,12 +59,12 @@ missing_by_snp <- function(vcfR,
 
     #IF this for loop is going to fail, alert user and skip visualizations
     if(is.null(nrow(dp.matrix[1-miss >= 1,]))){
-      print("0 SNPs passing 100% completeness threshold, visualizations cannot be generated, returning filtered vcf")
+      message("0 SNPs passing 100% completeness threshold, visualizations cannot be generated, returning filtered vcf")
       #calc # of SNPs filtered
       p<-round(sum(miss > 1-cutoff)/length(miss)*100, 2)
 
       #report # of SNPs filtered
-      print(paste0(p,"% of SNPs fell below a completeness cutoff of ", cutoff, " and were removed from the VCF"))
+      message(p,"% of SNPs fell below a completeness cutoff of ", cutoff, " and were removed from the VCF")
 
       #do filtering
       vcfR <- vcfR[miss <= 1-cutoff, ]
@@ -130,7 +130,7 @@ missing_by_snp <- function(vcfR,
     p<-round(sum(miss > 1-cutoff)/length(miss)*100, 2)
 
     #report # of SNPs filtered
-    print(paste0(p,"% of SNPs fell below a completeness cutoff of ", cutoff, " and were removed from the VCF"))
+    message(p,"% of SNPs fell below a completeness cutoff of ", cutoff, " and were removed from the VCF")
 
     #do filtering
     vcfR <- vcfR[miss <= 1-cutoff, ]
@@ -147,7 +147,7 @@ missing_by_snp <- function(vcfR,
   else {
 
     #print user message
-    print("cutoff is not specified, exploratory visualizations will be generated")
+    message("cutoff is not specified, exploratory visualizations will be generated")
 
     ###Part 1
     #Vis to understand the interplay between retaining samples and setting a missing data cutoff
@@ -160,7 +160,7 @@ missing_by_snp <- function(vcfR,
 
     #IF this for loop over filtering cutoffs is going to fail, alert user:
     if(is.null(nrow(dp.matrix[1-miss >= 1,]))){
-      print("0 SNPs passing 100% completeness threshold, low-data samples must be removed before creating visualizations")
+      message("0 SNPs passing 100% completeness threshold, low-data samples must be removed before creating visualizations")
       #calculate missingness by individual
       miss<-colSums(is.na(dp))/nrow(dp)
       samples<-colnames(dp)

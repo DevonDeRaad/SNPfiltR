@@ -29,7 +29,7 @@ min_mac <- function(vcfR,
   if (is.null(min.mac)){
 
     #print message
-    print("no filtering cutoff provided, vcf will be returned unfiltered")
+    message("no filtering cutoff provided, vcf will be returned unfiltered")
 
     #convert vcfR to matrix and make numeric
     gt.matrix<-vcfR::extract.gt(vcfR)
@@ -94,7 +94,7 @@ min_mac <- function(vcfR,
     p<-round((sum(sfs < min.mac)/length(sfs))*100, 2)
 
     #print message to user
-    print(paste0(p, "% of SNPs fell below a minor allele count of ", min.mac, " and were removed from the VCF"))
+    message(p, "% of SNPs fell below a minor allele count of ", min.mac, " and were removed from the VCF")
 
     #filter vcfR
     vcfR <- vcfR[sfs >= min.mac,]

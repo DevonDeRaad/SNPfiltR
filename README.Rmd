@@ -21,7 +21,7 @@ knitr::opts_chunk$set(
 ![License](https://img.shields.io/badge/license-MIT-red.svg)
 <!-- badges: end -->
 
-SNPfiltR is a package to streamline and automate the process of choosing appropriate filtering parameters for next-gen SNP datasets. The package was designed with RADseq (Restriction-site Associated DNA sequencing) data in mind, but can be used on any SNP dataset in need of data exploration and quality filtering. The package shines when used on moderate sized reduced-representation genomic datasets, where SNPfiltR allows the rapid exploration of an array of quality and completeness parameters via an interactive Rstudio window.
+SNPfiltR is a package to streamline and automate the process of choosing appropriate filtering parameters for next-gen SNP datasets. The package was designed with RADseq (Restriction-site Associated DNA sequencing) data in mind, but can be used on any SNP dataset in need of data exploration and quality filtering (e.g., UCEs, sequence capture, GBS). SNPfiltR shines when used on moderate sized reduced-representation genomic datasets, where SNP datasets can be rapidly explored across an array of quality and completeness parameters via an interactive Rstudio window.
 
 ## Installation
 
@@ -40,7 +40,7 @@ Knaus, Brian J., and Niklaus J. Grunwald. 2017. VCFR: a package to manipulate an
 
 ## Full documentation
 
-To see vignettes showing real-world examples of using SNPfiltR to explore and optimize SNP datasets derived from both RADseq and UCE ([ultra-conserved elements](https://www.ultraconserved.org/)) sequencing approaches, please check out the [pkgdown site](https://devonderaad.github.io/SNPfiltR/). Or, for a quick start, simply follow the directions below:
+To see vignettes using SNPfiltR to execute an interactive SNP filtering pipeline for real empirical [UCE data](https://devonderaad.github.io/SNPfiltR/articles/scrub-jay-UCE-vignette.html) and [RADseq data](https://devonderaad.github.io/SNPfiltR/articles/scrub-jay-RADseq-vignette.html), please check out the [pkgdown site](https://devonderaad.github.io/SNPfiltR/). Or, for a quick start, simply follow the example pipeline executed below:
 
 ### Optional Step 0: 
 

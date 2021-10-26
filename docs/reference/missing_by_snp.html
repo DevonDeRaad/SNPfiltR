@@ -179,7 +179,7 @@ and the filtered vcfR object will be returned.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'>missing_by_snp</span><span class='op'>(</span>vcfR <span class='op'>=</span> <span class='fu'>SNPfiltR</span><span class='fu'>::</span><span class='va'><a href='vcfR.example.html'>vcfR.example</a></span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "cutoff is not specified, exploratory visualizations will be generated"</div><div class='output co'>#&gt; <span class='message'>Picking joint bandwidth of 0.0903</span></div><div class='img'><img src='missing_by_snp-1.png' alt='' width='700' height='433' /></div><div class='img'><img src='missing_by_snp-2.png' alt='' width='700' height='433' /></div><div class='output co'>#&gt;    filt missingness snps.retained
+</div><div class='output co'>#&gt; <span class='message'>cutoff is not specified, exploratory visualizations will be generated</span></div><div class='output co'>#&gt; <span class='message'>Picking joint bandwidth of 0.0903</span></div><div class='img'><img src='missing_by_snp-1.png' alt='' width='700' height='433' /></div><div class='img'><img src='missing_by_snp-2.png' alt='' width='700' height='433' /></div><div class='output co'>#&gt;    filt missingness snps.retained
 #&gt; 1  0.30  0.28741007           417
 #&gt; 2  0.50  0.21399417           343
 #&gt; 3  0.60  0.17118644           295
@@ -191,7 +191,7 @@ and the filtered vcfR object will be returned.</p>
 #&gt; 9  0.90  0.06082090           134
 #&gt; 10 0.95  0.04414894            94
 #&gt; 11 1.00  0.00000000            11</div><div class='input'><span class='fu'>missing_by_snp</span><span class='op'>(</span>vcfR <span class='op'>=</span> <span class='fu'>SNPfiltR</span><span class='fu'>::</span><span class='va'><a href='vcfR.example.html'>vcfR.example</a></span>, cutoff <span class='op'>=</span> <span class='fl'>.6</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "cutoff is specified, filtered vcfR object will be returned"</div><div class='img'><img src='missing_by_snp-3.png' alt='' width='700' height='433' /></div><div class='output co'>#&gt; [1] "41% of SNPs fell below a completeness cutoff of 0.6 and were removed from the VCF"</div><div class='output co'>#&gt; ***** Object of Class vcfR *****
+</div><div class='output co'>#&gt; <span class='message'>cutoff is specified, filtered vcfR object will be returned</span></div><div class='output co'>#&gt; <span class='message'>41% of SNPs fell below a completeness cutoff of 0.6 and were removed from the VCF</span></div><div class='img'><img src='missing_by_snp-3.png' alt='' width='700' height='433' /></div><div class='output co'>#&gt; ***** Object of Class vcfR *****
 #&gt; 20 samples
 #&gt; 1 CHROMs
 #&gt; 295 variants

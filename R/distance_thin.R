@@ -149,7 +149,7 @@ z<-nrow(keep.df)
 p<-nrow(vcfR@fix)
 
 #print info to screen
-print(paste0(p," out of ",z," input SNPs were not located within ",j," base-pairs of another SNP and were retained despite filtering"))
+message(p," out of ",z," input SNPs were not located within ",j," base-pairs of another SNP and were retained despite filtering")
 
 #return vcfR
 return(vcfR)

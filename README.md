@@ -14,10 +14,11 @@ SNPfiltR is a package to streamline and automate the process of choosing
 appropriate filtering parameters for next-gen SNP datasets. The package
 was designed with RADseq (Restriction-site Associated DNA sequencing)
 data in mind, but can be used on any SNP dataset in need of data
-exploration and quality filtering. The package shines when used on
-moderate sized reduced-representation genomic datasets, where SNPfiltR
-allows the rapid exploration of an array of quality and completeness
-parameters via an interactive Rstudio window.
+exploration and quality filtering (e.g., UCEs, sequence capture, GBS).
+SNPfiltR shines when used on moderate sized reduced-representation
+genomic datasets, where SNP datasets can be rapidly explored across an
+array of quality and completeness parameters via an interactive Rstudio
+window.
 
 ## Installation
 
@@ -44,12 +45,14 @@ Ecology Resources 17(1):44-53.
 
 ## Full documentation
 
-To see vignettes showing real-world examples of using SNPfiltR to
-explore and optimize SNP datasets derived from both RADseq and UCE
-([ultra-conserved elements](https://www.ultraconserved.org/)) sequencing
-approaches, please check out the [pkgdown
+To see vignettes using SNPfiltR to execute an interactive SNP filtering
+pipeline for real empirical [UCE
+data](https://devonderaad.github.io/SNPfiltR/articles/scrub-jay-UCE-vignette.html)
+and [RADseq
+data](https://devonderaad.github.io/SNPfiltR/articles/scrub-jay-RADseq-vignette.html),
+please check out the [pkgdown
 site](https://devonderaad.github.io/SNPfiltR/). Or, for a quick start,
-simply follow the directions below:
+simply follow the example pipeline executed below:
 
 ### Optional Step 0:
 
@@ -147,12 +150,15 @@ filters like allele balance and max depth, here in R using SNPfiltR.
 ``` r
 #visualize distributions
 hard_filter(vcfR=vcfR)
-#> [1] "no depth cutoff provided, exploratory visualization will be generated."
+#> no depth cutoff provided, exploratory visualization will be generated.
 ```
 
-<img src="man/figures/README-unnamed-chunk-5-1.png" width="100%" /><img src="man/figures/README-unnamed-chunk-5-2.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-5-1.png" width="100%" />
 
-    #> [1] "no genotype quality cutoff provided, exploratory visualization will be generated."
+    #> no genotype quality cutoff provided, exploratory visualization will be generated.
+
+<img src="man/figures/README-unnamed-chunk-5-2.png" width="100%" /><img src="man/figures/README-unnamed-chunk-5-3.png" width="100%" />
+
     #> ***** Object of Class vcfR *****
     #> 20 samples
     #> 71 CHROMs
@@ -163,10 +169,8 @@ hard_filter(vcfR=vcfR)
 
     #hard filter to minimum depth of 5, and minimum genotype quality of 30
     vcfR<-hard_filter(vcfR=vcfR, depth = 5, gq = 30)
-    #> [1] "27.3% of genotypes fall below a read depth of 5 and were converted to NA"
-    #> [1] "3.5% of genotypes fall below a genotype quality of 30 and were converted to NA"
-
-<img src="man/figures/README-unnamed-chunk-5-3.png" width="100%" />
+    #> 27.3% of genotypes fall below a read depth of 5 and were converted to NA
+    #> 3.5% of genotypes fall below a genotype quality of 30 and were converted to NA
 
 #### Then use this function to filter for allele balance
 
@@ -182,7 +186,7 @@ loci) should be close to 0.5”
 ``` r
 #execute allele balance filter
 vcfR<-filter_allele_balance(vcfR)
-#> [1] "7.66% of het genotypes (0.66% of all genotypes) fall outside of .25 - .75 allele balance and were converted to NA"
+#> 7.66% of het genotypes (0.66% of all genotypes) fall outside of .25 - .75 allele balance and were converted to NA
 ```
 
 <img src="man/figures/README-unnamed-chunk-6-1.png" width="100%" />
@@ -202,18 +206,23 @@ loci.
 ``` r
 #visualize and pick appropriate max depth cutoff
 max_depth(vcfR)
-#> [1] "cutoff is not specified, exploratory visualization will be generated."
+#> cutoff is not specified, exploratory visualization will be generated.
 ```
 
 <img src="man/figures/README-unnamed-chunk-7-1.png" width="100%" />
 
-    #> [1] "dashed line indicates a mean depth across all SNPs of 68.3"
-    #filter vcf by the max depth cutoff you chose
-    vcfR<-max_depth(vcfR, maxdepth = 100)
-    #> [1] "maxdepth cutoff is specified, filtered vcfR object will be returned"
-    #> [1] "19.33% of SNPs were above a mean depth of 100 and were removed from the vcf"
+    #> dashed line indicates a mean depth across all SNPs of 68.3
 
 <img src="man/figures/README-unnamed-chunk-7-2.png" width="100%" />
+
+``` r
+#filter vcf by the max depth cutoff you chose
+vcfR<-max_depth(vcfR, maxdepth = 100)
+#> maxdepth cutoff is specified, filtered vcfR object will be returned
+#> 19.33% of SNPs were above a mean depth of 100 and were removed from the vcf
+```
+
+<img src="man/figures/README-unnamed-chunk-7-3.png" width="100%" />
 
 #### Note:
 
@@ -274,29 +283,32 @@ assigned to genetic clusters
 ``` r
 #run function to drop samples above the threshold we want from the vcf
 vcfR<-missing_by_sample(vcfR=vcfR, cutoff = .9)
+#> 1 samples are above a 0.9 missing data cutoff, and were removed from VCF
 ```
 
 <img src="man/figures/README-unnamed-chunk-10-1.png" width="100%" />
 
-    #> [1] "1 samples are above a 0.9 missing data cutoff, and were removed from VCF"
-    #subset popmap to only include retained individuals
-    popmap<-popmap[popmap$id %in% colnames(vcfR@gt),]
+``` r
+#subset popmap to only include retained individuals
+popmap<-popmap[popmap$id %in% colnames(vcfR@gt),]
 
-    #remove invariant sites generated by dropping individuals
-    vcfR<-min_mac(vcfR, min.mac = 1)
+#remove invariant sites generated by dropping individuals
+vcfR<-min_mac(vcfR, min.mac = 1)
+#> 50.23% of SNPs fell below a minor allele count of 1 and were removed from the VCF
+```
 
 <img src="man/figures/README-unnamed-chunk-10-2.png" width="100%" />
 
-    #> [1] "50.23% of SNPs fell below a minor allele count of 1 and were removed from the VCF"
-
-    #verify that missing data is not driving clustering patterns among the retained samples
-    miss<-assess_missing_data_pca(vcfR=vcfR, popmap = popmap, thresholds = .8, clustering = FALSE)
-    #> [1] "cutoff is specified, filtered vcfR object will be returned"
-    #> [1] "69.26% of SNPs fell below a completeness cutoff of 0.8 and were removed from the VCF"
-    #> Loading required namespace: adegenet
-    #> Registered S3 method overwritten by 'spdep':
-    #>   method   from
-    #>   plot.mst ape
+``` r
+#verify that missing data is not driving clustering patterns among the retained samples
+miss<-assess_missing_data_pca(vcfR=vcfR, popmap = popmap, thresholds = .8, clustering = FALSE)
+#> cutoff is specified, filtered vcfR object will be returned
+#> 69.26% of SNPs fell below a completeness cutoff of 0.8 and were removed from the VCF
+#> Loading required namespace: adegenet
+#> Registered S3 method overwritten by 'spdep':
+#>   method   from
+#>   plot.mst ape
+```
 
 <img src="man/figures/README-unnamed-chunk-10-3.png" width="100%" /><img src="man/figures/README-unnamed-chunk-10-4.png" width="100%" /><img src="man/figures/README-unnamed-chunk-10-5.png" width="100%" />
 
@@ -327,7 +339,7 @@ group.
 ``` r
 #visualize missing data by SNP and the effect of various cutoffs on the missingness of each sample
 missing_by_snp(vcfR)
-#> [1] "cutoff is not specified, exploratory visualizations will be generated"
+#> cutoff is not specified, exploratory visualizations will be generated
 #> Picking joint bandwidth of 0.128
 ```
 
@@ -348,49 +360,47 @@ missing_by_snp(vcfR)
 
     #verify that missing data is not driving clustering patterns among the retained samples at some reasonable thresholds
     miss<-assess_missing_data_pca(vcfR=vcfR, popmap = popmap, thresholds = c(.7,.8,.85), clustering = FALSE)
-    #> [1] "cutoff is specified, filtered vcfR object will be returned"
+    #> cutoff is specified, filtered vcfR object will be returned
+    #> 58.43% of SNPs fell below a completeness cutoff of 0.7 and were removed from the VCF
 
-<img src="man/figures/README-unnamed-chunk-11-3.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-11-3.png" width="100%" /><img src="man/figures/README-unnamed-chunk-11-4.png" width="100%" />
 
-    #> [1] "58.43% of SNPs fell below a completeness cutoff of 0.7 and were removed from the VCF"
+    #> cutoff is specified, filtered vcfR object will be returned
 
-<img src="man/figures/README-unnamed-chunk-11-4.png" width="100%" /><img src="man/figures/README-unnamed-chunk-11-5.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-11-5.png" width="100%" />
 
-    #> [1] "cutoff is specified, filtered vcfR object will be returned"
+    #> 69.26% of SNPs fell below a completeness cutoff of 0.8 and were removed from the VCF
 
-<img src="man/figures/README-unnamed-chunk-11-6.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-11-6.png" width="100%" /><img src="man/figures/README-unnamed-chunk-11-7.png" width="100%" />
 
-    #> [1] "69.26% of SNPs fell below a completeness cutoff of 0.8 and were removed from the VCF"
+    #> cutoff is specified, filtered vcfR object will be returned
 
-<img src="man/figures/README-unnamed-chunk-11-7.png" width="100%" /><img src="man/figures/README-unnamed-chunk-11-8.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-11-8.png" width="100%" />
 
-    #> [1] "cutoff is specified, filtered vcfR object will be returned"
+    #> 75.2% of SNPs fell below a completeness cutoff of 0.85 and were removed from the VCF
 
-<img src="man/figures/README-unnamed-chunk-11-9.png" width="100%" />
-
-    #> [1] "75.2% of SNPs fell below a completeness cutoff of 0.85 and were removed from the VCF"
-
-<img src="man/figures/README-unnamed-chunk-11-10.png" width="100%" /><img src="man/figures/README-unnamed-chunk-11-11.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-11-9.png" width="100%" /><img src="man/figures/README-unnamed-chunk-11-10.png" width="100%" /><img src="man/figures/README-unnamed-chunk-11-11.png" width="100%" />
 
 ``` r
 #choose a value that retains an acceptable amount of missing data in each sample, and maximizes SNPs retained while minimizing overall missing data, and filter vcf
 vcfR<-missing_by_snp(vcfR, cutoff = .85)
-#> [1] "cutoff is specified, filtered vcfR object will be returned"
+#> cutoff is specified, filtered vcfR object will be returned
+#> 75.2% of SNPs fell below a completeness cutoff of 0.85 and were removed from the VCF
 ```
 
 <img src="man/figures/README-unnamed-chunk-11-12.png" width="100%" />
 
-    #> [1] "75.2% of SNPs fell below a completeness cutoff of 0.85 and were removed from the VCF"
-
-    #check how many SNPs and samples are left
-    vcfR
-    #> ***** Object of Class vcfR *****
-    #> 19 samples
-    #> 34 CHROMs
-    #> 7,555 variants
-    #> Object size: 14.3 Mb
-    #> 4.617 percent missing data
-    #> *****        *****         *****
+``` r
+#check how many SNPs and samples are left
+vcfR
+#> ***** Object of Class vcfR *****
+#> 19 samples
+#> 34 CHROMs
+#> 7,555 variants
+#> Object size: 14.3 Mb
+#> 4.617 percent missing data
+#> *****        *****         *****
+```
 
 ### Step 5:
 
@@ -416,14 +426,15 @@ sites”"
 #investigate clustering patterns with and without a minor allele cutoff
 #use min.mac() to investigate the effect of multiple cutoffs
 vcfR.mac<-min_mac(vcfR = vcfR, min.mac = 2)
+#> 39.21% of SNPs fell below a minor allele count of 2 and were removed from the VCF
 ```
 
 <img src="man/figures/README-unnamed-chunk-12-1.png" width="100%" />
 
-    #> [1] "39.21% of SNPs fell below a minor allele count of 2 and were removed from the VCF"
-
-    #assess clustering without MAC cutoff
-    miss<-assess_missing_data_tsne(vcfR, popmap, clustering = FALSE)
+``` r
+#assess clustering without MAC cutoff
+miss<-assess_missing_data_tsne(vcfR, popmap, clustering = FALSE)
+```
 
 <img src="man/figures/README-unnamed-chunk-12-2.png" width="100%" /><img src="man/figures/README-unnamed-chunk-12-3.png" width="100%" />
 
@@ -478,7 +489,7 @@ vcfR::write.vcf(vcfR, "~/Downloads/aphelocoma.filtered.vcf.gz")
 #linkage filter vcf to thin SNPs to one per 500bp
 vcfR.thin<-distance_thin(vcfR, min.distance = 500)
 #>   |                                                                              |                                                                      |   0%  |                                                                              |==                                                                    |   3%  |                                                                              |====                                                                  |   6%  |                                                                              |======                                                                |   9%  |                                                                              |========                                                              |  12%  |                                                                              |==========                                                            |  15%  |                                                                              |============                                                          |  18%  |                                                                              |==============                                                        |  21%  |                                                                              |================                                                      |  24%  |                                                                              |===================                                                   |  26%  |                                                                              |=====================                                                 |  29%  |                                                                              |=======================                                               |  32%  |                                                                              |=========================                                             |  35%  |                                                                              |===========================                                           |  38%  |                                                                              |=============================                                         |  41%  |                                                                              |===============================                                       |  44%  |                                                                              |=================================                                     |  47%  |                                                                              |===================================                                   |  50%  |                                                                              |=====================================                                 |  53%  |                                                                              |=======================================                               |  56%  |                                                                              |=========================================                             |  59%  |                                                                              |===========================================                           |  62%  |                                                                              |=============================================                         |  65%  |                                                                              |===============================================                       |  68%  |                                                                              |=================================================                     |  71%  |                                                                              |===================================================                   |  74%  |                                                                              |======================================================                |  76%  |                                                                              |========================================================              |  79%  |                                                                              |==========================================================            |  82%  |                                                                              |============================================================          |  85%  |                                                                              |==============================================================        |  88%  |                                                                              |================================================================      |  91%  |                                                                              |==================================================================    |  94%  |                                                                              |====================================================================  |  97%  |                                                                              |======================================================================| 100%
-#> [1] "2550 out of 7555 input SNPs were not located within 500 base-pairs of another SNP and were retained despite filtering"
+#> 2550 out of 7555 input SNPs were not located within 500 base-pairs of another SNP and were retained despite filtering
 
 #write out thinned vcf
 #vcfR::write.vcf(vcfR.thin, "~/Downloads/aphelocoma.filtered.thinned.vcf.gz")

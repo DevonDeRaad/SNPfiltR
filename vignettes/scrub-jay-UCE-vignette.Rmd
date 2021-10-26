@@ -16,13 +16,14 @@ knitr::opts_chunk$set(
 
 This is an example of filtering SNPs derived from sequencing UCE's ([ultra-conserved elements](https://www.ultraconserved.org/)) for 28 bird toe-pad samples. This filtering example starts with the unfiltered vcf file that I downloaded from the publicly available repository associated with the paper [Sequence capture of ultraconserved elements from bird museum specimens](https://onlinelibrary.wiley.com/doi/full/10.1111/1755-0998.12466). This small next-generation dataset can be easily handled in Rstudio on a personal laptop, and is ideal for showing off the interactive functionality of SNPfiltR. Because these samples come from degraded DNA (avian toepads), and contain varying levels of contamination (according to the paper) they are also ideal for showing the necessity of stringent filtering protocols both by sample and by SNP.
 
-# Optional Step 0: 
+# Optional Step 0: per sample quality control
 
 Do quality control per sample before performing SNP calling. I have written an [RMarkdown script](https://github.com/DevonDeRaad/RADstackshelpR/blob/master/inst/extdata/fastqcr.Rmd) that uses the R package [fastqcr](https://github.com/kassambara/fastqcr) to generate a report visualizing the quality and quantity of sequencing for each sample, and recommending a subset of samples to be immediately dropped before parameter optimization (specifically useful for RADseq data). The only modification necessary for this script is the path to the folder containing the input .fastq.gz files and the path to your desired output folder. An example report generated using this script can be seen [here](https://devonderaad.github.io/RADstackshelpR/articles/quality.control.vignette.html). Because the fastq.gz files for your experiment may be large and handled remotely, an example bash script for executing this RMarkdown file as a job on a high performance computing cluster is available [here](https://github.com/DevonDeRaad/RADstackshelpR/blob/master/inst/extdata/RMarkdown.qc.submit.script.sh).
 
 #### Because I downloaded this publicly available vcf, I was unable to perform quality control before assembly. This is no problem, because we can effectively perform sample quality control here in R using SNPfiltR. I started by reading in the vcf file using the vcfR package:
 
-# Step 1:
+# Step 1: read in vcf file as 'vcfR' object
+
 ### Read in vcf file using [vcfR](https://knausb.github.io/vcfR_documentation/)
 
 ```{r}
@@ -46,7 +47,8 @@ popmap$pop<-c("ca","wood","ca","ca","ca","wood","wood","ca","wood","wood","sumi"
               "ca","ca","hybrid")
 ```
 
-# Step 2:
+# Step 2: quality filtering
+
 ### Implement quality filters that don't involve missing data. This is because removing low data samples will alter percentage/quantile based missing data cutoffs, so we wait to implement those until after deciding on our final set of samples for downstream analysis
 
 ### Note:
@@ -94,7 +96,8 @@ vcfR<-min_mac(vcfR, min.mac = 1)
 #check vcfR to see how many SNPs we have left
 vcfR
 ```
-# Step 3:
+# Step 3: set missing data per sample cutoff
+
 ### Set arbitrary cutoff for missing data allowed per sample.
 
 Determining which samples and SNPs to retain is always project specific, and is contingent on sampling, biology of the focal taxa, sequencing idiosyncrasies, etc. SNPfiltR contains functions designed to simply and easily generate exploratory visualizations that will allow you to make informed decisions about which samples and SNPs are of sufficient quality to retain for downstream analyses, but there is never a single correct option for these cutoffs. In my experience, the best thing to do is to look at your data, look at what effects some reasonable cutoffs would have on your data, and pick one that works for you. Then as you continue to analyze your data, make sure that your arbitrary filtering decisions are not driving the patterns you see, and iteratively update your filtering approach if you are concerned about the effects previous filtering choices are having on downstream results.
@@ -130,7 +133,8 @@ clust<-assess_missing_data_pca(vcfR=vcfR, popmap = popmap, thresholds = c(.75,.8
 #clustering still not great, but at least doesn't seem to be as driven by missing data patterns now
 ```
 
-# Step 4:
+# Step 4: set missing data per SNP cutoff
+
 ### Set arbitrary cutoff for missing data allowed per SNP.
 
 #### We can visualize the effect that typical missing data cutoffs will have on both the number of SNPs retained and the total missing data in our entire dataset.We want to choose a cutoff that minimizes the overall missing data in the dataset, while maximizing the total number of loci retained.
@@ -159,8 +163,9 @@ vcfR<-missing_by_snp(vcfR, cutoff = .85)
 vcfR
 ```
 
-# Step 5:
-### investigate the effect of a minor allele count (MAC) cutoff on downstream inferences. 
+# Step 5: minor allele and linkage filtering
+
+### investigate the effect of a minor allele count (MAC) cutoff on downstream inferences. We always want to do this last, because these filters are not quality aware, and using them early in the pipeline will result in dumping good SNPs.
 
 #### MAC/MAF cutoffs can be helpful in removing spurious and uninformative loci from the dataset, but also have the potential to bias downstream inferences. Linck and Battey (2019) have an excellent paper on just this topic. From the paper-
 
@@ -267,8 +272,7 @@ heatmap.bp(dp, rlabels = FALSE)
 
 #### We can see that these five problematic samples have low depth of sequencing, low quality on called genotypes, and high amounts of missing data. Retaining these samples may be possible depending on which analyses you wish to perform. The paper [Sequence capture of ultraconserved elements from bird museum specimens](https://onlinelibrary.wiley.com/doi/full/10.1111/1755-0998.12466) showed that some analyses such as creating a SNAPP species tree worked quite well despite these poor quality samples, while other analyses such as STRUCTURE were sensitive to the high missing data and potential contamination in these low quality samples. Regardless of your goals, SNPfiltR allows you to quickly document your preliminary analyses and filtering decisions as you investigate your SNP dataset.
 
-# Step 6:
-### Write out vcf files for downstream analyses.
+# Step 6: write out vcf files for downstream analyses.
 
 ### Note:
 #### The function vcfR::write.vcf() automatically writes a gzipped vcf file, so be sure to add the suffix .gz to the name of your output file.

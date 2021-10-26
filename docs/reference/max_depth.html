@@ -175,14 +175,14 @@ otherwise it would disproportionately remove genotypes from our deepest sequence
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'>max_depth</span><span class='op'>(</span>vcfR <span class='op'>=</span> <span class='fu'>SNPfiltR</span><span class='fu'>::</span><span class='va'><a href='vcfR.example.html'>vcfR.example</a></span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "cutoff is not specified, exploratory visualization will be generated."</div><div class='img'><img src='max_depth-1.png' alt='' width='700' height='433' /></div><div class='output co'>#&gt; [1] "dashed line indicates a mean depth across all SNPs of 47"</div><div class='input'><span class='fu'>max_depth</span><span class='op'>(</span>vcfR <span class='op'>=</span> <span class='fu'>SNPfiltR</span><span class='fu'>::</span><span class='va'><a href='vcfR.example.html'>vcfR.example</a></span>, maxdepth <span class='op'>=</span> <span class='fl'>100</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "maxdepth cutoff is specified, filtered vcfR object will be returned"</div><div class='output co'>#&gt; [1] "17% of SNPs were above a mean depth of 100 and were removed from the vcf"</div><div class='output co'>#&gt; ***** Object of Class vcfR *****
+</div><div class='output co'>#&gt; <span class='message'>cutoff is not specified, exploratory visualization will be generated.</span></div><div class='img'><img src='max_depth-1.png' alt='' width='700' height='433' /></div><div class='output co'>#&gt; <span class='message'>dashed line indicates a mean depth across all SNPs of 47</span></div><div class='img'><img src='max_depth-2.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>max_depth</span><span class='op'>(</span>vcfR <span class='op'>=</span> <span class='fu'>SNPfiltR</span><span class='fu'>::</span><span class='va'><a href='vcfR.example.html'>vcfR.example</a></span>, maxdepth <span class='op'>=</span> <span class='fl'>100</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='message'>maxdepth cutoff is specified, filtered vcfR object will be returned</span></div><div class='output co'>#&gt; <span class='message'>17% of SNPs were above a mean depth of 100 and were removed from the vcf</span></div><div class='img'><img src='max_depth-3.png' alt='' width='700' height='433' /></div><div class='output co'>#&gt; ***** Object of Class vcfR *****
 #&gt; 20 samples
 #&gt; 1 CHROMs
 #&gt; 415 variants
 #&gt; Object size: 0.5 Mb
 #&gt; 44.22 percent missing data
-#&gt; *****        *****         *****</div><div class='img'><img src='max_depth-2.png' alt='' width='700' height='433' /></div></pre>
+#&gt; *****        *****         *****</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

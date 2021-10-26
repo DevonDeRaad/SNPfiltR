@@ -45,7 +45,7 @@ filter_allele_balance <- function(vcfR){
   j<-round(sum(AB, na.rm = TRUE) / sum(is.na(gt.matrix) == FALSE)*100, 2)
 
   #print to user
-  print(paste0(p,"% of het genotypes (",j,"% of all genotypes) fall outside of .25 - .75 allele balance and were converted to NA"))
+  message(p,"% of het genotypes (",j,"% of all genotypes) fall outside of .25 - .75 allele balance and were converted to NA")
 
   #convert failing genotypes to NA
   vcfR@gt[,-1][AB]<-NA
