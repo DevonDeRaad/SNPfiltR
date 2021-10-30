@@ -1,0 +1,455 @@
+---
+title: "Performance benchmark"
+author: "Devon DeRaad"
+date: "10/27/2021"
+output: html_document
+---
+
+### We are going to do performance benchmarking on the hard_filter() function from the SNPfiltR package, against the same filtering approach implemented in VCFtools. I have already generated vcf files with 500K, 400K, 300K, 200K, 100K, 50K, 20K, and 10K SNPs, (each with 100 individuals) in order to compare performance across file sizes. For each vcf file, we will use the R package microbenchmark to benchmark the time it takes to:
+#### 1) Read in the vcf using vcfR::read.vcfR() and use SNPfiltR::hard_filter() to filter the file to a minimum depth of 5 per genotype and a minimum quality of 30 per genotype.
+#### 2) Use SNPfiltR::hard_filter() to filter the file to a minimum depth of 5 per genotype and a minimum quality of 30 per genotype, with the vcfR object already read in.
+
+### Using microbenchmark, I will execute three replicates for each approach, and record the mean value of the three replicates. Then I will execute the same filter three times (minimum depth = 5, minimum gq =30) using VCFtools, and record the mean of the three replicates.
+
+### After doing this for each vcf file, we should get a sense of the performance of the SNPfiltR package relative to the state of the art program VCFtools, and how each program scales with input file size.
+
+
+```{r}
+library(SNPfiltR)
+library(vcfR)
+library(microbenchmark)
+library(ggplot2)
+```
+
+# Benchmark 10K
+```{r}
+#10K
+
+#now benchmark with having to read in the file itself
+y<-microbenchmark(
+  #benchmark 10K while having to read in the vcf file
+  hard_filter(vcfR = read.vcfR("~/Desktop/benchmarking.vcfs/benchmark.10K.vcf"),depth = 5,gq = 30),
+  #set number of reps and units as seconds
+  times = 3, unit = "s"
+)
+
+#read in 10K benchmarking vcf
+x<-read.vcfR("~/Desktop/benchmarking.vcfs/benchmark.10K.vcf")
+
+#now benchmark without having to read in the file itself
+z<-microbenchmark(
+  #benchmark 20K while having to read in the vcf file
+  hard_filter(vcfR = x, depth = 5, gq = 30),
+  #set number of reps and units as seconds
+  times = 3, unit = "s"
+)
+
+#convert each to a dataframe
+y<-summary(y)
+z<-summary(z)
+
+#add these results into the full dataframe
+sum.df<-rbind(y,z)
+
+```
+
+# Benchmark 20K
+```{r}
+#20K
+#remove objects currently in the working directory to avoid internal memory issues slowing down the functions and affecting benchmarking accuracy
+rm(x,y,z)
+
+#now benchmark with having to read in the file itself
+y<-microbenchmark(
+  #benchmark 20K while having to read in the vcf file
+  hard_filter(vcfR = read.vcfR("~/Desktop/benchmarking.vcfs/benchmark.20K.vcf"),depth = 5,gq = 30),
+  #set number of reps and units as seconds
+  times = 3, unit = "s"
+)
+
+#read in 20K benchmarking vcf
+x<-read.vcfR("~/Desktop/benchmarking.vcfs/benchmark.20K.vcf")
+
+#now benchmark without having to read in the file itself
+z<-microbenchmark(
+  #benchmark 20K while having to read in the vcf file
+  hard_filter(vcfR = x, depth = 5, gq = 30),
+  #set number of reps and units as seconds
+  times = 3, unit = "s"
+)
+
+#convert each to a dataframe
+y<-summary(y)
+z<-summary(z)
+
+#add these results into the full dataframe
+sum.df<-rbind(sum.df,y,z)
+```
+
+# Benchmark 50K
+```{r}
+#50K
+#remove objects currently in the working directory to avoid internal memory issues slowing down the functions and affecting benchmarking accuracy
+rm(x,y,z)
+
+#now benchmark with having to read in the file itself
+y<-microbenchmark(
+  #benchmark 50K while having to read in the vcf file
+  hard_filter(vcfR = read.vcfR("~/Desktop/benchmarking.vcfs/benchmark.50K.vcf"),depth = 5,gq = 30),
+  #set number of reps and units as seconds
+  times = 3, unit = "s"
+)
+
+#read in 50K benchmarking vcf
+x<-read.vcfR("~/Desktop/benchmarking.vcfs/benchmark.50K.vcf")
+
+#now benchmark without having to read in the file itself
+z<-microbenchmark(
+  #benchmark 50K while having to read in the vcf file
+  hard_filter(vcfR = x, depth = 5, gq = 30),
+  #set number of reps and units as seconds
+  times = 3, unit = "s"
+)
+
+#convert each to a dataframe
+y<-summary(y)
+z<-summary(z)
+
+#add these results into the full dataframe
+sum.df<-rbind(sum.df,y,z)
+```
+
+# Benchmark 100K
+```{r}
+#100K
+#remove objects currently in the working directory to avoid internal memory issues slowing down the functions and affecting benchmarking accuracy
+rm(x,y,z)
+
+#now benchmark with having to read in the file itself
+y<-microbenchmark(
+  #benchmark 100K while having to read in the vcf file
+  hard_filter(vcfR = read.vcfR("~/Desktop/benchmarking.vcfs/benchmark.100K.vcf"),depth = 5,gq = 30),
+  #set number of reps and units as seconds
+  times = 3, unit = "s"
+)
+
+#read in 100K benchmarking vcf
+x<-read.vcfR("~/Desktop/benchmarking.vcfs/benchmark.100K.vcf")
+
+#now benchmark without having to read in the file itself
+z<-microbenchmark(
+  #benchmark 100K while having to read in the vcf file
+  hard_filter(vcfR = x, depth = 5, gq = 30),
+  #set number of reps and units as seconds
+  times = 3, unit = "s"
+)
+
+#convert each to a dataframe
+y<-summary(y)
+z<-summary(z)
+
+#add these results into the full dataframe
+sum.df<-rbind(sum.df,y,z)
+```
+
+# Benchmark 200K
+```{r}
+#200K
+#remove objects currently in the working directory to avoid internal memory issues slowing down the functions and affecting benchmarking accuracy
+rm(x,y,z)
+
+#now benchmark with having to read in the file itself
+y<-microbenchmark(
+  #benchmark 200K while having to read in the vcf file
+  hard_filter(vcfR = read.vcfR("~/Desktop/benchmarking.vcfs/benchmark.200K.vcf"),depth = 5,gq = 30),
+  #set number of reps and units as seconds
+  times = 3, unit = "s"
+)
+
+#read in 200K benchmarking vcf
+x<-read.vcfR("~/Desktop/benchmarking.vcfs/benchmark.200K.vcf")
+
+#now benchmark without having to read in the file itself
+z<-microbenchmark(
+  #benchmark 200K while having to read in the vcf file
+  hard_filter(vcfR = x, depth = 5, gq = 30),
+  #set number of reps and units as seconds
+  times = 3, unit = "s"
+)
+
+#convert each to a dataframe
+y<-summary(y)
+z<-summary(z)
+
+#add these results into the full dataframe
+sum.df<-rbind(sum.df,y,z)
+```
+
+# Benchmark 300K
+```{r}
+#300K
+#remove objects currently in the working directory to avoid internal memory issues slowing down the functions and affecting benchmarking accuracy
+rm(x,y,z)
+
+#now benchmark with having to read in the file itself
+y<-microbenchmark(
+  #benchmark 300K while having to read in the vcf file
+  hard_filter(vcfR = read.vcfR("~/Desktop/benchmarking.vcfs/benchmark.300K.vcf"),depth = 5,gq = 30),
+  #set number of reps and units as seconds
+  times = 3, unit = "s"
+)
+
+#read in 300K benchmarking vcf
+x<-read.vcfR("~/Desktop/benchmarking.vcfs/benchmark.300K.vcf")
+
+#now benchmark without having to read in the file itself
+z<-microbenchmark(
+  #benchmark 300K while having to read in the vcf file
+  hard_filter(vcfR = x, depth = 5, gq = 30),
+  #set number of reps and units as seconds
+  times = 3, unit = "s"
+)
+
+#convert each to a dataframe
+y<-summary(y)
+z<-summary(z)
+
+#add these results into the full dataframe
+sum.df<-rbind(sum.df,y,z)
+```
+
+#Benchmark 400K
+```{r}
+#400K
+#remove objects currently in the working directory to avoid internal memory issues slowing down the functions and affecting benchmarking accuracy
+rm(x,y,z)
+
+#now benchmark with having to read in the file itself
+y<-microbenchmark(
+  #benchmark 400K while having to read in the vcf file
+  hard_filter(vcfR = read.vcfR("~/Desktop/benchmarking.vcfs/benchmark.400K.vcf"),depth = 5,gq = 30),
+  #set number of reps and units as seconds
+  times = 3, unit = "s"
+)
+
+#read in 400K benchmarking vcf
+x<-read.vcfR("~/Desktop/benchmarking.vcfs/benchmark.400K.vcf")
+
+#now benchmark without having to read in the file itself
+z<-microbenchmark(
+  #benchmark 400K while having to read in the vcf file
+  hard_filter(vcfR = x, depth = 5, gq = 30),
+  #set number of reps and units as seconds
+  times = 3, unit = "s"
+)
+
+#convert each to a dataframe
+y<-summary(y)
+z<-summary(z)
+
+#add these results into the full dataframe
+sum.df<-rbind(sum.df,y,z)
+```
+
+# Benchmark 500K
+```{r}
+#500K
+#remove objects currently in the working directory to avoid internal memory issues slowing down the functions and affecting benchmarking accuracy
+rm(x,y,z)
+
+#now benchmark with having to read in the file itself
+y<-microbenchmark(
+  #benchmark 500K while having to read in the vcf file
+  hard_filter(vcfR = read.vcfR("~/Desktop/benchmarking.vcfs/benchmark.500K.vcf"),depth = 5,gq = 30),
+  #set number of reps and units as seconds
+  times = 3, unit = "s"
+)
+
+#read in 500K benchmarking vcf
+x<-read.vcfR("~/Desktop/benchmarking.vcfs/benchmark.500K.vcf")
+
+#now benchmark without having to read in the file itself
+z<-microbenchmark(
+  #benchmark 500K while having to read in the vcf file
+  hard_filter(vcfR = x, depth = 5, gq = 30),
+  #set number of reps and units as seconds
+  times = 3, unit = "s"
+)
+
+#convert each to a dataframe
+y<-summary(y)
+z<-summary(z)
+
+#add these results into the full dataframe
+sum.df<-rbind(sum.df,y,z)
+```
+
+### Now add informative columns to the dataframe
+```{r}
+sum.df$approach<-rep(c("SNPfiltR+vcfR","SNPfiltR"), times = 8)
+
+sum.df$SNPs<-c(10000,10000,20000,20000,50000,50000,100000,100000,
+               200000,200000,300000,300000,400000,400000,500000,500000)
+
+SNPfiltR.times<-sum.df[,c(9,10,4)]
+```
+
+### Now time VCFtools performing the same filtering, in bash, three times for the 10K SNP dataset
+
+# VCFtools benchmark 10K
+```{bash}
+cd /Users/devder/Desktop/benchmarking.vcfs
+{ time /Users/devder/Downloads/vcftools/src/cpp/vcftools --vcf benchmark.10K.vcf --minGQ 30 --minDP 5 --recode --recode-INFO-all ; } 2>&1 |  cat > time.txt
+
+{ time /Users/devder/Downloads/vcftools/src/cpp/vcftools --vcf benchmark.10K.vcf --minGQ 30 --minDP 5 --recode --recode-INFO-all ; } 2>&1 |  cat >> time.txt
+
+{ time /Users/devder/Downloads/vcftools/src/cpp/vcftools --vcf benchmark.10K.vcf --minGQ 30 --minDP 5 --recode --recode-INFO-all ; } 2>&1 |  cat >> time.txt
+```
+
+# VCFtools benchmark 20K
+```{bash}
+cd /Users/devder/Desktop/benchmarking.vcfs
+{ time /Users/devder/Downloads/vcftools/src/cpp/vcftools --vcf benchmark.20K.vcf --minGQ 30 --minDP 5 --recode --recode-INFO-all ; } 2>&1 |  cat >> time.txt
+
+{ time /Users/devder/Downloads/vcftools/src/cpp/vcftools --vcf benchmark.20K.vcf --minGQ 30 --minDP 5 --recode --recode-INFO-all ; } 2>&1 |  cat >> time.txt
+
+{ time /Users/devder/Downloads/vcftools/src/cpp/vcftools --vcf benchmark.20K.vcf --minGQ 30 --minDP 5 --recode --recode-INFO-all ; } 2>&1 |  cat >> time.txt
+```
+
+# VCFtools benchmark 50K
+```{bash}
+cd /Users/devder/Desktop/benchmarking.vcfs
+{ time /Users/devder/Downloads/vcftools/src/cpp/vcftools --vcf benchmark.50K.vcf --minGQ 30 --minDP 5 --recode --recode-INFO-all ; } 2>&1 |  cat >> time.txt
+
+{ time /Users/devder/Downloads/vcftools/src/cpp/vcftools --vcf benchmark.50K.vcf --minGQ 30 --minDP 5 --recode --recode-INFO-all ; } 2>&1 |  cat >> time.txt
+
+{ time /Users/devder/Downloads/vcftools/src/cpp/vcftools --vcf benchmark.50K.vcf --minGQ 30 --minDP 5 --recode --recode-INFO-all ; } 2>&1 |  cat >> time.txt
+```
+
+# VCFtools benchmark 100K
+```{bash}
+cd /Users/devder/Desktop/benchmarking.vcfs
+{ time /Users/devder/Downloads/vcftools/src/cpp/vcftools --vcf benchmark.100K.vcf --minGQ 30 --minDP 5 --recode --recode-INFO-all ; } 2>&1 |  cat >> time.txt
+
+{ time /Users/devder/Downloads/vcftools/src/cpp/vcftools --vcf benchmark.100K.vcf --minGQ 30 --minDP 5 --recode --recode-INFO-all ; } 2>&1 |  cat >> time.txt
+
+{ time /Users/devder/Downloads/vcftools/src/cpp/vcftools --vcf benchmark.100K.vcf --minGQ 30 --minDP 5 --recode --recode-INFO-all ; } 2>&1 |  cat >> time.txt
+```
+
+# VCFtools benchmark 200K
+```{bash}
+cd /Users/devder/Desktop/benchmarking.vcfs
+{ time /Users/devder/Downloads/vcftools/src/cpp/vcftools --vcf benchmark.200K.vcf --minGQ 30 --minDP 5 --recode --recode-INFO-all ; } 2>&1 |  cat >> time.txt
+
+{ time /Users/devder/Downloads/vcftools/src/cpp/vcftools --vcf benchmark.200K.vcf --minGQ 30 --minDP 5 --recode --recode-INFO-all ; } 2>&1 |  cat >> time.txt
+
+{ time /Users/devder/Downloads/vcftools/src/cpp/vcftools --vcf benchmark.200K.vcf --minGQ 30 --minDP 5 --recode --recode-INFO-all ; } 2>&1 |  cat >> time.txt
+```
+
+# VCFtools benchmark 300K
+```{bash}
+cd /Users/devder/Desktop/benchmarking.vcfs
+{ time /Users/devder/Downloads/vcftools/src/cpp/vcftools --vcf benchmark.300K.vcf --minGQ 30 --minDP 5 --recode --recode-INFO-all ; } 2>&1 |  cat >> time.txt
+
+{ time /Users/devder/Downloads/vcftools/src/cpp/vcftools --vcf benchmark.300K.vcf --minGQ 30 --minDP 5 --recode --recode-INFO-all ; } 2>&1 |  cat >> time.txt
+
+{ time /Users/devder/Downloads/vcftools/src/cpp/vcftools --vcf benchmark.300K.vcf --minGQ 30 --minDP 5 --recode --recode-INFO-all ; } 2>&1 |  cat >> time.txt
+```
+
+# VCFtools benchmark 400K
+```{bash}
+cd /Users/devder/Desktop/benchmarking.vcfs
+{ time /Users/devder/Downloads/vcftools/src/cpp/vcftools --vcf benchmark.400K.vcf --minGQ 30 --minDP 5 --recode --recode-INFO-all ; } 2>&1 |  cat >> time.txt
+
+{ time /Users/devder/Downloads/vcftools/src/cpp/vcftools --vcf benchmark.400K.vcf --minGQ 30 --minDP 5 --recode --recode-INFO-all ; } 2>&1 |  cat >> time.txt
+
+{ time /Users/devder/Downloads/vcftools/src/cpp/vcftools --vcf benchmark.400K.vcf --minGQ 30 --minDP 5 --recode --recode-INFO-all ; } 2>&1 |  cat >> time.txt
+```
+
+# VCFtools benchmark 500K
+```{bash}
+cd /Users/devder/Desktop/benchmarking.vcfs
+{ time /Users/devder/Downloads/vcftools/src/cpp/vcftools --vcf benchmark.500K.vcf --minGQ 30 --minDP 5 --recode --recode-INFO-all ; } 2>&1 |  cat >> time.txt
+
+{ time /Users/devder/Downloads/vcftools/src/cpp/vcftools --vcf benchmark.500K.vcf --minGQ 30 --minDP 5 --recode --recode-INFO-all ; } 2>&1 |  cat >> time.txt
+
+{ time /Users/devder/Downloads/vcftools/src/cpp/vcftools --vcf benchmark.500K.vcf --minGQ 30 --minDP 5 --recode --recode-INFO-all ; } 2>&1 |  cat >> time.txt
+```
+
+### clean output file with sed one-liner to keep only the lines beginning with "real" (which contain the time info for each replicate run)
+```{bash}
+cd /Users/devder/Desktop/benchmarking.vcfs
+#use sed one-liner to get only the times of each run in a single file
+sed -n -e '/^real/ p' time.txt > cleantimes.txt
+```
+
+### read cleaned file into R and manipulate into a cohesive dataframe with our microbenchmark output dataframe
+```{r}
+#read in VCFtools times
+vcftools.times<-read.table("~/Desktop/benchmarking.vcfs/cleantimes.txt", sep = "\t")
+
+#make column 1 informative about run conditions
+vcftools.times$V1<-c(rep(10000, times=3),rep(20000, times=3),rep(50000, times=3),
+                     rep(100000, times=3),rep(200000, times=3),rep(300000, times=3),
+                     rep(400000, times=3),rep(500000, times=3))
+
+#make column 2 numeric
+vcftools.times$V2<-gsub("0m", "", vcftools.times$V2)
+vcftools.times$V2<-gsub("1m", "", vcftools.times$V2)
+vcftools.times$V2<-gsub("s", "", vcftools.times$V2)
+vcftools.times$V2<-as.numeric(as.character(vcftools.times$V2))
+#account for the last 3 which took over a minute
+vcftools.times$V2[22:24]<-vcftools.times$V2[22:24]+60
+
+#get the mean of the runtimes across all three replicates, for each vcf file
+v<-aggregate(vcftools.times$V2, list(vcftools.times$V1), mean)
+
+#add column tagging all of these times as coming from vcftools
+v$approach<-rep("VCFtools", times=nrow(v))
+#give informative column names
+colnames(v)[1:2]<-c("SNPs","mean")
+#reorder to match column order from microbenchmark
+v<-v[,c(3,1,2)]
+#rbind dataframe with the microbenchmark dataframe
+benchmark.df<-rbind(SNPfiltR.times,v)
+#make approach a factor for plotting
+benchmark.df$approach<-as.factor(benchmark.df$approach)
+
+#final product:
+benchmark.df
+#write.csv(benchmark.df, file="~/Desktop/benchmarking.vcfs/benchmark.info.csv", quote = F, row.names = F)
+```
+
+### visualize comparative runtimes between approaches
+
+```{r}
+#visualize the comparative runtimes across SNPs and between approaches
+ggplot(benchmark.df, aes(x = SNPs, y = mean, color = approach)) +
+  geom_point(aes(fill=approach),size=3) +
+  geom_line(aes(group = approach))+
+  theme_classic()+
+  ylab("mean runtime (seconds)")+
+  theme(legend.position = c(0.2, 0.8))
+
+#runtime.plot<-ggplot(benchmark.df, aes(x = SNPs, y = mean, color = approach)) +
+#  geom_point(aes(fill=approach),size=3) +
+#  geom_line(aes(group = approach))+
+#  theme_classic()+
+#  ylab("mean runtime (seconds)")+
+#  theme(legend.position = c(0.2, 0.8))
+#
+#ggsave(runtime.plot,
+#       filename = "~/Desktop/SNPfiltR.mol.ecol.resour.submission/comp.runtimes.pdf",
+#       height = 3, width = 4, units = "in")
+  
+
+#try it with a log10 scaled x axis
+ggplot(benchmark.df, aes(x = SNPs, y = mean, color = approach)) +
+  geom_point(aes(fill=approach),size=3) +
+  geom_line(aes(group = approach))+
+  scale_x_log10()+
+  theme_classic()+
+  ylab("mean runtime (seconds)")+
+  theme(legend.position = c(0.2, 0.8))
+```
+
