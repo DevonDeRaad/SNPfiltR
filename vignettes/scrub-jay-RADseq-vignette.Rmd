@@ -114,7 +114,7 @@ missing_by_sample(vcfR=vcfR, popmap = popmap)
 ### Now we can try setting a reasonable threshold, and then visualizing clustering patterns to determine whether there are still problematic samples with excess missing data that can't be accurately assigned to genetic clusters
 ```{r, fig.height=4, fig.width=6, dpi=150}
 #run function to drop samples above the threshold we want from the vcf
-vcfR<-missing_by_sample(vcfR=vcfR, cutoff = .91)
+vcfR<-missing_by_sample(vcfR=vcfR, cutoff = .81)
 #subset popmap to only include retained individuals
 popmap<-popmap[popmap$id %in% colnames(vcfR@gt),]
 
@@ -140,10 +140,16 @@ This filter interacts with the above filter, where we dropped low data samples. 
 #visualize missing data by SNP and the effect of various cutoffs on the missingness of each sample
 missing_by_snp(vcfR)
 
-#verify that missing data is not driving clustering patterns among the retained samples at some reasonable thresholds
-miss<-assess_missing_data_pca(vcfR=vcfR, popmap = popmap, thresholds = c(.7,.8,.85), clustering = FALSE)
+#check if these cutoffs prevent samples from clustering
+#by patterns of missing data in a PCA
+miss<-assess_missing_data_pca(vcfR=vcfR, popmap = popmap,
+                              thresholds = c(.75,.85), clustering = FALSE)
 
-#choose a value that retains an acceptable amount of missing data in each sample, and maximizes SNPs retained while minimizing overall missing data, and filter vcf
+#check what t-SNE clustering looks like at an 85% threshold
+miss<-assess_missing_data_tsne(vcfR=vcfR, popmap = popmap,
+                              thresholds = .85, clustering = FALSE)
+
+#choose a cutoff resulting in an acceptable amount of missing data in each sample, and maximizes SNPs retained while minimizing overall missing data, and filter vcf
 vcfR<-missing_by_snp(vcfR, cutoff = .85)
 
 #check how many SNPs and samples are left
