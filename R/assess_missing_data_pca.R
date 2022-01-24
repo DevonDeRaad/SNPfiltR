@@ -21,9 +21,9 @@
 #' thresholds = c(.6,.8))
 #' @export
 assess_missing_data_pca <- function(vcfR,
-                              popmap=NULL,
-                              thresholds=NULL,
-                              clustering=TRUE){
+                                    popmap=NULL,
+                                    thresholds=NULL,
+                                    clustering=TRUE){
 
   #bind global variables
   PC1<- NULL
@@ -98,21 +98,21 @@ assess_missing_data_pca <- function(vcfR,
   #if clustering = TRUE, start here:
   if (clustering == TRUE){
 
-  #if checks on inputs pass, and clustering == TRUE, and thresholds are not specified, start here:
-  if (is.null(thresholds)) {
+    #if checks on inputs pass, and clustering == TRUE, and thresholds are not specified, start here:
+    if (is.null(thresholds)) {
 
-    #run clustering with no filters
-    #convert vcfR into genlight
-    gen<-vcfR::vcfR2genlight(vcfR)
+      #run clustering with no filters
+      #convert vcfR into genlight
+      gen<-vcfR::vcfR2genlight(vcfR)
 
-    #execute PCA using this genlight
-    #retain number of PC axes equivalent to the number of populations being discriminated + 2
-    pca<-adegenet::glPca(gen,
-                         nf=length(levels(as.factor(popmap$pop)))+2)
+      #execute PCA using this genlight
+      #retain number of PC axes equivalent to the number of populations being discriminated + 2
+      pca<-adegenet::glPca(gen,
+                           nf=length(levels(as.factor(popmap$pop)))+2)
 
-    #pull pca scores out of df
-    pca.scores<-as.data.frame(pca$scores)
-    #pca.scores$pop<-popmap$pop
+      #pull pca scores out of df
+      pca.scores<-as.data.frame(pca$scores)
+      #pca.scores$pop<-popmap$pop
 
       #record pam clustering info directly on PCA
       m=c()
@@ -180,14 +180,16 @@ assess_missing_data_pca <- function(vcfR,
       #return df
       return(pca.scores)
 
-    #close if(is.null(thresholds))
-  }
+      #close if(is.null(thresholds))
+    }
 
-  #if thresholds are provided, run loop over all filtering thresholds here:
-  else{
+    #if thresholds are provided, run loop over all filtering thresholds here:
+    else{
 
-    #open list to fill meta info
-    dfs<-list()
+      #open list to fill meta info
+      dfs<-list()
+      #start incrementer for dfs list
+      j<-1
 
       for (i in thresholds){
 
@@ -275,7 +277,9 @@ assess_missing_data_pca <- function(vcfR,
         )
 
         #fill list with relevant dataframe
-        dfs[[i]]<-pca.scores
+        dfs[[j]]<-pca.scores
+        #move up incrementer for indexing the list 'dfs'
+        j<-j+1
 
         #clean objects
         pca.scores<-NULL
@@ -284,11 +288,14 @@ assess_missing_data_pca <- function(vcfR,
         #close for loop
       }
 
-    #return list
-    return(dfs)
+      #remove incrementer
+      rm(j)
 
-    #close else statement from if (thresholds==NULL)
-  }
+      #return list
+      return(dfs)
+
+      #close else statement from if (thresholds==NULL)
+    }
 
   } #close if statement from if (clustering == TRUE)
 
@@ -370,6 +377,8 @@ assess_missing_data_pca <- function(vcfR,
 
       #open list to fill meta info
       dfs<-list()
+      #start incrementer for dfs
+      j<-1
 
       for (i in thresholds){
 
@@ -434,7 +443,9 @@ assess_missing_data_pca <- function(vcfR,
         )
 
         #fill list with relevant dataframe
-        dfs[[i]]<-pca.scores
+        dfs[[j]]<-pca.scores
+        #move up incrementer for indexing the list 'dfs'
+        j<-j+1
 
         #clean objects
         pca.scores<-NULL
@@ -442,6 +453,9 @@ assess_missing_data_pca <- function(vcfR,
 
         #close for loop
       }
+
+      #remove incrementer
+      rm(j)
 
       #return list
       return(dfs)

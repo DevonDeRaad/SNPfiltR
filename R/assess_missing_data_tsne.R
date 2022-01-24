@@ -231,6 +231,8 @@ assess_missing_data_tsne <- function(vcfR,
 
     #open list to fill meta info
     dfs<-list()
+    #start incrementer for dfs
+    j<-1
 
     for (i in thresholds){
 
@@ -325,13 +327,19 @@ assess_missing_data_tsne <- function(vcfR,
       )
 
       #fill list with relevant dataframe
-      dfs[[i]]<-tsne.df
+      dfs[[j]]<-tsne.df
+      #move up incrementer for indexing the list 'dfs'
+      j<-j+1
 
       #clean df object
       tsne.df<-NULL
 
     #close for loop
     }
+
+    #remove incrementer
+    rm(j)
+
     return(dfs)
   #close else statement
   }
@@ -430,6 +438,8 @@ assess_missing_data_tsne <- function(vcfR,
 
       #open list to fill meta info
       dfs<-list()
+      #start incrementer for dfs
+      j<-1
 
       for (i in thresholds){
 
@@ -503,13 +513,19 @@ assess_missing_data_tsne <- function(vcfR,
         )
 
         #fill list with relevant dataframe
-        dfs[[i]]<-tsne.df
+        dfs[[j]]<-tsne.df
+        #move up incrementer for indexing the list 'dfs'
+        j<-j+1
 
         #clean df object
         tsne.df<-NULL
 
         #close for loop
       }
+
+      #remove incrementer
+      rm(j)
+
       return(dfs)
       #close else statement
     }
