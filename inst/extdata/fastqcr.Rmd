@@ -1,0 +1,111 @@
+---
+title: "Diadema Dinops quality control"
+author: "Devon DeRaad"
+date: "9/21/2021"
+output: html_document
+---
+
+```{r, message=FALSE}
+library(gridExtra)
+library(knitr)
+library(ggplot2)
+library(fastqcr)
+#must run this if fastqc is not already installed locally
+#fastqc_install()
+```
+
+```{r}
+###ONLY THIS CHUNK REQUIRES MODIFICATION###
+###assign your directory locations here:
+
+#specify full path to directory containing a .fastq.gz file for each sample
+fq.dir<-"/home/d669d153/work/dia.din/fq"
+
+#specify full path to the output directory where you want 
+qc.dir<-"/home/d669d153/work/dia.din/qc"
+```
+
+```{r}
+#run fastqc on all .fastq.gz files, through r
+#This only needs to be run once, if only tweaking downstream visualizations, you can comment out this step
+fastqc(fq.dir = fq.dir, # FASTQ files directory
+       qc.dir = qc.dir, # Results directory
+       threads = 4      # Number of threads
+       )
+```
+
+```{r, dpi=50, results = 'asis', fig.dim = c(10, 3), out.width="100%", out.height="100px", message=FALSE, warning=FALSE}
+# List of files in the output directory to ensure fastqc worked
+list.files(qc.dir)
+
+#create a character vector where each value is the full path to the .zip created by fastqc() for a given sample
+samps<-list.files(qc.dir, full.names = T, pattern = "*.zip")
+
+#plot qc test results for each sample
+for (i in samps){
+  #read info for given sample from the .zip file generated in the previous step
+  samp.info <- qc_read(i)
+  #open blank list to hold qc visualizations for the given sample
+  plot<-list()
+  #do qc for the given sample
+  plot[[1]]<-qc_plot(samp.info, "Basic statistics")
+  plot[[2]]<-qc_plot(samp.info, "Per sequence quality scores")
+  plot[[3]]<-qc_plot(samp.info, "Sequence duplication levels")
+  #visualize tables
+  print(paste0("QC results for sample ", gsub(".*/", "", i)))
+
+  cat('\n')
+
+  print(kable(plot[[1]]))
+
+  cat('\n')
+
+  #visualize plots
+  grid.arrange(plot[[2]],plot[[3]],
+               ncol=2)
+  
+  #clear plot to hold info for next sample
+  rm(plot)
+}
+```
+
+```{r, message=FALSE, warning=FALSE}
+#aggregate the reports by pointing this function to the folder holding output of fastqc()
+qc <- qc_aggregate(qc.dir, progressbar = F)
+
+#stats per sample
+knitr::kable(qc_stats(qc))
+```
+
+### solid red line = median sample value
+### dashed red line = 10% of median sample value
+
+```{r, dpi=50, out.width="65%", results = 'asis'}
+#save stats info as an object
+stats.info<-qc_stats(qc)
+#make tot.seq numeric
+stats.info$tot.seq<-as.numeric(stats.info$tot.seq)
+
+#make histogram of number of sequence reads for each sample
+ggplot(stats.info, aes(x=tot.seq))+
+              geom_histogram(color="black", fill="white", bins=20)+
+              geom_vline(aes(xintercept=median(tot.seq)), color = "red")+
+              geom_vline(aes(xintercept=median(tot.seq)*.1), color = "red", lty=14)+
+              theme_classic()+
+              xlab("Number of sequencing reads")
+
+#solid red line = median sample value
+#dashed red line = 10% of median sample value
+ggplot(stats.info, aes(x=tot.seq))+
+              geom_histogram(color="black", fill="white", bins=200)+
+              geom_vline(aes(xintercept=median(tot.seq)), color = "red")+
+              geom_vline(aes(xintercept=median(tot.seq)*.1), color = "red", lty=14)+
+              theme_classic()+
+              xlab("Number of sequencing reads")
+
+#show me the samples that have less than 10% of the number of reads as the median sample from this experiment (these should be dropped immediately)
+print(paste("Median sample contains", median(stats.info$tot.seq), "reads. The following samples contain less than", median(stats.info$tot.seq)*.1, "reads (10% of the median), and should likely be dropped"))
+
+knitr::kable(stats.info[stats.info$tot.seq < median(stats.info$tot.seq)*.1,])
+```
+

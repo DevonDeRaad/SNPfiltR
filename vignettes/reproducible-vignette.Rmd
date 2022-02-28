@@ -14,6 +14,7 @@ knitr::opts_chunk$set(
 )
 ```
 
+This is a small, quick-running example showing how to use the SNPfiltR package to filter a next-generation sequencing (NGS) single nucleotide polymorphism (SNP) dataset. This vignette uses the small example dataset distributed with the package (20 samples, and 500 SNPs). The entire vignette can be rendered in <60s, allowing rapid validation of the filtering pipeline shown here. Overall, this pipeline shows the power of SNPfiltR to facilitate the visualization, exploration, and interactive filtering of any SNP dataset. We start by reading in our vcf file as a vcfR object. Having the vcfR object stored in local memory allows for the rapid visualization and imposition of various filtering criteria, allowing users to make informed decisions and interactively explore parameter space. This vignette follows best-practices by implementing quality aware filters (i.e., filters based on genotype quality) first, and quality blind filters (e.g., distance-based thinning) last, in order to preserve as many high-quality genotypes as possible for downstream analyses.
 ```{r setup}
 library(SNPfiltR)
 library(vcfR)
@@ -21,10 +22,10 @@ library(vcfR)
 
 # Optional Step 0: 
 
-### Do quality control per sample before performing SNP calling. I have written an [RMarkdown script](https://github.com/DevonDeRaad/RADstackshelpR/blob/master/inst/extdata/fastqcr.Rmd) that uses the R package [fastqcr](https://github.com/kassambara/fastqcr) to generate a report visualizing the quality and quantity of sequencing for each sample, and recommending a subset of samples to be immediately dropped before parameter optimization (specifically useful for RADseq data). The only modification necessary for this script is the path to the folder containing the input .fastq.gz files and the path to your desired output folder. An example report generated using this script can be seen [here](https://devonderaad.github.io/RADstackshelpR/articles/quality.control.vignette.html). Because the fastq.gz files for your experiment may be large and handled remotely, an example bash script for executing this RMarkdown file as a job on a high performance computing cluster is available [here](https://github.com/DevonDeRaad/RADstackshelpR/blob/master/inst/extdata/RMarkdown.qc.submit.script.sh).
+Do quality control per sample before performing SNP calling. I have written an [RMarkdown script](https://github.com/DevonDeRaad/RADstackshelpR/blob/master/inst/extdata/fastqcr.Rmd) that uses the R package [fastqcr](https://github.com/kassambara/fastqcr) to generate a report visualizing the quality and quantity of sequencing for each sample, and recommending a subset of samples to be immediately dropped before parameter optimization (specifically useful for RADseq data). The only modification necessary for this script is the path to the folder containing the input .fastq.gz files and the path to your desired output folder. An example report generated using this script can be seen [here](https://devonderaad.github.io/RADstackshelpR/articles/quality.control.vignette.html). Because the fastq.gz files for your experiment may be large and handled remotely, an example bash script for executing this RMarkdown file as a job on a high performance computing cluster is available [here](https://github.com/DevonDeRaad/RADstackshelpR/blob/master/inst/extdata/RMarkdown.qc.submit.script.sh).
 
-### Because this is just an example dataset, we will skip this step and load in the vcf and popmap which are distributed with the SNPfiltR package
-
+# Step 1: read in vcf file as 'vcfR' object
+Because we are using the example dataset distributed with the package, we just load in the vcf and popmap using the data() function.
 ```{r}
 #load the example vcfR object 
 data(vcfR.example)
@@ -41,8 +42,8 @@ data(popmap)
 popmap
 ```
 
-### step 1: Implement quality filters that don't involve missing data. This is because removing low data samples will alter percentage/quantile based missing data cutoffs, so we wait to implement those until after deciding on our final set of samples for downstream analysis
-
+# Step 2: quality filtering
+We now implement quality filters that don't involve missing data. This is because removing low data samples will alter percentage/quantile based missing data cutoffs, so we wait to implement those until after deciding on our final set of samples for downstream analysis
 ```{r, fig.height= 4, fig.width=6}
 #generate exploratory visualizations of depth and genotype quality for all called genotypes
 #hard_filter(vcfR=vcfR.example)
@@ -51,15 +52,16 @@ popmap
 vcfR<-hard_filter(vcfR=vcfR.example, depth = 5, gq = 30)
 ```
 
-### Use this function to filter for allele balance from Puritz SNP filtering tutorial "Allele balance: a number between 0 and 1 representing the ratio of reads showing the reference allele to all reads, considering only reads from individuals called as heterozygous, we expect that the allele balance in our data (for real loci) should be close to 0.5"
-
+Jon Puritz has an excellent filtering tutorial that is focused specifically on [filtering RADseq data](https://www.ddocent.com/filtering/).From Puritz SNP filtering tutorial "Allele balance: a number between 0 and 1 representing the ratio of reads showing the reference allele to all reads, considering only reads from individuals called as heterozygous, we expect that the allele balance in our data (for real loci) should be close to 0.5". Here we will implement an allele balance filter converting called heterozygous genotypes outside of the .25-.75 range to NA.
 ```{r, fig.height= 3, fig.width=4}
 #execute allele balance filter
 vcfR<-filter_allele_balance(vcfR)
 ```
 
-### max depth filter (super high depth loci are likely multiple loci stuck together into a single paralogous locus).
+Here we will implement a max depth filter, as super high depth loci are likely multiple loci stuck together into a single paralogous locus, which we want to remove before making downstream inferences.
 
+### Note:
+This filter is applied 'per SNP' rather than 'per genotype' otherwise we would simply be removing most of the genotypes from our deepest sequenced samples (because sequencing depth is so variable between samples). By filtering per SNP, we remove the SNPs with outlier depth values, which are most likely to be spuriously mapped/built paralagous loci.
 ```{r, fig.height= 3, fig.width=4}
 #visualize and pick appropriate max depth cutoff
 #max_depth(vcfR)
@@ -72,8 +74,16 @@ vcfR<-max_depth(vcfR, maxdepth = 100)
 vcfR
 ```
 
-### Step 2: visualize missing data by sample. Check out the visualizations and make decision on which samples look like they will not be salvageable for downstream analysis.
+# Step 3: set missing data per sample cutoff
 
+### Set arbitrary cutoff for missing data allowed per sample.
+
+Determining which samples and SNPs to retain is always project specific, and is contingent on sampling, biology of the focal taxa, sequencing idiosyncrasies, etc. SNPfiltR contains functions designed to simply and easily generate exploratory visualizations that will allow you to make informed decisions about which samples and SNPs are of sufficient quality to retain for downstream analyses, but there is never a single correct option for these cutoffs. In my experience, the best thing to do is to look at your data, look at what effects some reasonable cutoffs would have on your data, and pick one that works for you. Then as you continue to analyze your data, make sure that your arbitrary filtering decisions are not driving the patterns you see, and iteratively update your filtering approach if you are concerned about the effects previous filtering choices are having on downstream results.
+
+We are going to start by visualizing missing data per sample. After checking out the visualizations, we can make decision on which samples look like they will not be salvageable for downstream analysis, and remove them either by setting a data completeness cutoff in the function missing_by_sample(), or by name using base R syntax which works with vcfR objects which treat SNPs as rows and samples as columns (e.g., vcfR <- vcfR[,colnames(vcfR@gt) != "A_woodhouseii_24711"]).
+
+### Note:
+If all of your samples are reasonably complete then you don't need to drop any samples! Variable missing data by sample seems to be mostly an issue with RAD approaches for whatever reason.
 ```{r, fig.height= 3, fig.width=4}
 #run function to visualize samples and return informative data.frame object
 miss<-missing_by_sample(vcfR=vcfR)
@@ -89,24 +99,29 @@ vcfR<-min_mac(vcfR, min.mac = 1)
 popmap<-popmap[popmap$id %in% colnames(vcfR@gt)[-1],]
 ```
 
-### Step 3: Set the arbitrary missing data cutoff
-### We can visualize the effect that typical missing data cutoffs will have on both the number of SNPs retained and the total missing data in our entire dataset. We want to choose a cutoff that minimizes the overall missing data in the dataset, while maximizing the total number of loci retained.
+# Step 4: set missing data per SNP cutoff
+
+### Set arbitrary cutoff for missing data allowed per SNP.
+
+We can visualize the effect that typical missing data cutoffs will have on both the number of SNPs retained and the total missing data in our entire dataset.We want to choose a cutoff that minimizes the overall missing data in the dataset, while maximizing the total number of loci retained.
+
+### Note: 
+This filter interacts with the above filter, where we dropped low data samples. A good rule of thumb is that individual samples shouldn't be above 50% missing data after applying a per-SNP missing data cutoff. So if we are retaining specific low data samples out of necessity or project design, we may have to set a more stringent per-SNP missing data cutoff, at the expense of the total number of SNPs retained for downstream analyses. We can again use the assess_missing_data_pca() function to determine whether all retained samples contain enough data at our chosen cutoff in order to be assigned accurately to their species group.
 ```{r, fig.height= 3, fig.width=4}
 #visualize missing data by SNP and the effect of various cutoffs on the missingness of each sample
 missing_by_snp(vcfR)
 ```
 
-### we can see that there are still some outlier samples with a lot of missing data even at high missing data per SNP thresholds
-#we can check whether this excess missing data in some samples is affecting overall clustering patterns
+We can see that there are still some outlier samples with a lot of missing data even at high missing data per SNP thresholds, which is concerning. We will want to check whether this excess missing data in some samples is affecting overall clustering patterns using the functions assess_missing_data_pca() and assess_missing_data_tsne().
 ```{r}
 #assess missing data effects on clustering
 assess_missing_data_pca(vcfR = vcfR, popmap = popmap, thresholds = c(.8), clustering = FALSE)
+assess_missing_data_tsne(vcfR = vcfR, popmap = popmap, thresholds = c(.8), clustering = FALSE)
 ```
 
-### we can see that at an 80% per SNP completeness cutoff, samples with an excess of missing data are leaking toward the center (specifically coerulescens samples), indicating that they can't be reliably clustered due to excess missing data
+We can see that at an 80% per SNP completeness cutoff, samples with an excess of missing data are leaking toward the center (specifically coerulescens samples), indicating that they can't be reliably clustered due to excess missing data.
 
-### This means we still need to target specific samples with too much missing data even at high filtering thresholds, for removal
-
+We can go back and target specific samples with too much missing data even at high filtering thresholds for removal using the following code:
 ```{r, fig.height= 3, fig.width=4}
 #show me the samples with the most missing data at an 80% completeness threshold
 filt<-miss[miss$filt == .8,]
@@ -123,22 +138,36 @@ vcfR
 popmap<-popmap[popmap$id %in% colnames(vcfR@gt)[-1],]
 ```
 
-### re-visualize missing data by SNP and the effect of various cutoffs on the missingness of each sample and set a reasonable missing data cutoff
+Re-visualize missing data by SNP and the effect of various cutoffs on the missingness of each sample and set a reasonable missing data cutoff.
 ```{r, fig.height= 3, fig.width=4}
+#visualize missing data at various completeness thresholds
 missing_by_snp(vcfR)
 #all samples look good at most thresholds, because of the small size of this dataset, I will choose a 60% completeness threshold in order to retain as many SNPs as possible
 
 #filter vcfR
 vcfR<-missing_by_snp(vcfR, cutoff = .6)
+```
+
+# Step 5: quality unaware filters
+
+We can now implement filters that are blind to genotype quality like a Minor Allele Count (MAC) threshold, and a distance-based filtering threshold, both of which may serve to increase the signal to noise ratio of our dataset in downstream analyses.
+```{r}
+#remove singletons (loci with only a single variant allele which have no phylogenetic signal)
+vcfR<-min_mac(vcfR = vcfR, min.mac = 2)
+
+#linkage filter vcf to thin SNPs to one per 500bp
+vcfR<-distance_thin(vcfR, min.distance = 500)
 
 #look at final stats for our filtered vcf file
 vcfR
 ```
 
-### We can now use the convenient function vcfR::write.vcf() to export our filtered vcf file for downstream analyses
+# Step 6: write out files for downstream analysis
 
-### Note: the function vcfR::write.vcf() automatically writes a gzipped vcf file, so be sure to add the suffix .gz to the name of your output file.
+We can now use the convenient function vcfR::write.vcf() to export our filtered vcf file for downstream analyses
 
+### Note:
+the function vcfR::write.vcf() automatically writes a gzipped vcf file, so be sure to add the suffix .gz to the name of your output file.
 ```{r}
 #write out vcf
 #vcfR::write.vcf(vcfR, file = "~/Downloads/scrub.jay.example.filtered.vcf.gz")

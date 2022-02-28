@@ -166,7 +166,7 @@ vcfR
 (a) duplicate analyses with nonparametric methods suchas PCA and DAPC with cross validation
 (b) exclude singletons
 (c) compare alignments with multiple assembly parameters
-When seeking to exclude only singletons in alignments with missing data (a ubiquitous problem for reduced‐representation library preparation methods), it is preferable to filter by the count (rather than frequency) of the minor allele, because variation in the amount of missing data across an alignment will cause a static frequency cutoff to remove different SFS classes at different sites""
+When seeking to exclude only singletons in alignments with missing data (a ubiquitous problem for reduced‐representation library preparation methods), it is preferable to filter by the count (rather than frequency) of the minor allele, because variation in the amount of missing data across an alignment will cause a static frequency cutoff to remove different SFS classes at different sites"
 
 #### Our package contains a convenient wrapper functions that can filter based on minor allele count (MAC) and streamline investigation of the effects of various filtering parameters on sample clustering patterns.
 ```{r, fig.height=4, fig.width=6, dpi=150}

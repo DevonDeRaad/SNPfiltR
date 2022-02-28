@@ -60,20 +60,20 @@ simply follow the example pipeline executed below:
 
 Do quality control per sample before performing SNP calling. I have
 written an [RMarkdown
-script](https://github.com/DevonDeRaad/RADstackshelpR/blob/master/inst/extdata/fastqcr.Rmd)
-that uses the R package [fastqcr](https://github.com/kassambara/fastqcr)
-to generate a report visualizing the quality and quantity of sequencing
-for each sample, and recommending a subset of samples to be immediately
-dropped before parameter optimization (specifically useful for RADseq
-data). The only modification necessary for this script is the path to
-the folder containing the input .fastq.gz files and the path to your
-desired output folder. An example report generated using this script can
-be seen
+script](https://github.com/DevonDeRaad/SNPfiltR/blob/master/inst/extdata/fastqcr.Rmd)
+which is distributed with this package, and uses the R package
+[fastqcr](https://github.com/kassambara/fastqcr) to generate a report
+visualizing the quality and quantity of sequencing for each sample, and
+recommending a subset of samples to be immediately dropped before
+parameter optimization (specifically useful for RADseq data). The only
+modification necessary for this script is the path to the folder
+containing the input .fastq.gz files and the path to your desired output
+folder. An example report generated using this script can be seen
 [here](https://devonderaad.github.io/RADstackshelpR/articles/quality.control.vignette.html).
 Because the fastq.gz files for your experiment may be large and handled
 remotely, an example bash script for executing this RMarkdown file as a
-job on a high performance computing cluster is available
-[here](https://github.com/DevonDeRaad/RADstackshelpR/blob/master/inst/extdata/RMarkdown.qc.submit.script.sh).
+job on a high performance computing cluster is also included
+[here](https://github.com/DevonDeRaad/SNPfiltR/blob/master/inst/extdata/RMarkdown.qc.submit.script.sh).
 
 #### Because this dataset was not overly large, and I used a reference based assembly that doesn’t depend on each sample contributing to the de novo building of RAD loci, I chose to skip this step and do all of the per sample quality filtering in R. I started below by reading in the vcf file using the aforementioned vcfR package. This example uses a subset proportion of a real vcf file in order to control runtimes. The full analysis of this dataset can be viewed [here](https://devonderaad.github.io/SNPfiltR/articles/scrub-jay-RADseq-vignette.html)
 
@@ -131,7 +131,7 @@ accurate. VCFtools has faster implementations of some of the same
 filters implemented here, and really shines with large datasets. The
 R-based implementations of these filters in SNPfiltR offers interactive
 visualization in a cohesive R-based pipeline, but be aware that reading
-in excessively large files to Rstudio (typically, &gt; 1 Gb in my
+in excessively large files to Rstudio (typically, \> 1 Gb in my
 experience) can cause R to hang and crash. Luckily, I have found that
 variant sites only vcf files for most reduced-representation genomic
 datasets are under this size, and can be handled efficiently using
@@ -271,10 +271,10 @@ missing_by_sample(vcfR=vcfR, popmap = popmap)
 ```
 
 <img src="man/figures/README-unnamed-chunk-9-1.png" width="100%" /><img src="man/figures/README-unnamed-chunk-9-2.png" width="100%" /><img src="man/figures/README-unnamed-chunk-9-3.png" width="100%" />
-\#\#\#\# Now we can try setting a reasonable threshold, and then
-visualizing clustering patterns to determine whether there are still
-problematic samples with excess missing data that can’t be accurately
-assigned to genetic clusters
+#### Now we can try setting a reasonable threshold, and then visualizing
+clustering patterns to determine whether there are still problematic
+samples with excess missing data that can’t be accurately assigned to
+genetic clusters
 
 ``` r
 #run function to drop samples above the threshold we want from the vcf
@@ -299,9 +299,6 @@ vcfR<-missing_by_sample(vcfR=vcfR, cutoff = .9)
     #> [1] "cutoff is specified, filtered vcfR object will be returned"
     #> [1] "69.26% of SNPs fell below a completeness cutoff of 0.8 and were removed from the VCF"
     #> Loading required namespace: adegenet
-    #> Registered S3 method overwritten by 'spdep':
-    #>   method   from
-    #>   plot.mst ape
 
 <img src="man/figures/README-unnamed-chunk-10-3.png" width="100%" /><img src="man/figures/README-unnamed-chunk-10-4.png" width="100%" /><img src="man/figures/README-unnamed-chunk-10-5.png" width="100%" />
 
@@ -324,7 +321,7 @@ above 50% missing data after applying a per-SNP missing data cutoff. So
 if we are retaining specific low data samples out of necessity or
 project design, we may have to set a more stringent per-SNP missing data
 cutoff, at the expense of the total number of SNPs retained for
-downstream analyses. We can again use the assess\_missing\_data\_pca()
+downstream analyses. We can again use the assess_missing_data_pca()
 function to determine whether all retained samples contain enough data
 at our chosen cutoff in order to be assigned accurately to their species
 group.
@@ -413,7 +410,7 @@ reduced‐representation library preparation methods), it is preferable to
 filter by the count (rather than frequency) of the minor allele, because
 variation in the amount of missing data across an alignment will cause a
 static frequency cutoff to remove different SFS classes at different
-sites”"
+sites””
 
 #### Our package contains a convenient wrapper functions that can filter based on minor allele count (MAC) and streamline investigation of the effects of various filtering parameters on sample clustering patterns.
 
@@ -467,7 +464,7 @@ heatmap.bp(gq, rlabels = FALSE)
 
 #### Write out vcf files for downstream analyses.
 
-#### Optionally, we can use the distance\_thin() function from the SNPfiltR package in order to filter our SNPs to a minimum distance between SNPs, in order to get a set of unlinked SNPs for downsteam analyses
+#### Optionally, we can use the distance_thin() function from the SNPfiltR package in order to filter our SNPs to a minimum distance between SNPs, in order to get a set of unlinked SNPs for downsteam analyses
 
 #### Note:
 
