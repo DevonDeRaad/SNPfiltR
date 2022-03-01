@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">SNPfiltR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.1</span>
       </span>
     </div>
 
@@ -61,7 +61,10 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="../articles/performance-benchmarking.html">Performance benchmark</a>
+      <a href="../articles/accuracy-benchmarking.html">Accuracy benchmarking</a>
+    </li>
+    <li>
+      <a href="../articles/performance-benchmarking.html">Performance benchmarking</a>
     </li>
     <li>
       <a href="../articles/reproducible-vignette.html">reproducible-vignette</a>
@@ -197,7 +200,7 @@ vcfR&lt;-filter_biallelic(vcfR)
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">#execute allele balance filter</span>
 <span class="va">vcfR</span><span class="op">&lt;-</span><span class="fu"><a href="../reference/filter_allele_balance.html">filter_allele_balance</a></span><span class="op">(</span><span class="va">vcfR</span><span class="op">)</span>
-<span class="co">#&gt; 7.56% of het genotypes (0.39% of all genotypes) fall outside of .25 - .75 allele balance and were converted to NA</span></code></pre></div>
+<span class="co">#&gt; 7.56% of het genotypes (0.39% of all genotypes) fall outside of 0.25 - 0.75 allele balance ratio and were converted to NA</span></code></pre></div>
 <p><img src="scrub-jay-RADseq-vignette_files/figure-html/unnamed-chunk-6-1.png" width="900"></p>
 <p>Now we can execute a max depth filter (super high depth loci are likely multiple loci stuck together into a single paralogous locus).</p>
 </div>
@@ -281,10 +284,7 @@ vcfR&lt;-filter_biallelic(vcfR)
 <span class="va">miss</span><span class="op">&lt;-</span><span class="fu"><a href="../reference/assess_missing_data_pca.html">assess_missing_data_pca</a></span><span class="op">(</span>vcfR<span class="op">=</span><span class="va">vcfR</span>, popmap <span class="op">=</span> <span class="va">popmap</span>, thresholds <span class="op">=</span> <span class="fl">.8</span>, clustering <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
 <span class="co">#&gt; cutoff is specified, filtered vcfR object will be returned</span>
 <span class="co">#&gt; 76.56% of SNPs fell below a completeness cutoff of 0.8 and were removed from the VCF</span>
-<span class="co">#&gt; Loading required namespace: adegenet</span>
-<span class="co">#&gt; Registered S3 method overwritten by 'spdep':</span>
-<span class="co">#&gt;   method   from</span>
-<span class="co">#&gt;   plot.mst ape</span></code></pre></div>
+<span class="co">#&gt; Loading required namespace: adegenet</span></code></pre></div>
 <p><img src="scrub-jay-RADseq-vignette_files/figure-html/unnamed-chunk-10-3.png" width="900"><img src="scrub-jay-RADseq-vignette_files/figure-html/unnamed-chunk-10-4.png" width="900"><img src="scrub-jay-RADseq-vignette_files/figure-html/unnamed-chunk-10-5.png" width="900"></p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R">
@@ -329,30 +329,42 @@ vcfR&lt;-filter_biallelic(vcfR)
 #check if these cutoffs prevent samples from clustering
 #by patterns of missing data in a PCA
 miss&lt;-assess_missing_data_pca(vcfR=vcfR, popmap = popmap,
-                              thresholds = c(.75,.85), clustering = FALSE)
+                              thresholds = c(.75,.85,.95), clustering = FALSE)
 #&gt; cutoff is specified, filtered vcfR object will be returned
 #&gt; 72.84% of SNPs fell below a completeness cutoff of 0.75 and were removed from the VCF</code></pre>
 <p><img src="scrub-jay-RADseq-vignette_files/figure-html/unnamed-chunk-11-3.png" width="900"><img src="scrub-jay-RADseq-vignette_files/figure-html/unnamed-chunk-11-4.png" width="900"></p>
 <pre><code>#&gt; cutoff is specified, filtered vcfR object will be returned</code></pre>
 <p><img src="scrub-jay-RADseq-vignette_files/figure-html/unnamed-chunk-11-5.png" width="900"></p>
 <pre><code>#&gt; 79.72% of SNPs fell below a completeness cutoff of 0.85 and were removed from the VCF</code></pre>
-<p><img src="scrub-jay-RADseq-vignette_files/figure-html/unnamed-chunk-11-6.png" width="900"><img src="scrub-jay-RADseq-vignette_files/figure-html/unnamed-chunk-11-7.png" width="900"><img src="scrub-jay-RADseq-vignette_files/figure-html/unnamed-chunk-11-8.png" width="900"></p>
-<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<p><img src="scrub-jay-RADseq-vignette_files/figure-html/unnamed-chunk-11-6.png" width="900"><img src="scrub-jay-RADseq-vignette_files/figure-html/unnamed-chunk-11-7.png" width="900"></p>
+<pre><code>#&gt; cutoff is specified, filtered vcfR object will be returned</code></pre>
+<p><img src="scrub-jay-RADseq-vignette_files/figure-html/unnamed-chunk-11-8.png" width="900"></p>
+<pre><code>#&gt; 90.03% of SNPs fell below a completeness cutoff of 0.95 and were removed from the VCF</code></pre>
+<p><img src="scrub-jay-RADseq-vignette_files/figure-html/unnamed-chunk-11-9.png" width="900"><img src="scrub-jay-RADseq-vignette_files/figure-html/unnamed-chunk-11-10.png" width="900"><img src="scrub-jay-RADseq-vignette_files/figure-html/unnamed-chunk-11-11.png" width="900"></p>
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R">
 <span class="co">#check what t-SNE clustering looks like at an 85% threshold</span>
 <span class="va">miss</span><span class="op">&lt;-</span><span class="fu"><a href="../reference/assess_missing_data_tsne.html">assess_missing_data_tsne</a></span><span class="op">(</span>vcfR<span class="op">=</span><span class="va">vcfR</span>, popmap <span class="op">=</span> <span class="va">popmap</span>,
-                              thresholds <span class="op">=</span> <span class="fl">.85</span>, clustering <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
+                              thresholds <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">.75</span>,<span class="fl">.85</span>,<span class="fl">.95</span><span class="op">)</span>, clustering <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
 <span class="co">#&gt; cutoff is specified, filtered vcfR object will be returned</span>
-<span class="co">#&gt; 79.72% of SNPs fell below a completeness cutoff of 0.85 and were removed from the VCF</span></code></pre></div>
-<p><img src="scrub-jay-RADseq-vignette_files/figure-html/unnamed-chunk-11-9.png" width="900"><img src="scrub-jay-RADseq-vignette_files/figure-html/unnamed-chunk-11-10.png" width="900"><img src="scrub-jay-RADseq-vignette_files/figure-html/unnamed-chunk-11-11.png" width="900"></p>
-<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<span class="co">#&gt; 72.84% of SNPs fell below a completeness cutoff of 0.75 and were removed from the VCF</span></code></pre></div>
+<p><img src="scrub-jay-RADseq-vignette_files/figure-html/unnamed-chunk-11-12.png" width="900"><img src="scrub-jay-RADseq-vignette_files/figure-html/unnamed-chunk-11-13.png" width="900"></p>
+<pre><code>#&gt; cutoff is specified, filtered vcfR object will be returned</code></pre>
+<p><img src="scrub-jay-RADseq-vignette_files/figure-html/unnamed-chunk-11-14.png" width="900"></p>
+<pre><code>#&gt; 79.72% of SNPs fell below a completeness cutoff of 0.85 and were removed from the VCF</code></pre>
+<p><img src="scrub-jay-RADseq-vignette_files/figure-html/unnamed-chunk-11-15.png" width="900"><img src="scrub-jay-RADseq-vignette_files/figure-html/unnamed-chunk-11-16.png" width="900"></p>
+<pre><code>#&gt; cutoff is specified, filtered vcfR object will be returned</code></pre>
+<p><img src="scrub-jay-RADseq-vignette_files/figure-html/unnamed-chunk-11-17.png" width="900"></p>
+<pre><code>#&gt; 90.03% of SNPs fell below a completeness cutoff of 0.95 and were removed from the VCF</code></pre>
+<p><img src="scrub-jay-RADseq-vignette_files/figure-html/unnamed-chunk-11-18.png" width="900"><img src="scrub-jay-RADseq-vignette_files/figure-html/unnamed-chunk-11-19.png" width="900"><img src="scrub-jay-RADseq-vignette_files/figure-html/unnamed-chunk-11-20.png" width="900"></p>
+<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
 <code class="sourceCode R">
 <span class="co">#choose a cutoff resulting in an acceptable amount of missing data in each sample, and maximizes SNPs retained while minimizing overall missing data, and filter vcf</span>
 <span class="va">vcfR</span><span class="op">&lt;-</span><span class="fu"><a href="../reference/missing_by_snp.html">missing_by_snp</a></span><span class="op">(</span><span class="va">vcfR</span>, cutoff <span class="op">=</span> <span class="fl">.85</span><span class="op">)</span>
 <span class="co">#&gt; cutoff is specified, filtered vcfR object will be returned</span>
 <span class="co">#&gt; 79.72% of SNPs fell below a completeness cutoff of 0.85 and were removed from the VCF</span></code></pre></div>
-<p><img src="scrub-jay-RADseq-vignette_files/figure-html/unnamed-chunk-11-12.png" width="900"></p>
-<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
+<p><img src="scrub-jay-RADseq-vignette_files/figure-html/unnamed-chunk-11-21.png" width="900"></p>
+<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
 <code class="sourceCode R">
 <span class="co">#check how many SNPs and samples are left</span>
 <span class="va">vcfR</span>
@@ -374,28 +386,28 @@ miss&lt;-assess_missing_data_pca(vcfR=vcfR, popmap = popmap,
 <div id="macmaf-cutoffs-can-be-helpful-in-removing-spurious-and-uninformative-loci-from-the-dataset-but-also-have-the-potential-to-bias-downstream-inferences--linck-and-battey-2019-have-an-excellent-paper-on-just-this-topic--from-the-paper-" class="section level4">
 <h4 class="hasAnchor">
 <a href="#macmaf-cutoffs-can-be-helpful-in-removing-spurious-and-uninformative-loci-from-the-dataset-but-also-have-the-potential-to-bias-downstream-inferences--linck-and-battey-2019-have-an-excellent-paper-on-just-this-topic--from-the-paper-" class="anchor"></a>MAC/MAF cutoffs can be helpful in removing spurious and uninformative loci from the dataset, but also have the potential to bias downstream inferences. Linck and Battey (2019) have an excellent paper on just this topic. From the paper-</h4>
-<p>“We recommend researchers using model‐based programs to describe population structure observe the following best practices: (a) duplicate analyses with nonparametric methods suchas PCA and DAPC with cross validation (b) exclude singletons (c) compare alignments with multiple assembly parameters When seeking to exclude only singletons in alignments with missing data (a ubiquitous problem for reduced‐representation library preparation methods), it is preferable to filter by the count (rather than frequency) of the minor allele, because variation in the amount of missing data across an alignment will cause a static frequency cutoff to remove different SFS classes at different sites”"</p>
+<p>“We recommend researchers using model‐based programs to describe population structure observe the following best practices: (a) duplicate analyses with nonparametric methods suchas PCA and DAPC with cross validation (b) exclude singletons (c) compare alignments with multiple assembly parameters When seeking to exclude only singletons in alignments with missing data (a ubiquitous problem for reduced‐representation library preparation methods), it is preferable to filter by the count (rather than frequency) of the minor allele, because variation in the amount of missing data across an alignment will cause a static frequency cutoff to remove different SFS classes at different sites”</p>
 </div>
 <div id="our-package-contains-a-convenient-wrapper-functions-that-can-filter-based-on-minor-allele-count-mac-and-streamline-investigation-of-the-effects-of-various-filtering-parameters-on-sample-clustering-patterns-" class="section level4">
 <h4 class="hasAnchor">
 <a href="#our-package-contains-a-convenient-wrapper-functions-that-can-filter-based-on-minor-allele-count-mac-and-streamline-investigation-of-the-effects-of-various-filtering-parameters-on-sample-clustering-patterns-" class="anchor"></a>Our package contains a convenient wrapper functions that can filter based on minor allele count (MAC) and streamline investigation of the effects of various filtering parameters on sample clustering patterns.</h4>
-<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">#investigate clustering patterns with and without a minor allele cutoff</span>
 <span class="co">#use min.mac() to investigate the effect of multiple cutoffs</span>
 <span class="va">vcfR.mac</span><span class="op">&lt;-</span><span class="fu"><a href="../reference/min_mac.html">min_mac</a></span><span class="op">(</span>vcfR <span class="op">=</span> <span class="va">vcfR</span>, min.mac <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>
 <span class="co">#&gt; 30.87% of SNPs fell below a minor allele count of 2 and were removed from the VCF</span></code></pre></div>
 <p><img src="scrub-jay-RADseq-vignette_files/figure-html/unnamed-chunk-12-1.png" width="900"></p>
-<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
 <code class="sourceCode R">
 <span class="co">#assess clustering without MAC cutoff</span>
 <span class="va">miss</span><span class="op">&lt;-</span><span class="fu"><a href="../reference/assess_missing_data_tsne.html">assess_missing_data_tsne</a></span><span class="op">(</span><span class="va">vcfR</span>, <span class="va">popmap</span>, clustering <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
 <p><img src="scrub-jay-RADseq-vignette_files/figure-html/unnamed-chunk-12-2.png" width="900"><img src="scrub-jay-RADseq-vignette_files/figure-html/unnamed-chunk-12-3.png" width="900"></p>
-<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
 <code class="sourceCode R">
 <span class="co">#assess clustering with MAC cutoff</span>
 <span class="va">miss</span><span class="op">&lt;-</span><span class="fu"><a href="../reference/assess_missing_data_tsne.html">assess_missing_data_tsne</a></span><span class="op">(</span><span class="va">vcfR.mac</span>, <span class="va">popmap</span>, clustering <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
 <p><img src="scrub-jay-RADseq-vignette_files/figure-html/unnamed-chunk-12-4.png" width="900"><img src="scrub-jay-RADseq-vignette_files/figure-html/unnamed-chunk-12-5.png" width="900"></p>
-<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
 <code class="sourceCode R">
 
 <span class="co">#based on these visualizations, singletons are not obviously biasing clustering patterns, so I will leave them in for now. If I want to run a program like STRUCTURE, where singletons are known to bias inference, I can write out the vcf with singletons removed as well:</span>
@@ -404,12 +416,12 @@ miss&lt;-assess_missing_data_pca(vcfR=vcfR, popmap = popmap,
 <div id="finally-we-will-make-sure-that-the-depth-and-genotype-quality-look-consistent-across-snps-and-samples-following-our-filtering-pipeline-" class="section level4">
 <h4 class="hasAnchor">
 <a href="#finally-we-will-make-sure-that-the-depth-and-genotype-quality-look-consistent-across-snps-and-samples-following-our-filtering-pipeline-" class="anchor"></a>Finally, we will make sure that the depth and genotype quality look consistent across SNPs and samples, following our filtering pipeline.</h4>
-<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">#plot depth per snp and per sample</span>
 <span class="va">dp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/vcfR/man/extract_gt.html">extract.gt</a></span><span class="op">(</span><span class="va">vcfR</span>, element <span class="op">=</span> <span class="st">"DP"</span>, as.numeric<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/pkg/vcfR/man/heatmap_bp.html">heatmap.bp</a></span><span class="op">(</span><span class="va">dp</span>, rlabels <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
 <p><img src="scrub-jay-RADseq-vignette_files/figure-html/unnamed-chunk-13-1.png" width="900"></p>
-<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">#plot genotype quality per snp and per sample</span>
 <span class="va">gq</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/vcfR/man/extract_gt.html">extract.gt</a></span><span class="op">(</span><span class="va">vcfR</span>, element <span class="op">=</span> <span class="st">"GQ"</span>, as.numeric<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/pkg/vcfR/man/heatmap_bp.html">heatmap.bp</a></span><span class="op">(</span><span class="va">gq</span>, rlabels <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
@@ -431,92 +443,92 @@ miss&lt;-assess_missing_data_pca(vcfR=vcfR, popmap = popmap,
 <div id="write-out-the-filtered-vcf-and-a-linkage-filtered-version-for-downstream-analyses" class="section level4">
 <h4 class="hasAnchor">
 <a href="#write-out-the-filtered-vcf-and-a-linkage-filtered-version-for-downstream-analyses" class="anchor"></a>Write out the filtered vcf, and a linkage filtered version, for downstream analyses</h4>
-<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co">#fix mislabeled sample</span></span>
-<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(vcfR<span class="sc">@</span>gt)[<span class="fu">colnames</span>(vcfR<span class="sc">@</span>gt) <span class="sc">==</span> <span class="st">"A_californica_334171"</span>]<span class="ot">&lt;-</span><span class="st">"A_woodhouseii_334171"</span></span>
-<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a><span class="co">#write out vcf with all SNPs</span></span>
-<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>vcfR<span class="sc">::</span><span class="fu">write.vcf</span>(vcfR, <span class="st">"~/Downloads/aphelocoma.filtered.vcf.gz"</span>)</span>
-<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a><span class="co">#linkage filter vcf to thin SNPs to one per 500bp</span></span>
-<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a>vcfR.thin<span class="ot">&lt;-</span><span class="fu">distance_thin</span>(vcfR, <span class="at">min.distance =</span> <span class="dv">500</span>)</span>
-<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
-<span id="cb31-10"><a href="#cb31-10" aria-hidden="true" tabindex="-1"></a>  <span class="er">|</span>                                                                      <span class="er">|</span>   <span class="dv">0</span>%</span>
-<span id="cb31-11"><a href="#cb31-11" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
-<span id="cb31-12"><a href="#cb31-12" aria-hidden="true" tabindex="-1"></a>  <span class="er">|==</span>                                                                    <span class="er">|</span>   <span class="dv">3</span>%</span>
-<span id="cb31-13"><a href="#cb31-13" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
-<span id="cb31-14"><a href="#cb31-14" aria-hidden="true" tabindex="-1"></a>  <span class="er">|====</span>                                                                  <span class="er">|</span>   <span class="dv">6</span>%</span>
-<span id="cb31-15"><a href="#cb31-15" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
-<span id="cb31-16"><a href="#cb31-16" aria-hidden="true" tabindex="-1"></a>  <span class="er">|======</span>                                                                <span class="er">|</span>   <span class="dv">8</span>%</span>
-<span id="cb31-17"><a href="#cb31-17" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
-<span id="cb31-18"><a href="#cb31-18" aria-hidden="true" tabindex="-1"></a>  <span class="er">|========</span>                                                              <span class="er">|</span>  <span class="dv">11</span>%</span>
-<span id="cb31-19"><a href="#cb31-19" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
-<span id="cb31-20"><a href="#cb31-20" aria-hidden="true" tabindex="-1"></a>  <span class="er">|==========</span>                                                            <span class="er">|</span>  <span class="dv">14</span>%</span>
-<span id="cb31-21"><a href="#cb31-21" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
-<span id="cb31-22"><a href="#cb31-22" aria-hidden="true" tabindex="-1"></a>  <span class="er">|============</span>                                                          <span class="er">|</span>  <span class="dv">17</span>%</span>
-<span id="cb31-23"><a href="#cb31-23" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
-<span id="cb31-24"><a href="#cb31-24" aria-hidden="true" tabindex="-1"></a>  <span class="er">|==============</span>                                                        <span class="er">|</span>  <span class="dv">19</span>%</span>
-<span id="cb31-25"><a href="#cb31-25" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
-<span id="cb31-26"><a href="#cb31-26" aria-hidden="true" tabindex="-1"></a>  <span class="er">|================</span>                                                      <span class="er">|</span>  <span class="dv">22</span>%</span>
-<span id="cb31-27"><a href="#cb31-27" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
-<span id="cb31-28"><a href="#cb31-28" aria-hidden="true" tabindex="-1"></a>  <span class="er">|==================</span>                                                    <span class="er">|</span>  <span class="dv">25</span>%</span>
-<span id="cb31-29"><a href="#cb31-29" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
-<span id="cb31-30"><a href="#cb31-30" aria-hidden="true" tabindex="-1"></a>  <span class="er">|===================</span>                                                   <span class="er">|</span>  <span class="dv">28</span>%</span>
-<span id="cb31-31"><a href="#cb31-31" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
-<span id="cb31-32"><a href="#cb31-32" aria-hidden="true" tabindex="-1"></a>  <span class="er">|=====================</span>                                                 <span class="er">|</span>  <span class="dv">31</span>%</span>
-<span id="cb31-33"><a href="#cb31-33" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
-<span id="cb31-34"><a href="#cb31-34" aria-hidden="true" tabindex="-1"></a>  <span class="er">|=======================</span>                                               <span class="er">|</span>  <span class="dv">33</span>%</span>
-<span id="cb31-35"><a href="#cb31-35" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
-<span id="cb31-36"><a href="#cb31-36" aria-hidden="true" tabindex="-1"></a>  <span class="er">|=========================</span>                                             <span class="er">|</span>  <span class="dv">36</span>%</span>
-<span id="cb31-37"><a href="#cb31-37" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
-<span id="cb31-38"><a href="#cb31-38" aria-hidden="true" tabindex="-1"></a>  <span class="er">|===========================</span>                                           <span class="er">|</span>  <span class="dv">39</span>%</span>
-<span id="cb31-39"><a href="#cb31-39" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
-<span id="cb31-40"><a href="#cb31-40" aria-hidden="true" tabindex="-1"></a>  <span class="er">|=============================</span>                                         <span class="er">|</span>  <span class="dv">42</span>%</span>
-<span id="cb31-41"><a href="#cb31-41" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
-<span id="cb31-42"><a href="#cb31-42" aria-hidden="true" tabindex="-1"></a>  <span class="er">|===============================</span>                                       <span class="er">|</span>  <span class="dv">44</span>%</span>
-<span id="cb31-43"><a href="#cb31-43" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
-<span id="cb31-44"><a href="#cb31-44" aria-hidden="true" tabindex="-1"></a>  <span class="er">|=================================</span>                                     <span class="er">|</span>  <span class="dv">47</span>%</span>
-<span id="cb31-45"><a href="#cb31-45" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
-<span id="cb31-46"><a href="#cb31-46" aria-hidden="true" tabindex="-1"></a>  <span class="er">|===================================</span>                                   <span class="er">|</span>  <span class="dv">50</span>%</span>
-<span id="cb31-47"><a href="#cb31-47" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
-<span id="cb31-48"><a href="#cb31-48" aria-hidden="true" tabindex="-1"></a>  <span class="er">|=====================================</span>                                 <span class="er">|</span>  <span class="dv">53</span>%</span>
-<span id="cb31-49"><a href="#cb31-49" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
-<span id="cb31-50"><a href="#cb31-50" aria-hidden="true" tabindex="-1"></a>  <span class="er">|=======================================</span>                               <span class="er">|</span>  <span class="dv">56</span>%</span>
-<span id="cb31-51"><a href="#cb31-51" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
-<span id="cb31-52"><a href="#cb31-52" aria-hidden="true" tabindex="-1"></a>  <span class="er">|=========================================</span>                             <span class="er">|</span>  <span class="dv">58</span>%</span>
-<span id="cb31-53"><a href="#cb31-53" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
-<span id="cb31-54"><a href="#cb31-54" aria-hidden="true" tabindex="-1"></a>  <span class="er">|===========================================</span>                           <span class="er">|</span>  <span class="dv">61</span>%</span>
-<span id="cb31-55"><a href="#cb31-55" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
-<span id="cb31-56"><a href="#cb31-56" aria-hidden="true" tabindex="-1"></a>  <span class="er">|=============================================</span>                         <span class="er">|</span>  <span class="dv">64</span>%</span>
-<span id="cb31-57"><a href="#cb31-57" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
-<span id="cb31-58"><a href="#cb31-58" aria-hidden="true" tabindex="-1"></a>  <span class="er">|===============================================</span>                       <span class="er">|</span>  <span class="dv">67</span>%</span>
-<span id="cb31-59"><a href="#cb31-59" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
-<span id="cb31-60"><a href="#cb31-60" aria-hidden="true" tabindex="-1"></a>  <span class="er">|=================================================</span>                     <span class="er">|</span>  <span class="dv">69</span>%</span>
-<span id="cb31-61"><a href="#cb31-61" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
-<span id="cb31-62"><a href="#cb31-62" aria-hidden="true" tabindex="-1"></a>  <span class="er">|===================================================</span>                   <span class="er">|</span>  <span class="dv">72</span>%</span>
-<span id="cb31-63"><a href="#cb31-63" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
-<span id="cb31-64"><a href="#cb31-64" aria-hidden="true" tabindex="-1"></a>  <span class="er">|====================================================</span>                  <span class="er">|</span>  <span class="dv">75</span>%</span>
-<span id="cb31-65"><a href="#cb31-65" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
-<span id="cb31-66"><a href="#cb31-66" aria-hidden="true" tabindex="-1"></a>  <span class="er">|======================================================</span>                <span class="er">|</span>  <span class="dv">78</span>%</span>
-<span id="cb31-67"><a href="#cb31-67" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
-<span id="cb31-68"><a href="#cb31-68" aria-hidden="true" tabindex="-1"></a>  <span class="er">|========================================================</span>              <span class="er">|</span>  <span class="dv">81</span>%</span>
-<span id="cb31-69"><a href="#cb31-69" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
-<span id="cb31-70"><a href="#cb31-70" aria-hidden="true" tabindex="-1"></a>  <span class="er">|==========================================================</span>            <span class="er">|</span>  <span class="dv">83</span>%</span>
-<span id="cb31-71"><a href="#cb31-71" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
-<span id="cb31-72"><a href="#cb31-72" aria-hidden="true" tabindex="-1"></a>  <span class="er">|============================================================</span>          <span class="er">|</span>  <span class="dv">86</span>%</span>
-<span id="cb31-73"><a href="#cb31-73" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
-<span id="cb31-74"><a href="#cb31-74" aria-hidden="true" tabindex="-1"></a>  <span class="er">|==============================================================</span>        <span class="er">|</span>  <span class="dv">89</span>%</span>
-<span id="cb31-75"><a href="#cb31-75" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
-<span id="cb31-76"><a href="#cb31-76" aria-hidden="true" tabindex="-1"></a>  <span class="er">|================================================================</span>      <span class="er">|</span>  <span class="dv">92</span>%</span>
-<span id="cb31-77"><a href="#cb31-77" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
-<span id="cb31-78"><a href="#cb31-78" aria-hidden="true" tabindex="-1"></a>  <span class="er">|==================================================================</span>    <span class="er">|</span>  <span class="dv">94</span>%</span>
-<span id="cb31-79"><a href="#cb31-79" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
-<span id="cb31-80"><a href="#cb31-80" aria-hidden="true" tabindex="-1"></a>  <span class="er">|====================================================================</span>  <span class="er">|</span>  <span class="dv">97</span>%</span>
-<span id="cb31-81"><a href="#cb31-81" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
-<span id="cb31-82"><a href="#cb31-82" aria-hidden="true" tabindex="-1"></a>  <span class="er">|======================================================================|</span> <span class="dv">100</span>%</span>
-<span id="cb31-83"><a href="#cb31-83" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2803 out of 16307 input SNPs were not located within 500 base-pairs of another SNP and were retained despite filtering</span></span>
-<span id="cb31-84"><a href="#cb31-84" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-85"><a href="#cb31-85" aria-hidden="true" tabindex="-1"></a><span class="co">#write out thinned vcf</span></span>
-<span id="cb31-86"><a href="#cb31-86" aria-hidden="true" tabindex="-1"></a>vcfR<span class="sc">::</span><span class="fu">write.vcf</span>(vcfR.thin, <span class="st">"~/Downloads/aphelocoma.filtered.thinned.vcf.gz"</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="co">#fix mislabeled sample</span></span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(vcfR<span class="sc">@</span>gt)[<span class="fu">colnames</span>(vcfR<span class="sc">@</span>gt) <span class="sc">==</span> <span class="st">"A_californica_334171"</span>]<span class="ot">&lt;-</span><span class="st">"A_woodhouseii_334171"</span></span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a><span class="co">#write out vcf with all SNPs</span></span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>vcfR<span class="sc">::</span><span class="fu">write.vcf</span>(vcfR, <span class="st">"~/Downloads/aphelocoma.filtered.vcf.gz"</span>)</span>
+<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a><span class="co">#linkage filter vcf to thin SNPs to one per 500bp</span></span>
+<span id="cb37-7"><a href="#cb37-7" aria-hidden="true" tabindex="-1"></a>vcfR.thin<span class="ot">&lt;-</span><span class="fu">distance_thin</span>(vcfR, <span class="at">min.distance =</span> <span class="dv">500</span>)</span>
+<span id="cb37-8"><a href="#cb37-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb37-9"><a href="#cb37-9" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
+<span id="cb37-10"><a href="#cb37-10" aria-hidden="true" tabindex="-1"></a>  <span class="er">|</span>                                                                      <span class="er">|</span>   <span class="dv">0</span>%</span>
+<span id="cb37-11"><a href="#cb37-11" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
+<span id="cb37-12"><a href="#cb37-12" aria-hidden="true" tabindex="-1"></a>  <span class="er">|==</span>                                                                    <span class="er">|</span>   <span class="dv">3</span>%</span>
+<span id="cb37-13"><a href="#cb37-13" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
+<span id="cb37-14"><a href="#cb37-14" aria-hidden="true" tabindex="-1"></a>  <span class="er">|====</span>                                                                  <span class="er">|</span>   <span class="dv">6</span>%</span>
+<span id="cb37-15"><a href="#cb37-15" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
+<span id="cb37-16"><a href="#cb37-16" aria-hidden="true" tabindex="-1"></a>  <span class="er">|======</span>                                                                <span class="er">|</span>   <span class="dv">8</span>%</span>
+<span id="cb37-17"><a href="#cb37-17" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
+<span id="cb37-18"><a href="#cb37-18" aria-hidden="true" tabindex="-1"></a>  <span class="er">|========</span>                                                              <span class="er">|</span>  <span class="dv">11</span>%</span>
+<span id="cb37-19"><a href="#cb37-19" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
+<span id="cb37-20"><a href="#cb37-20" aria-hidden="true" tabindex="-1"></a>  <span class="er">|==========</span>                                                            <span class="er">|</span>  <span class="dv">14</span>%</span>
+<span id="cb37-21"><a href="#cb37-21" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
+<span id="cb37-22"><a href="#cb37-22" aria-hidden="true" tabindex="-1"></a>  <span class="er">|============</span>                                                          <span class="er">|</span>  <span class="dv">17</span>%</span>
+<span id="cb37-23"><a href="#cb37-23" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
+<span id="cb37-24"><a href="#cb37-24" aria-hidden="true" tabindex="-1"></a>  <span class="er">|==============</span>                                                        <span class="er">|</span>  <span class="dv">19</span>%</span>
+<span id="cb37-25"><a href="#cb37-25" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
+<span id="cb37-26"><a href="#cb37-26" aria-hidden="true" tabindex="-1"></a>  <span class="er">|================</span>                                                      <span class="er">|</span>  <span class="dv">22</span>%</span>
+<span id="cb37-27"><a href="#cb37-27" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
+<span id="cb37-28"><a href="#cb37-28" aria-hidden="true" tabindex="-1"></a>  <span class="er">|==================</span>                                                    <span class="er">|</span>  <span class="dv">25</span>%</span>
+<span id="cb37-29"><a href="#cb37-29" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
+<span id="cb37-30"><a href="#cb37-30" aria-hidden="true" tabindex="-1"></a>  <span class="er">|===================</span>                                                   <span class="er">|</span>  <span class="dv">28</span>%</span>
+<span id="cb37-31"><a href="#cb37-31" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
+<span id="cb37-32"><a href="#cb37-32" aria-hidden="true" tabindex="-1"></a>  <span class="er">|=====================</span>                                                 <span class="er">|</span>  <span class="dv">31</span>%</span>
+<span id="cb37-33"><a href="#cb37-33" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
+<span id="cb37-34"><a href="#cb37-34" aria-hidden="true" tabindex="-1"></a>  <span class="er">|=======================</span>                                               <span class="er">|</span>  <span class="dv">33</span>%</span>
+<span id="cb37-35"><a href="#cb37-35" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
+<span id="cb37-36"><a href="#cb37-36" aria-hidden="true" tabindex="-1"></a>  <span class="er">|=========================</span>                                             <span class="er">|</span>  <span class="dv">36</span>%</span>
+<span id="cb37-37"><a href="#cb37-37" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
+<span id="cb37-38"><a href="#cb37-38" aria-hidden="true" tabindex="-1"></a>  <span class="er">|===========================</span>                                           <span class="er">|</span>  <span class="dv">39</span>%</span>
+<span id="cb37-39"><a href="#cb37-39" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
+<span id="cb37-40"><a href="#cb37-40" aria-hidden="true" tabindex="-1"></a>  <span class="er">|=============================</span>                                         <span class="er">|</span>  <span class="dv">42</span>%</span>
+<span id="cb37-41"><a href="#cb37-41" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
+<span id="cb37-42"><a href="#cb37-42" aria-hidden="true" tabindex="-1"></a>  <span class="er">|===============================</span>                                       <span class="er">|</span>  <span class="dv">44</span>%</span>
+<span id="cb37-43"><a href="#cb37-43" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
+<span id="cb37-44"><a href="#cb37-44" aria-hidden="true" tabindex="-1"></a>  <span class="er">|=================================</span>                                     <span class="er">|</span>  <span class="dv">47</span>%</span>
+<span id="cb37-45"><a href="#cb37-45" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
+<span id="cb37-46"><a href="#cb37-46" aria-hidden="true" tabindex="-1"></a>  <span class="er">|===================================</span>                                   <span class="er">|</span>  <span class="dv">50</span>%</span>
+<span id="cb37-47"><a href="#cb37-47" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
+<span id="cb37-48"><a href="#cb37-48" aria-hidden="true" tabindex="-1"></a>  <span class="er">|=====================================</span>                                 <span class="er">|</span>  <span class="dv">53</span>%</span>
+<span id="cb37-49"><a href="#cb37-49" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
+<span id="cb37-50"><a href="#cb37-50" aria-hidden="true" tabindex="-1"></a>  <span class="er">|=======================================</span>                               <span class="er">|</span>  <span class="dv">56</span>%</span>
+<span id="cb37-51"><a href="#cb37-51" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
+<span id="cb37-52"><a href="#cb37-52" aria-hidden="true" tabindex="-1"></a>  <span class="er">|=========================================</span>                             <span class="er">|</span>  <span class="dv">58</span>%</span>
+<span id="cb37-53"><a href="#cb37-53" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
+<span id="cb37-54"><a href="#cb37-54" aria-hidden="true" tabindex="-1"></a>  <span class="er">|===========================================</span>                           <span class="er">|</span>  <span class="dv">61</span>%</span>
+<span id="cb37-55"><a href="#cb37-55" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
+<span id="cb37-56"><a href="#cb37-56" aria-hidden="true" tabindex="-1"></a>  <span class="er">|=============================================</span>                         <span class="er">|</span>  <span class="dv">64</span>%</span>
+<span id="cb37-57"><a href="#cb37-57" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
+<span id="cb37-58"><a href="#cb37-58" aria-hidden="true" tabindex="-1"></a>  <span class="er">|===============================================</span>                       <span class="er">|</span>  <span class="dv">67</span>%</span>
+<span id="cb37-59"><a href="#cb37-59" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
+<span id="cb37-60"><a href="#cb37-60" aria-hidden="true" tabindex="-1"></a>  <span class="er">|=================================================</span>                     <span class="er">|</span>  <span class="dv">69</span>%</span>
+<span id="cb37-61"><a href="#cb37-61" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
+<span id="cb37-62"><a href="#cb37-62" aria-hidden="true" tabindex="-1"></a>  <span class="er">|===================================================</span>                   <span class="er">|</span>  <span class="dv">72</span>%</span>
+<span id="cb37-63"><a href="#cb37-63" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
+<span id="cb37-64"><a href="#cb37-64" aria-hidden="true" tabindex="-1"></a>  <span class="er">|====================================================</span>                  <span class="er">|</span>  <span class="dv">75</span>%</span>
+<span id="cb37-65"><a href="#cb37-65" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
+<span id="cb37-66"><a href="#cb37-66" aria-hidden="true" tabindex="-1"></a>  <span class="er">|======================================================</span>                <span class="er">|</span>  <span class="dv">78</span>%</span>
+<span id="cb37-67"><a href="#cb37-67" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
+<span id="cb37-68"><a href="#cb37-68" aria-hidden="true" tabindex="-1"></a>  <span class="er">|========================================================</span>              <span class="er">|</span>  <span class="dv">81</span>%</span>
+<span id="cb37-69"><a href="#cb37-69" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
+<span id="cb37-70"><a href="#cb37-70" aria-hidden="true" tabindex="-1"></a>  <span class="er">|==========================================================</span>            <span class="er">|</span>  <span class="dv">83</span>%</span>
+<span id="cb37-71"><a href="#cb37-71" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
+<span id="cb37-72"><a href="#cb37-72" aria-hidden="true" tabindex="-1"></a>  <span class="er">|============================================================</span>          <span class="er">|</span>  <span class="dv">86</span>%</span>
+<span id="cb37-73"><a href="#cb37-73" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
+<span id="cb37-74"><a href="#cb37-74" aria-hidden="true" tabindex="-1"></a>  <span class="er">|==============================================================</span>        <span class="er">|</span>  <span class="dv">89</span>%</span>
+<span id="cb37-75"><a href="#cb37-75" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
+<span id="cb37-76"><a href="#cb37-76" aria-hidden="true" tabindex="-1"></a>  <span class="er">|================================================================</span>      <span class="er">|</span>  <span class="dv">92</span>%</span>
+<span id="cb37-77"><a href="#cb37-77" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
+<span id="cb37-78"><a href="#cb37-78" aria-hidden="true" tabindex="-1"></a>  <span class="er">|==================================================================</span>    <span class="er">|</span>  <span class="dv">94</span>%</span>
+<span id="cb37-79"><a href="#cb37-79" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
+<span id="cb37-80"><a href="#cb37-80" aria-hidden="true" tabindex="-1"></a>  <span class="er">|====================================================================</span>  <span class="er">|</span>  <span class="dv">97</span>%</span>
+<span id="cb37-81"><a href="#cb37-81" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
+<span id="cb37-82"><a href="#cb37-82" aria-hidden="true" tabindex="-1"></a>  <span class="er">|======================================================================|</span> <span class="dv">100</span>%</span>
+<span id="cb37-83"><a href="#cb37-83" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2803 out of 16307 input SNPs were not located within 500 base-pairs of another SNP and were retained despite filtering</span></span>
+<span id="cb37-84"><a href="#cb37-84" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-85"><a href="#cb37-85" aria-hidden="true" tabindex="-1"></a><span class="co">#write out thinned vcf</span></span>
+<span id="cb37-86"><a href="#cb37-86" aria-hidden="true" tabindex="-1"></a>vcfR<span class="sc">::</span><span class="fu">write.vcf</span>(vcfR.thin, <span class="st">"~/Downloads/aphelocoma.filtered.thinned.vcf.gz"</span>)</span></code></pre></div>
 </div>
 </div>
 </div>

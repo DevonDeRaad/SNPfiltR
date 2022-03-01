@@ -87,7 +87,7 @@ on clustering patterns." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">SNPfiltR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.1</span>
       </span>
     </div>
 
@@ -110,7 +110,10 @@ on clustering patterns." />
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/performance-benchmarking.html">Performance benchmark</a>
+      <a href="../articles/accuracy-benchmarking.html">Accuracy benchmarking</a>
+    </li>
+    <li>
+      <a href="../articles/performance-benchmarking.html">Performance benchmarking</a>
     </li>
     <li>
       <a href="../articles/reproducible-vignette.html">reproducible-vignette</a>
@@ -210,27 +213,27 @@ clustering on the output? (default = TRUE, max clusters = # of levels in popmap 
 popmap <span class='op'>=</span> <span class='fu'>SNPfiltR</span><span class='fu'>::</span><span class='va'><a href='popmap.html'>popmap</a></span>,
 thresholds <span class='op'>=</span> <span class='fl'>.8</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; <span class='message'>cutoff is specified, filtered vcfR object will be returned</span></div><div class='output co'>#&gt; <span class='message'>65.8% of SNPs fell below a completeness cutoff of 0.8 and were removed from the VCF</span></div><div class='img'><img src='assess_missing_data_tsne-1.png' alt='' width='700' height='433' /></div><div class='img'><img src='assess_missing_data_tsne-2.png' alt='' width='700' height='433' /></div><div class='img'><img src='assess_missing_data_tsne-3.png' alt='' width='700' height='433' /></div><div class='img'><img src='assess_missing_data_tsne-4.png' alt='' width='700' height='433' /></div><div class='output co'>#&gt; [[1]]
-#&gt;            V1          V2          pop pam.clust missing
-#&gt; 1  -21.817034   51.960294  californica         1   0.168
-#&gt; 2  -16.604207   31.230375  californica         1   0.304
-#&gt; 3  -21.391474   61.365407  californica         1   0.344
-#&gt; 4  -11.075735   40.963542  californica         1   0.200
-#&gt; 5  -21.526845   39.252405  californica         1   0.314
-#&gt; 6    1.206668 -105.562559    insularis         2   0.264
-#&gt; 7   -5.192100 -120.478404    insularis         2   0.194
-#&gt; 8    4.147520 -117.999175    insularis         2   0.206
-#&gt; 9   10.105444 -110.305773    insularis         2   0.260
-#&gt; 10  -7.109449 -110.573486    insularis         2   0.300
-#&gt; 11  12.157778   43.207582  woodhouseii         1   0.278
-#&gt; 12  15.862556   51.311318  woodhouseii         1   0.568
-#&gt; 13  -1.177286   77.461613  woodhouseii         1   0.322
-#&gt; 14   3.044428   62.186027  woodhouseii         1   0.600
-#&gt; 15   6.393167   69.598685  woodhouseii         1   0.388
-#&gt; 16  20.494783   -2.318659 coerulescens         1   0.474
-#&gt; 17  10.839123    4.778829 coerulescens         1   0.700
-#&gt; 18  -8.959113   50.966253 coerulescens         1   0.964
-#&gt; 19  11.146261   -5.405786 coerulescens         1   0.534
-#&gt; 20  19.455516  -11.638488 coerulescens         1   0.232
+#&gt;            V1          V2          pop pam.clust     missing
+#&gt; 1  -21.817034   51.960294  californica         1 0.005847953
+#&gt; 2  -16.604207   31.230375  californica         1 0.005847953
+#&gt; 3  -21.391474   61.365407  californica         1 0.017543860
+#&gt; 4  -11.075735   40.963542  californica         1 0.000000000
+#&gt; 5  -21.526845   39.252405  californica         1 0.005847953
+#&gt; 6    1.206668 -105.562559    insularis         2 0.005847953
+#&gt; 7   -5.192100 -120.478404    insularis         2 0.000000000
+#&gt; 8    4.147520 -117.999175    insularis         2 0.005847953
+#&gt; 9   10.105444 -110.305773    insularis         2 0.005847953
+#&gt; 10  -7.109449 -110.573486    insularis         2 0.000000000
+#&gt; 11  12.157778   43.207582  woodhouseii         1 0.000000000
+#&gt; 12  15.862556   51.311318  woodhouseii         1 0.076023392
+#&gt; 13  -1.177286   77.461613  woodhouseii         1 0.000000000
+#&gt; 14   3.044428   62.186027  woodhouseii         1 0.116959064
+#&gt; 15   6.393167   69.598685  woodhouseii         1 0.011695906
+#&gt; 16  20.494783   -2.318659 coerulescens         1 0.029239766
+#&gt; 17  10.839123    4.778829 coerulescens         1 0.327485380
+#&gt; 18  -8.959113   50.966253 coerulescens         1 0.894736842
+#&gt; 19  11.146261   -5.405786 coerulescens         1 0.087719298
+#&gt; 20  19.455516  -11.638488 coerulescens         1 0.005847953
 #&gt; </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

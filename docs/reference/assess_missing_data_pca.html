@@ -87,7 +87,7 @@ on clustering patterns." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">SNPfiltR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.1</span>
       </span>
     </div>
 
@@ -110,7 +110,10 @@ on clustering patterns." />
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/performance-benchmarking.html">Performance benchmark</a>
+      <a href="../articles/accuracy-benchmarking.html">Accuracy benchmarking</a>
+    </li>
+    <li>
+      <a href="../articles/performance-benchmarking.html">Performance benchmarking</a>
     </li>
     <li>
       <a href="../articles/reproducible-vignette.html">reproducible-vignette</a>
@@ -192,9 +195,72 @@ clustering on the output? (default = TRUE, max clusters = # of levels in popmap 
     <pre class="examples"><div class='input'><span class='fu'>assess_missing_data_pca</span><span class='op'>(</span>vcfR <span class='op'>=</span> <span class='fu'>SNPfiltR</span><span class='fu'>::</span><span class='va'><a href='vcfR.example.html'>vcfR.example</a></span>,
 popmap <span class='op'>=</span> <span class='fu'>SNPfiltR</span><span class='fu'>::</span><span class='va'><a href='popmap.html'>popmap</a></span>,
 thresholds <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>.6</span>,<span class='fl'>.8</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>cutoff is specified, filtered vcfR object will be returned</span></div><div class='output co'>#&gt; <span class='message'>41% of SNPs fell below a completeness cutoff of 0.6 and were removed from the VCF</span></div><div class='output co'>#&gt; <span class='message'>Loading required namespace: adegenet</span></div><div class='output co'>#&gt; <span class='message'>Registered S3 method overwritten by 'spdep':</span>
-#&gt; <span class='message'>  method   from</span>
-#&gt; <span class='message'>  plot.mst ape </span></div><div class='img'><img src='assess_missing_data_pca-1.png' alt='' width='700' height='433' /></div><div class='img'><img src='assess_missing_data_pca-2.png' alt='' width='700' height='433' /></div><div class='img'><img src='assess_missing_data_pca-3.png' alt='' width='700' height='433' /></div><div class='output co'>#&gt; <span class='message'>cutoff is specified, filtered vcfR object will be returned</span></div><div class='img'><img src='assess_missing_data_pca-4.png' alt='' width='700' height='433' /></div><div class='output co'>#&gt; <span class='message'>65.8% of SNPs fell below a completeness cutoff of 0.8 and were removed from the VCF</span></div><div class='img'><img src='assess_missing_data_pca-5.png' alt='' width='700' height='433' /></div><div class='img'><img src='assess_missing_data_pca-6.png' alt='' width='700' height='433' /></div><div class='img'><img src='assess_missing_data_pca-7.png' alt='' width='700' height='433' /></div><div class='img'><img src='assess_missing_data_pca-8.png' alt='' width='700' height='433' /></div><div class='output co'>#&gt; [[1]]
+</div><div class='output co'>#&gt; <span class='message'>cutoff is specified, filtered vcfR object will be returned</span></div><div class='output co'>#&gt; <span class='message'>41% of SNPs fell below a completeness cutoff of 0.6 and were removed from the VCF</span></div><div class='output co'>#&gt; <span class='message'>Loading required namespace: adegenet</span></div><div class='img'><img src='assess_missing_data_pca-1.png' alt='' width='700' height='433' /></div><div class='img'><img src='assess_missing_data_pca-2.png' alt='' width='700' height='433' /></div><div class='img'><img src='assess_missing_data_pca-3.png' alt='' width='700' height='433' /></div><div class='output co'>#&gt; <span class='message'>cutoff is specified, filtered vcfR object will be returned</span></div><div class='img'><img src='assess_missing_data_pca-4.png' alt='' width='700' height='433' /></div><div class='output co'>#&gt; <span class='message'>65.8% of SNPs fell below a completeness cutoff of 0.8 and were removed from the VCF</span></div><div class='img'><img src='assess_missing_data_pca-5.png' alt='' width='700' height='433' /></div><div class='img'><img src='assess_missing_data_pca-6.png' alt='' width='700' height='433' /></div><div class='img'><img src='assess_missing_data_pca-7.png' alt='' width='700' height='433' /></div><div class='img'><img src='assess_missing_data_pca-8.png' alt='' width='700' height='433' /></div><div class='output co'>#&gt; [[1]]
+#&gt;                                PC1        PC2          PC3         PC4
+#&gt; A_californica_333849   0.237741866 -2.4988404 -2.351813835  2.14328838
+#&gt; A_californica_333854  -0.354127529 -1.3710840 -1.932002575 -1.83979203
+#&gt; A_californica_333855  -0.165697881 -1.1561654 -1.102001045 -1.67398509
+#&gt; A_californica_333857   0.488514978 -1.9606079 -1.157016976 -0.42707071
+#&gt; A_californica_333860   0.008234824 -2.1165240 -1.575534572  0.04664692
+#&gt; A_insularis_334031    -3.244449855  1.8875981 -0.004242683  0.15963315
+#&gt; A_insularis_334032    -3.328762399  1.7937941  0.032348010  0.17309594
+#&gt; A_insularis_334033    -3.302240187  1.9576252  0.027737021  0.07963436
+#&gt; A_insularis_334034    -3.121877248  1.8566288  0.044493153  0.09811736
+#&gt; A_insularis_334037    -3.121081744  1.9003974 -0.018574175  0.21422938
+#&gt; A_woodhouseii_334133   0.235279341 -1.7091003  1.571126852  2.43373578
+#&gt; A_woodhouseii_334134   0.122858284 -1.4509186  0.924995203  1.17009468
+#&gt; A_woodhouseii_334142   0.895294022 -2.2372383  2.685445733 -0.85236090
+#&gt; A_woodhouseii_334148  -0.200318033 -1.1310393  1.045625915 -0.38294068
+#&gt; A_woodhouseii_334153  -0.174072324 -1.4946312  2.302686686 -1.28448335
+#&gt; A_coerulescens_396256  4.339770767  2.1009699 -0.254363947  0.44018754
+#&gt; A_coerulescens_396259  1.797642360  0.7673510 -0.112731430 -0.28643195
+#&gt; A_coerulescens_396262  0.131470546 -0.1333516 -0.092382544 -0.11303044
+#&gt; A_coerulescens_396263  3.584911161  1.9122802  0.155648579  0.01424265
+#&gt; A_coerulescens_396264  5.170909054  3.0828563 -0.189443370 -0.11281100
+#&gt;                               PC5          PC6          pop pam.clust
+#&gt; A_californica_333849   2.30695729 -0.127695776  californica         1
+#&gt; A_californica_333854  -0.96923829  0.148874242  californica         1
+#&gt; A_californica_333855  -0.54138171 -1.075938210  californica         1
+#&gt; A_californica_333857   0.46242619  0.443840252  californica         1
+#&gt; A_californica_333860  -1.27313572  0.136969670  californica         1
+#&gt; A_insularis_334031     0.22816820  0.035932350    insularis         2
+#&gt; A_insularis_334032     0.18279836 -0.128408089    insularis         2
+#&gt; A_insularis_334033     0.19966895 -0.033480020    insularis         2
+#&gt; A_insularis_334034     0.19602878 -0.010296899    insularis         2
+#&gt; A_insularis_334037     0.03120804  0.109312888    insularis         2
+#&gt; A_woodhouseii_334133  -1.72666490 -0.721345948  woodhouseii         1
+#&gt; A_woodhouseii_334134  -1.25036561  0.286135215  woodhouseii         1
+#&gt; A_woodhouseii_334142   1.91461428  0.248727796  woodhouseii         1
+#&gt; A_woodhouseii_334148   0.19405629 -0.192039632  woodhouseii         1
+#&gt; A_woodhouseii_334153   0.05455793 -0.367094862  woodhouseii         1
+#&gt; A_coerulescens_396256  0.06592831 -0.101102779 coerulescens         3
+#&gt; A_coerulescens_396259  0.18985355  0.806218877 coerulescens         3
+#&gt; A_coerulescens_396262 -0.10652985  0.009830057 coerulescens         1
+#&gt; A_coerulescens_396263 -0.39300360  2.759466548 coerulescens         3
+#&gt; A_coerulescens_396264  0.23405352 -2.227905680 coerulescens         3
+#&gt;                          missing
+#&gt; A_californica_333849  0.01355932
+#&gt; A_californica_333854  0.06779661
+#&gt; A_californica_333855  0.09152542
+#&gt; A_californica_333857  0.03728814
+#&gt; A_californica_333860  0.06779661
+#&gt; A_insularis_334031    0.04745763
+#&gt; A_insularis_334032    0.01355932
+#&gt; A_insularis_334033    0.03389831
+#&gt; A_insularis_334034    0.05762712
+#&gt; A_insularis_334037    0.04406780
+#&gt; A_woodhouseii_334133  0.04745763
+#&gt; A_woodhouseii_334134  0.32542373
+#&gt; A_woodhouseii_334142  0.06779661
+#&gt; A_woodhouseii_334148  0.38305085
+#&gt; A_woodhouseii_334153  0.12203390
+#&gt; A_coerulescens_396256 0.19661017
+#&gt; A_coerulescens_396259 0.53220339
+#&gt; A_coerulescens_396262 0.93898305
+#&gt; A_coerulescens_396263 0.28474576
+#&gt; A_coerulescens_396264 0.05084746
+#&gt; 
+#&gt; [[2]]
 #&gt;                               PC1        PC2         PC3         PC4
 #&gt; A_californica_333849   0.10800467 -1.2622614 -0.42913167 -1.13151863
 #&gt; A_californica_333854   0.47446425 -1.1533207 -2.26034905  0.45898145
@@ -216,27 +282,48 @@ thresholds <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r
 #&gt; A_coerulescens_396262 -0.15117477 -0.1794463 -0.22073088  0.04413322
 #&gt; A_coerulescens_396263 -3.38747070  1.3321107  0.05360827  0.10676121
 #&gt; A_coerulescens_396264 -3.98351395  2.0017141  0.01860152 -0.18960558
-#&gt;                               PC5         PC6          pop pam.clust missing
-#&gt; A_californica_333849   0.77809865  1.88515106  californica         1   0.168
-#&gt; A_californica_333854  -0.30240921 -0.65007850  californica         1   0.304
-#&gt; A_californica_333855   1.86150801 -1.07424934  californica         1   0.344
-#&gt; A_californica_333857  -0.25739454  0.33591027  californica         1   0.200
-#&gt; A_californica_333860  -0.26400332  0.04207691  californica         1   0.314
-#&gt; A_insularis_334031    -0.04572244  0.05381709    insularis         2   0.264
-#&gt; A_insularis_334032    -0.04493868  0.04805338    insularis         2   0.194
-#&gt; A_insularis_334033    -0.04685803  0.05007695    insularis         2   0.206
-#&gt; A_insularis_334034    -0.04572244  0.05381709    insularis         2   0.260
-#&gt; A_insularis_334037    -0.02363185  0.03106438    insularis         2   0.300
-#&gt; A_woodhouseii_334133  -0.11209490 -0.64744433  woodhouseii         1   0.278
-#&gt; A_woodhouseii_334134  -1.48562119 -0.65435725  woodhouseii         1   0.568
-#&gt; A_woodhouseii_334142   1.25368265  0.34508479  woodhouseii         1   0.322
-#&gt; A_woodhouseii_334148  -0.59943809  0.16093514  woodhouseii         1   0.600
-#&gt; A_woodhouseii_334153  -0.34449347 -0.19867999  woodhouseii         1   0.388
-#&gt; A_coerulescens_396256  0.01596914 -0.01426633 coerulescens         3   0.474
-#&gt; A_coerulescens_396259 -0.08067753  0.35280180 coerulescens         3   0.700
-#&gt; A_coerulescens_396262  0.04434716 -0.09654030 coerulescens         1   0.964
-#&gt; A_coerulescens_396263 -0.73964893  0.81626021 coerulescens         3   0.534
-#&gt; A_coerulescens_396264  0.43904901 -0.83943304 coerulescens         3   0.232
+#&gt;                               PC5         PC6          pop pam.clust
+#&gt; A_californica_333849   0.77809865  1.88515106  californica         1
+#&gt; A_californica_333854  -0.30240921 -0.65007850  californica         1
+#&gt; A_californica_333855   1.86150801 -1.07424934  californica         1
+#&gt; A_californica_333857  -0.25739454  0.33591027  californica         1
+#&gt; A_californica_333860  -0.26400332  0.04207691  californica         1
+#&gt; A_insularis_334031    -0.04572244  0.05381709    insularis         2
+#&gt; A_insularis_334032    -0.04493868  0.04805338    insularis         2
+#&gt; A_insularis_334033    -0.04685803  0.05007695    insularis         2
+#&gt; A_insularis_334034    -0.04572244  0.05381709    insularis         2
+#&gt; A_insularis_334037    -0.02363185  0.03106438    insularis         2
+#&gt; A_woodhouseii_334133  -0.11209490 -0.64744433  woodhouseii         1
+#&gt; A_woodhouseii_334134  -1.48562119 -0.65435725  woodhouseii         1
+#&gt; A_woodhouseii_334142   1.25368265  0.34508479  woodhouseii         1
+#&gt; A_woodhouseii_334148  -0.59943809  0.16093514  woodhouseii         1
+#&gt; A_woodhouseii_334153  -0.34449347 -0.19867999  woodhouseii         1
+#&gt; A_coerulescens_396256  0.01596914 -0.01426633 coerulescens         3
+#&gt; A_coerulescens_396259 -0.08067753  0.35280180 coerulescens         3
+#&gt; A_coerulescens_396262  0.04434716 -0.09654030 coerulescens         1
+#&gt; A_coerulescens_396263 -0.73964893  0.81626021 coerulescens         3
+#&gt; A_coerulescens_396264  0.43904901 -0.83943304 coerulescens         3
+#&gt;                           missing
+#&gt; A_californica_333849  0.005847953
+#&gt; A_californica_333854  0.005847953
+#&gt; A_californica_333855  0.017543860
+#&gt; A_californica_333857  0.000000000
+#&gt; A_californica_333860  0.005847953
+#&gt; A_insularis_334031    0.005847953
+#&gt; A_insularis_334032    0.000000000
+#&gt; A_insularis_334033    0.005847953
+#&gt; A_insularis_334034    0.005847953
+#&gt; A_insularis_334037    0.000000000
+#&gt; A_woodhouseii_334133  0.000000000
+#&gt; A_woodhouseii_334134  0.076023392
+#&gt; A_woodhouseii_334142  0.000000000
+#&gt; A_woodhouseii_334148  0.116959064
+#&gt; A_woodhouseii_334153  0.011695906
+#&gt; A_coerulescens_396256 0.029239766
+#&gt; A_coerulescens_396259 0.327485380
+#&gt; A_coerulescens_396262 0.894736842
+#&gt; A_coerulescens_396263 0.087719298
+#&gt; A_coerulescens_396264 0.005847953
 #&gt; </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

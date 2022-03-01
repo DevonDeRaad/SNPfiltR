@@ -113,9 +113,6 @@ assess_missing_data_tsne <- function(vcfR,
     stop("invariant SNPs detected in input vcf. Invariant sites must be filtered prior to input")
   }
 
-  #calculate missingness by individual
-  miss<-colSums(is.na(gt.matrix))/nrow(gt.matrix)
-
   ###
   ###
   ###
@@ -182,8 +179,11 @@ assess_missing_data_tsne <- function(vcfR,
     #match order for pop from popmap into this df
     tsne.df$pop<-popmap$pop[order(popmap$id == colnames(vcfR@gt)[-1])]
     tsne.df$pam.clust<-pam.clust$clustering
+
     #add missingness to df
-    tsne.df$missing<-miss
+    miss<-colSums(is.na(vcfR@gt))/nrow(vcfR@gt)
+    #add missingness to df
+    tsne.df$missing<-miss[-1]
 
     #plot pam clusters versus a priori clusters
     print(
@@ -295,8 +295,11 @@ assess_missing_data_tsne <- function(vcfR,
       #match order for pop from popmap into this df
       tsne.df$pop<-popmap$pop[order(popmap$id == colnames(vcfR.filt@gt)[-1])]
       tsne.df$pam.clust<-pam.clust$clustering
+
       #add missingness to df
-      tsne.df$missing<-miss
+      miss<-colSums(is.na(vcfR.filt@gt))/nrow(vcfR.filt@gt)
+      #add missingness to df
+      tsne.df$missing<-miss[-1]
 
       #plot pam clusters versus a priori clusters
       print(
@@ -393,7 +396,10 @@ assess_missing_data_tsne <- function(vcfR,
       tsne.df$pop<-popmap$pop[order(popmap$id == colnames(vcfR@gt)[-1])]
 
       #add missingness to df
-      tsne.df$missing<-miss
+      #calculate missingness by individual
+      miss<-colSums(is.na(vcfR@gt))/nrow(vcfR@gt)
+      #add missingness to df
+      tsne.df$missing<-miss[-1]
 
       #plot pam clusters versus a priori clusters
       print(
@@ -483,7 +489,9 @@ assess_missing_data_tsne <- function(vcfR,
         tsne.df$pop<-popmap$pop[order(popmap$id == colnames(vcfR.filt@gt)[-1])]
 
         #add missingness to df
-        tsne.df$missing<-miss
+        miss<-colSums(is.na(vcfR.filt@gt))/nrow(vcfR.filt@gt)
+        #add missingness to df
+        tsne.df$missing<-miss[-1]
 
         #plot pam clusters versus a priori clusters
         print(

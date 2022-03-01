@@ -2,7 +2,7 @@
 title: "scrub-jay-UCE-vignette"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{bird-UCE-vignette}
+  %\VignetteIndexEntry{scrub-jay-UCE-vignette}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

@@ -48,8 +48,9 @@
 
 <meta property="og:title" content="Filter out heterozygous genotypes failing an allele balance check — filter_allele_balance" />
 <meta property="og:description" content="This function requires a vcfR object as input, and returns a vcfR object filtered
-to convert heterozygous sites with an allele balance falling outside of .25-.75 to 'NA'.
-From the Ddocent filtering page &quot;Allele balance:
+to convert heterozygous sites with an allele balance falling outside of the
+specified ratio to 'NA'. If no ratio is specified, a default .25-.75 limit is imposed.
+From the dDocent filtering page &quot;Allele balance:
 a number between 0 and 1 representing the ratio of reads showing the reference allele to
 all reads, considering only reads from individuals called as heterozygous, we expect that the
 allele balance in our data (for real loci) should be close to 0.5&quot;." />
@@ -85,7 +86,7 @@ allele balance in our data (for real loci) should be close to 0.5&quot;." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">SNPfiltR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.1</span>
       </span>
     </div>
 
@@ -108,7 +109,10 @@ allele balance in our data (for real loci) should be close to 0.5&quot;." />
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/performance-benchmarking.html">Performance benchmark</a>
+      <a href="../articles/accuracy-benchmarking.html">Accuracy benchmarking</a>
+    </li>
+    <li>
+      <a href="../articles/performance-benchmarking.html">Performance benchmarking</a>
     </li>
     <li>
       <a href="../articles/reproducible-vignette.html">reproducible-vignette</a>
@@ -144,14 +148,15 @@ allele balance in our data (for real loci) should be close to 0.5&quot;." />
 
     <div class="ref-description">
     <p>This function requires a vcfR object as input, and returns a vcfR object filtered
-to convert heterozygous sites with an allele balance falling outside of .25-.75 to 'NA'.
-From the <a href='https://www.ddocent.com/filtering/'>Ddocent filtering page</a> "Allele balance:
+to convert heterozygous sites with an allele balance falling outside of the
+specified ratio to 'NA'. If no ratio is specified, a default .25-.75 limit is imposed.
+From the <a href='https://www.ddocent.com/filtering/'>dDocent filtering page</a> "Allele balance:
 a number between 0 and 1 representing the ratio of reads showing the reference allele to
 all reads, considering only reads from individuals called as heterozygous, we expect that the
 allele balance in our data (for real loci) should be close to 0.5".</p>
     </div>
 
-    <pre class="usage"><span class='fu'>filter_allele_balance</span><span class='op'>(</span><span class='va'>vcfR</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>filter_allele_balance</span><span class='op'>(</span><span class='va'>vcfR</span>, min.ratio <span class='op'>=</span> <span class='cn'>NULL</span>, max.ratio <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -159,6 +164,14 @@ allele balance in our data (for real loci) should be close to 0.5".</p>
     <tr>
       <th>vcfR</th>
       <td><p>a vcfR object</p></td>
+    </tr>
+    <tr>
+      <th>min.ratio</th>
+      <td><p>minumum allele ratio for a called het</p></td>
+    </tr>
+    <tr>
+      <th>max.ratio</th>
+      <td><p>maximum allele ratio for a called het</p></td>
     </tr>
     </table>
 
@@ -169,7 +182,7 @@ filter have been converted to 'NA'.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'>filter_allele_balance</span><span class='op'>(</span>vcfR <span class='op'>=</span> <span class='fu'>SNPfiltR</span><span class='fu'>::</span><span class='va'><a href='vcfR.example.html'>vcfR.example</a></span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>13.24% of het genotypes (1.05% of all genotypes) fall outside of .25 - .75 allele balance and were converted to NA</span></div><div class='img'><img src='filter_allele_balance-1.png' alt='' width='700' height='433' /></div><div class='output co'>#&gt; ***** Object of Class vcfR *****
+</div><div class='output co'>#&gt; <span class='message'>13.24% of het genotypes (1.05% of all genotypes) fall outside of 0.25 - 0.75 allele balance ratio and were converted to NA</span></div><div class='img'><img src='filter_allele_balance-1.png' alt='' width='700' height='433' /></div><div class='output co'>#&gt; ***** Object of Class vcfR *****
 #&gt; 20 samples
 #&gt; 1 CHROMs
 #&gt; 500 variants

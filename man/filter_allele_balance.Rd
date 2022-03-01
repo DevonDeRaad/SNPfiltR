@@ -4,10 +4,14 @@
 \alias{filter_allele_balance}
 \title{Filter out heterozygous genotypes failing an allele balance check}
 \usage{
-filter_allele_balance(vcfR)
+filter_allele_balance(vcfR, min.ratio = NULL, max.ratio = NULL)
 }
 \arguments{
 \item{vcfR}{a vcfR object}
+
+\item{min.ratio}{minumum allele ratio for a called het}
+
+\item{max.ratio}{maximum allele ratio for a called het}
 }
 \value{
 An identical vcfR object, except that genotypes failing the allele balance
@@ -15,8 +19,9 @@ filter have been converted to 'NA'.
 }
 \description{
 This function requires a vcfR object as input, and returns a vcfR object filtered
-to convert heterozygous sites with an allele balance falling outside of .25-.75 to 'NA'.
-From the \href{https://www.ddocent.com/filtering/}{Ddocent filtering page} "Allele balance:
+to convert heterozygous sites with an allele balance falling outside of the
+specified ratio to 'NA'. If no ratio is specified, a default .25-.75 limit is imposed.
+From the \href{https://www.ddocent.com/filtering/}{dDocent filtering page} "Allele balance:
 a number between 0 and 1 representing the ratio of reads showing the reference allele to
 all reads, considering only reads from individuals called as heterozygous, we expect that the
 allele balance in our data (for real loci) should be close to 0.5".

@@ -23,8 +23,12 @@ window.
 ## Installation
 
 ``` r
-#Install current release from CRAN
+#Install current release from CRAN (v0.1.1)
 install.packages("SNPfiltR")
+
+#Install current development version directly from GitHub (v0.2.0)
+library(devtools)
+install_github("DevonDeRaad/SNPfiltR")
 ```
 
 ## Citation

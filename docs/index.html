@@ -50,7 +50,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">SNPfiltR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.1</span>
       </span>
     </div>
 
@@ -73,7 +73,10 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="articles/performance-benchmarking.html">Performance benchmark</a>
+      <a href="articles/accuracy-benchmarking.html">Accuracy benchmarking</a>
+    </li>
+    <li>
+      <a href="articles/performance-benchmarking.html">Performance benchmarking</a>
     </li>
     <li>
       <a href="articles/reproducible-vignette.html">reproducible-vignette</a>
@@ -110,8 +113,12 @@
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co">#Install current release from CRAN</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"SNPfiltR"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="co">#Install current release from CRAN (v0.1.1)</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"SNPfiltR"</span><span class="op">)</span>
+
+<span class="co">#Install current development version directly from GitHub (v0.2.0)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://devtools.r-lib.org/">devtools</a></span><span class="op">)</span>
+<span class="fu"><a href="https://devtools.r-lib.org/reference/remote-reexports.html">install_github</a></span><span class="op">(</span><span class="st">"DevonDeRaad/SNPfiltR"</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="citation" class="section level2">
 <h2 class="hasAnchor">
@@ -127,7 +134,7 @@
 <div id="optional-step-0" class="section level3">
 <h3 class="hasAnchor">
 <a href="#optional-step-0" class="anchor"></a>Optional Step 0:</h3>
-<p>Do quality control per sample before performing SNP calling. I have written an <a href="https://github.com/DevonDeRaad/RADstackshelpR/blob/master/inst/extdata/fastqcr.Rmd">RMarkdown script</a> that uses the R package <a href="https://github.com/kassambara/fastqcr">fastqcr</a> to generate a report visualizing the quality and quantity of sequencing for each sample, and recommending a subset of samples to be immediately dropped before parameter optimization (specifically useful for RADseq data). The only modification necessary for this script is the path to the folder containing the input .fastq.gz files and the path to your desired output folder. An example report generated using this script can be seen <a href="https://devonderaad.github.io/RADstackshelpR/articles/quality.control.vignette.html">here</a>. Because the fastq.gz files for your experiment may be large and handled remotely, an example bash script for executing this RMarkdown file as a job on a high performance computing cluster is available <a href="https://github.com/DevonDeRaad/RADstackshelpR/blob/master/inst/extdata/RMarkdown.qc.submit.script.sh">here</a>.</p>
+<p>Do quality control per sample before performing SNP calling. I have written an <a href="https://github.com/DevonDeRaad/SNPfiltR/blob/master/inst/extdata/fastqcr.Rmd">RMarkdown script</a> which is distributed with this package, and uses the R package <a href="https://github.com/kassambara/fastqcr">fastqcr</a> to generate a report visualizing the quality and quantity of sequencing for each sample, and recommending a subset of samples to be immediately dropped before parameter optimization (specifically useful for RADseq data). The only modification necessary for this script is the path to the folder containing the input .fastq.gz files and the path to your desired output folder. An example report generated using this script can be seen <a href="https://devonderaad.github.io/RADstackshelpR/articles/quality.control.vignette.html">here</a>. Because the fastq.gz files for your experiment may be large and handled remotely, an example bash script for executing this RMarkdown file as a job on a high performance computing cluster is also included <a href="https://github.com/DevonDeRaad/SNPfiltR/blob/master/inst/extdata/RMarkdown.qc.submit.script.sh">here</a>.</p>
 <div id="because-this-dataset-was-not-overly-large-and-i-used-a-reference-based-assembly-that-doesnt-depend-on-each-sample-contributing-to-the-de-novo-building-of-rad-loci-i-chose-to-skip-this-step-and-do-all-of-the-per-sample-quality-filtering-in-r-i-started-below-by-reading-in-the-vcf-file-using-the-aforementioned-vcfr-package-this-example-uses-a-subset-proportion-of-a-real-vcf-file-in-order-to-control-runtimes-the-full-analysis-of-this-dataset-can-be-viewed-here" class="section level4">
 <h4 class="hasAnchor">
 <a href="#because-this-dataset-was-not-overly-large-and-i-used-a-reference-based-assembly-that-doesnt-depend-on-each-sample-contributing-to-the-de-novo-building-of-rad-loci-i-chose-to-skip-this-step-and-do-all-of-the-per-sample-quality-filtering-in-r-i-started-below-by-reading-in-the-vcf-file-using-the-aforementioned-vcfr-package-this-example-uses-a-subset-proportion-of-a-real-vcf-file-in-order-to-control-runtimes-the-full-analysis-of-this-dataset-can-be-viewed-here" class="anchor"></a>Because this dataset was not overly large, and I used a reference based assembly that doesn’t depend on each sample contributing to the de novo building of RAD loci, I chose to skip this step and do all of the per sample quality filtering in R. I started below by reading in the vcf file using the aforementioned vcfR package. This example uses a subset proportion of a real vcf file in order to control runtimes. The full analysis of this dataset can be viewed <a href="https://devonderaad.github.io/SNPfiltR/articles/scrub-jay-RADseq-vignette.html">here</a>
@@ -271,7 +278,12 @@
 <span class="fu"><a href="reference/missing_by_sample.html">missing_by_sample</a></span><span class="op">(</span>vcfR<span class="op">=</span><span class="va">vcfR</span>, popmap <span class="op">=</span> <span class="va">popmap</span><span class="op">)</span>
 <span class="co">#&gt; Bin width defaults to 1/30 of the range of the data. Pick better value with `binwidth`.</span>
 <span class="co">#&gt; Bin width defaults to 1/30 of the range of the data. Pick better value with `binwidth`.</span></code></pre></div>
-<p><img src="reference/figures/README-unnamed-chunk-9-1.png" width="100%"><img src="reference/figures/README-unnamed-chunk-9-2.png" width="100%"><img src="reference/figures/README-unnamed-chunk-9-3.png" width="100%"> #### Now we can try setting a reasonable threshold, and then visualizing clustering patterns to determine whether there are still problematic samples with excess missing data that can’t be accurately assigned to genetic clusters</p>
+<p><img src="reference/figures/README-unnamed-chunk-9-1.png" width="100%"><img src="reference/figures/README-unnamed-chunk-9-2.png" width="100%"><img src="reference/figures/README-unnamed-chunk-9-3.png" width="100%"></p>
+</div>
+<div id="now-we-can-try-setting-a-reasonable-threshold-and-then-visualizing" class="section level4">
+<h4 class="hasAnchor">
+<a href="#now-we-can-try-setting-a-reasonable-threshold-and-then-visualizing" class="anchor"></a>Now we can try setting a reasonable threshold, and then visualizing</h4>
+<p>clustering patterns to determine whether there are still problematic samples with excess missing data that can’t be accurately assigned to genetic clusters</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">#run function to drop samples above the threshold we want from the vcf</span>
 <span class="va">vcfR</span><span class="op">&lt;-</span><span class="fu"><a href="reference/missing_by_sample.html">missing_by_sample</a></span><span class="op">(</span>vcfR<span class="op">=</span><span class="va">vcfR</span>, cutoff <span class="op">=</span> <span class="fl">.9</span><span class="op">)</span></code></pre></div>
@@ -289,10 +301,7 @@
 <span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>miss<span class="ot">&lt;-</span><span class="fu">assess_missing_data_pca</span>(<span class="at">vcfR=</span>vcfR, <span class="at">popmap =</span> popmap, <span class="at">thresholds =</span> .<span class="dv">8</span>, <span class="at">clustering =</span> <span class="cn">FALSE</span>)</span>
 <span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] "cutoff is specified, filtered vcfR object will be returned"</span></span>
 <span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] "69.26% of SNPs fell below a completeness cutoff of 0.8 and were removed from the VCF"</span></span>
-<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Loading required namespace: adegenet</span></span>
-<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Registered S3 method overwritten by 'spdep':</span></span>
-<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   method   from</span></span>
-<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   plot.mst ape</span></span></code></pre></div>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Loading required namespace: adegenet</span></span></code></pre></div>
 <p><img src="reference/figures/README-unnamed-chunk-10-3.png" width="100%"><img src="reference/figures/README-unnamed-chunk-10-4.png" width="100%"><img src="reference/figures/README-unnamed-chunk-10-5.png" width="100%"></p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">#if there are still problematic samples, drop them using the following syntax</span>
@@ -375,7 +384,7 @@
 <div id="macmaf-cutoffs-can-be-helpful-in-removing-spurious-and-uninformative-loci-from-the-dataset-but-also-have-the-potential-to-bias-downstream-inferences-linck-and-battey-2019-have-an-excellent-paper-on-just-this-topic-from-the-paper-" class="section level4">
 <h4 class="hasAnchor">
 <a href="#macmaf-cutoffs-can-be-helpful-in-removing-spurious-and-uninformative-loci-from-the-dataset-but-also-have-the-potential-to-bias-downstream-inferences-linck-and-battey-2019-have-an-excellent-paper-on-just-this-topic-from-the-paper-" class="anchor"></a>MAC/MAF cutoffs can be helpful in removing spurious and uninformative loci from the dataset, but also have the potential to bias downstream inferences. Linck and Battey (2019) have an excellent paper on just this topic. From the paper-</h4>
-<p>“We recommend researchers using model‐based programs to describe population structure observe the following best practices: (a) duplicate analyses with nonparametric methods suchas PCA and DAPC with cross validation (b) exclude singletons (c) compare alignments with multiple assembly parameters When seeking to exclude only singletons in alignments with missing data (a ubiquitous problem for reduced‐representation library preparation methods), it is preferable to filter by the count (rather than frequency) of the minor allele, because variation in the amount of missing data across an alignment will cause a static frequency cutoff to remove different SFS classes at different sites”"</p>
+<p>“We recommend researchers using model‐based programs to describe population structure observe the following best practices: (a) duplicate analyses with nonparametric methods suchas PCA and DAPC with cross validation (b) exclude singletons (c) compare alignments with multiple assembly parameters When seeking to exclude only singletons in alignments with missing data (a ubiquitous problem for reduced‐representation library preparation methods), it is preferable to filter by the count (rather than frequency) of the minor allele, because variation in the amount of missing data across an alignment will cause a static frequency cutoff to remove different SFS classes at different sites””</p>
 </div>
 <div id="our-package-contains-a-convenient-wrapper-functions-that-can-filter-based-on-minor-allele-count-mac-and-streamline-investigation-of-the-effects-of-various-filtering-parameters-on-sample-clustering-patterns" class="section level4">
 <h4 class="hasAnchor">

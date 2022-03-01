@@ -84,9 +84,6 @@ assess_missing_data_pca <- function(vcfR,
     stop("invariant SNPs detected in input vcf. Invariant sites must be filtered prior to input")
   }
 
-  #calculate missingness by individual
-  miss<-colSums(is.na(gt.matrix))/nrow(gt.matrix)
-
   ###
   ###
   ###
@@ -138,7 +135,10 @@ assess_missing_data_pca <- function(vcfR,
       pca.scores$pop<-popmap$pop[order(popmap$id == colnames(vcfR@gt)[-1])]
       pca.scores$pam.clust<-pam.clust$clustering
       #add missingness to df
-      pca.scores$missing<-miss
+      #calculate missingness by individual
+      miss<-colSums(is.na(vcfR@gt))/nrow(vcfR@gt)
+      #add missingness to df
+      pca.scores$missing<-miss[-1]
 
       #record percentage of variance explained in the PCA
       var_frac <- pca$eig/sum(pca$eig)
@@ -236,8 +236,12 @@ assess_missing_data_pca <- function(vcfR,
         #match order for pop from popmap into this df
         pca.scores$pop<-popmap$pop[order(popmap$id == colnames(vcfR@gt)[-1])]
         pca.scores$pam.clust<-pam.clust$clustering
+
         #add missingness to df
-        pca.scores$missing<-miss
+        #calculate missingness by individual
+        miss<-colSums(is.na(vcfR.filt@gt))/nrow(vcfR.filt@gt)
+        #add missingness to df
+        pca.scores$missing<-miss[-1]
 
         #record percentage of variance explained in the PCA
         var_frac <- pca$eig/sum(pca$eig)
@@ -329,7 +333,10 @@ assess_missing_data_pca <- function(vcfR,
       #match order for pop from popmap into this df
       pca.scores$pop<-popmap$pop[order(popmap$id == colnames(vcfR@gt)[-1])]
       #add missingness to df
-      pca.scores$missing<-miss
+      #calculate missingness by individual
+      miss<-colSums(is.na(vcfR@gt))/nrow(vcfR@gt)
+      #add missingness to df
+      pca.scores$missing<-miss[-1]
 
       #record percentage of variance explained in the PCA
       var_frac <- pca$eig/sum(pca$eig)
@@ -405,7 +412,10 @@ assess_missing_data_pca <- function(vcfR,
         #match order for pop from popmap into this df
         pca.scores$pop<-popmap$pop[order(popmap$id == colnames(vcfR@gt)[-1])]
         #add missingness to df
-        pca.scores$missing<-miss
+        #calculate missingness by individual
+        miss<-colSums(is.na(vcfR.filt@gt))/nrow(vcfR.filt@gt)
+        #add missingness to df
+        pca.scores$missing<-miss[-1]
 
         #record percentage of variance explained in the PCA
         var_frac <- pca$eig/sum(pca$eig)

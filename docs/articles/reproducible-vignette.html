@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">SNPfiltR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.1</span>
       </span>
     </div>
 
@@ -61,7 +61,10 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="../articles/performance-benchmarking.html">Performance benchmark</a>
+      <a href="../articles/accuracy-benchmarking.html">Accuracy benchmarking</a>
+    </li>
+    <li>
+      <a href="../articles/performance-benchmarking.html">Performance benchmarking</a>
     </li>
     <li>
       <a href="../articles/reproducible-vignette.html">reproducible-vignette</a>
@@ -98,6 +101,7 @@
 
     
     
+<p>This is a small, quick-running example showing how to use the SNPfiltR package to filter a next-generation sequencing (NGS) single nucleotide polymorphism (SNP) dataset. This vignette uses the small example dataset distributed with the package (20 samples, and 500 SNPs). The entire vignette can be rendered in &lt;60s, allowing rapid validation of the filtering pipeline shown here. Overall, this pipeline shows the power of SNPfiltR to facilitate the visualization, exploration, and interactive filtering of any SNP dataset. We start by reading in our vcf file as a vcfR object. Having the vcfR object stored in local memory allows for the rapid visualization and imposition of various filtering criteria, allowing users to make informed decisions and interactively explore parameter space. This vignette follows best-practices by implementing quality aware filters (i.e., filters based on genotype quality) first, and quality blind filters (e.g., distance-based thinning) last, in order to preserve as many high-quality genotypes as possible for downstream analyses.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">SNPfiltR</span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/knausb/vcfR">vcfR</a></span><span class="op">)</span>
@@ -110,13 +114,12 @@
 <div id="optional-step-0" class="section level1">
 <h1 class="hasAnchor">
 <a href="#optional-step-0" class="anchor"></a>Optional Step 0:</h1>
-<div id="do-quality-control-per-sample-before-performing-snp-calling--i-have-written-an-rmarkdown-script-that-uses-the-r-package-fastqcr-to-generate-a-report-visualizing-the-quality-and-quantity-of-sequencing-for-each-sample-and-recommending-a-subset-of-samples-to-be-immediately-dropped-before-parameter-optimization-specifically-useful-for-radseq-data--the-only-modification-necessary-for-this-script-is-the-path-to-the-folder-containing-the-input--fastq-gz-files-and-the-path-to-your-desired-output-folder--an-example-report-generated-using-this-script-can-be-seen-here--because-the-fastq-gz-files-for-your-experiment-may-be-large-and-handled-remotely-an-example-bash-script-for-executing-this-rmarkdown-file-as-a-job-on-a-high-performance-computing-cluster-is-available-here-" class="section level3">
-<h3 class="hasAnchor">
-<a href="#do-quality-control-per-sample-before-performing-snp-calling--i-have-written-an-rmarkdown-script-that-uses-the-r-package-fastqcr-to-generate-a-report-visualizing-the-quality-and-quantity-of-sequencing-for-each-sample-and-recommending-a-subset-of-samples-to-be-immediately-dropped-before-parameter-optimization-specifically-useful-for-radseq-data--the-only-modification-necessary-for-this-script-is-the-path-to-the-folder-containing-the-input--fastq-gz-files-and-the-path-to-your-desired-output-folder--an-example-report-generated-using-this-script-can-be-seen-here--because-the-fastq-gz-files-for-your-experiment-may-be-large-and-handled-remotely-an-example-bash-script-for-executing-this-rmarkdown-file-as-a-job-on-a-high-performance-computing-cluster-is-available-here-" class="anchor"></a>Do quality control per sample before performing SNP calling. I have written an <a href="https://github.com/DevonDeRaad/RADstackshelpR/blob/master/inst/extdata/fastqcr.Rmd">RMarkdown script</a> that uses the R package <a href="https://github.com/kassambara/fastqcr">fastqcr</a> to generate a report visualizing the quality and quantity of sequencing for each sample, and recommending a subset of samples to be immediately dropped before parameter optimization (specifically useful for RADseq data). The only modification necessary for this script is the path to the folder containing the input .fastq.gz files and the path to your desired output folder. An example report generated using this script can be seen <a href="https://devonderaad.github.io/RADstackshelpR/articles/quality.control.vignette.html">here</a>. Because the fastq.gz files for your experiment may be large and handled remotely, an example bash script for executing this RMarkdown file as a job on a high performance computing cluster is available <a href="https://github.com/DevonDeRaad/RADstackshelpR/blob/master/inst/extdata/RMarkdown.qc.submit.script.sh">here</a>.</h3>
+<p>Do quality control per sample before performing SNP calling. I have written an <a href="https://github.com/DevonDeRaad/RADstackshelpR/blob/master/inst/extdata/fastqcr.Rmd">RMarkdown script</a> that uses the R package <a href="https://github.com/kassambara/fastqcr">fastqcr</a> to generate a report visualizing the quality and quantity of sequencing for each sample, and recommending a subset of samples to be immediately dropped before parameter optimization (specifically useful for RADseq data). The only modification necessary for this script is the path to the folder containing the input .fastq.gz files and the path to your desired output folder. An example report generated using this script can be seen <a href="https://devonderaad.github.io/RADstackshelpR/articles/quality.control.vignette.html">here</a>. Because the fastq.gz files for your experiment may be large and handled remotely, an example bash script for executing this RMarkdown file as a job on a high performance computing cluster is available <a href="https://github.com/DevonDeRaad/RADstackshelpR/blob/master/inst/extdata/RMarkdown.qc.submit.script.sh">here</a>.</p>
 </div>
-<div id="because-this-is-just-an-example-dataset-we-will-skip-this-step-and-load-in-the-vcf-and-popmap-which-are-distributed-with-the-snpfiltr-package" class="section level3">
-<h3 class="hasAnchor">
-<a href="#because-this-is-just-an-example-dataset-we-will-skip-this-step-and-load-in-the-vcf-and-popmap-which-are-distributed-with-the-snpfiltr-package" class="anchor"></a>Because this is just an example dataset, we will skip this step and load in the vcf and popmap which are distributed with the SNPfiltR package</h3>
+<div id="step-1-read-in-vcf-file-as-vcfr-object" class="section level1">
+<h1 class="hasAnchor">
+<a href="#step-1-read-in-vcf-file-as-vcfr-object" class="anchor"></a>Step 1: read in vcf file as ‘vcfR’ object</h1>
+<p>Because we are using the example dataset distributed with the package, we just load in the vcf and popmap using the data() function.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">#load the example vcfR object </span>
 <span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">vcfR.example</span><span class="op">)</span>
@@ -193,9 +196,10 @@
 <span class="co">#&gt; 19 A_coerulescens_396263 coerulescens</span>
 <span class="co">#&gt; 20 A_coerulescens_396264 coerulescens</span></code></pre></div>
 </div>
-<div id="step-1-implement-quality-filters-that-dont-involve-missing-data--this-is-because-removing-low-data-samples-will-alter-percentagequantile-based-missing-data-cutoffs-so-we-wait-to-implement-those-until-after-deciding-on-our-final-set-of-samples-for-downstream-analysis" class="section level3">
-<h3 class="hasAnchor">
-<a href="#step-1-implement-quality-filters-that-dont-involve-missing-data--this-is-because-removing-low-data-samples-will-alter-percentagequantile-based-missing-data-cutoffs-so-we-wait-to-implement-those-until-after-deciding-on-our-final-set-of-samples-for-downstream-analysis" class="anchor"></a>step 1: Implement quality filters that don’t involve missing data. This is because removing low data samples will alter percentage/quantile based missing data cutoffs, so we wait to implement those until after deciding on our final set of samples for downstream analysis</h3>
+<div id="step-2-quality-filtering" class="section level1">
+<h1 class="hasAnchor">
+<a href="#step-2-quality-filtering" class="anchor"></a>Step 2: quality filtering</h1>
+<p>We now implement quality filters that don’t involve missing data. This is because removing low data samples will alter percentage/quantile based missing data cutoffs, so we wait to implement those until after deciding on our final set of samples for downstream analysis</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">#generate exploratory visualizations of depth and genotype quality for all called genotypes</span>
 <span class="co">#hard_filter(vcfR=vcfR.example)</span>
@@ -204,19 +208,17 @@
 <span class="va">vcfR</span><span class="op">&lt;-</span><span class="fu"><a href="../reference/hard_filter.html">hard_filter</a></span><span class="op">(</span>vcfR<span class="op">=</span><span class="va">vcfR.example</span>, depth <span class="op">=</span> <span class="fl">5</span>, gq <span class="op">=</span> <span class="fl">30</span><span class="op">)</span>
 <span class="co">#&gt; 28.81% of genotypes fall below a read depth of 5 and were converted to NA</span>
 <span class="co">#&gt; 3.81% of genotypes fall below a genotype quality of 30 and were converted to NA</span></code></pre></div>
-</div>
-<div id="use-this-function-to-filter-for-allele-balance-from-puritz-snp-filtering-tutorial-allele-balance-a-number-between-0-and-1-representing-the-ratio-of-reads-showing-the-reference-allele-to-all-reads-considering-only-reads-from-individuals-called-as-heterozygous-we-expect-that-the-allele-balance-in-our-data-for-real-loci-should-be-close-to-0-5" class="section level3">
-<h3 class="hasAnchor">
-<a href="#use-this-function-to-filter-for-allele-balance-from-puritz-snp-filtering-tutorial-allele-balance-a-number-between-0-and-1-representing-the-ratio-of-reads-showing-the-reference-allele-to-all-reads-considering-only-reads-from-individuals-called-as-heterozygous-we-expect-that-the-allele-balance-in-our-data-for-real-loci-should-be-close-to-0-5" class="anchor"></a>Use this function to filter for allele balance from Puritz SNP filtering tutorial “Allele balance: a number between 0 and 1 representing the ratio of reads showing the reference allele to all reads, considering only reads from individuals called as heterozygous, we expect that the allele balance in our data (for real loci) should be close to 0.5”</h3>
+<p>Jon Puritz has an excellent filtering tutorial that is focused specifically on <a href="https://www.ddocent.com/filtering/">filtering RADseq data</a>.From Puritz SNP filtering tutorial “Allele balance: a number between 0 and 1 representing the ratio of reads showing the reference allele to all reads, considering only reads from individuals called as heterozygous, we expect that the allele balance in our data (for real loci) should be close to 0.5”. Here we will implement an allele balance filter converting called heterozygous genotypes outside of the .25-.75 range to NA.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">#execute allele balance filter</span>
 <span class="va">vcfR</span><span class="op">&lt;-</span><span class="fu"><a href="../reference/filter_allele_balance.html">filter_allele_balance</a></span><span class="op">(</span><span class="va">vcfR</span><span class="op">)</span>
-<span class="co">#&gt; 7.54% of het genotypes (0.71% of all genotypes) fall outside of .25 - .75 allele balance and were converted to NA</span></code></pre></div>
+<span class="co">#&gt; 7.54% of het genotypes (0.71% of all genotypes) fall outside of 0.25 - 0.75 allele balance ratio and were converted to NA</span></code></pre></div>
 <p><img src="reproducible-vignette_files/figure-html/unnamed-chunk-4-1.png" width="384"></p>
-</div>
-<div id="max-depth-filter-super-high-depth-loci-are-likely-multiple-loci-stuck-together-into-a-single-paralogous-locus-" class="section level3">
+<p>Here we will implement a max depth filter, as super high depth loci are likely multiple loci stuck together into a single paralogous locus, which we want to remove before making downstream inferences.</p>
+<div id="note" class="section level3">
 <h3 class="hasAnchor">
-<a href="#max-depth-filter-super-high-depth-loci-are-likely-multiple-loci-stuck-together-into-a-single-paralogous-locus-" class="anchor"></a>max depth filter (super high depth loci are likely multiple loci stuck together into a single paralogous locus).</h3>
+<a href="#note" class="anchor"></a>Note:</h3>
+<p>This filter is applied ‘per SNP’ rather than ‘per genotype’ otherwise we would simply be removing most of the genotypes from our deepest sequenced samples (because sequencing depth is so variable between samples). By filtering per SNP, we remove the SNPs with outlier depth values, which are most likely to be spuriously mapped/built paralagous loci.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">#visualize and pick appropriate max depth cutoff</span>
 <span class="co">#max_depth(vcfR)</span>
@@ -239,9 +241,20 @@
 <span class="co">#&gt; 67.65 percent missing data</span>
 <span class="co">#&gt; *****        *****         *****</span></code></pre></div>
 </div>
-<div id="step-2-visualize-missing-data-by-sample--check-out-the-visualizations-and-make-decision-on-which-samples-look-like-they-will-not-be-salvageable-for-downstream-analysis-" class="section level3">
+</div>
+<div id="step-3-set-missing-data-per-sample-cutoff" class="section level1">
+<h1 class="hasAnchor">
+<a href="#step-3-set-missing-data-per-sample-cutoff" class="anchor"></a>Step 3: set missing data per sample cutoff</h1>
+<div id="set-arbitrary-cutoff-for-missing-data-allowed-per-sample-" class="section level3">
 <h3 class="hasAnchor">
-<a href="#step-2-visualize-missing-data-by-sample--check-out-the-visualizations-and-make-decision-on-which-samples-look-like-they-will-not-be-salvageable-for-downstream-analysis-" class="anchor"></a>Step 2: visualize missing data by sample. Check out the visualizations and make decision on which samples look like they will not be salvageable for downstream analysis.</h3>
+<a href="#set-arbitrary-cutoff-for-missing-data-allowed-per-sample-" class="anchor"></a>Set arbitrary cutoff for missing data allowed per sample.</h3>
+<p>Determining which samples and SNPs to retain is always project specific, and is contingent on sampling, biology of the focal taxa, sequencing idiosyncrasies, etc. SNPfiltR contains functions designed to simply and easily generate exploratory visualizations that will allow you to make informed decisions about which samples and SNPs are of sufficient quality to retain for downstream analyses, but there is never a single correct option for these cutoffs. In my experience, the best thing to do is to look at your data, look at what effects some reasonable cutoffs would have on your data, and pick one that works for you. Then as you continue to analyze your data, make sure that your arbitrary filtering decisions are not driving the patterns you see, and iteratively update your filtering approach if you are concerned about the effects previous filtering choices are having on downstream results.</p>
+<p>We are going to start by visualizing missing data per sample. After checking out the visualizations, we can make decision on which samples look like they will not be salvageable for downstream analysis, and remove them either by setting a data completeness cutoff in the function missing_by_sample(), or by name using base R syntax which works with vcfR objects which treat SNPs as rows and samples as columns (e.g., vcfR &lt;- vcfR[,colnames(<a href="mailto:vcfR@gt" class="email">vcfR@gt</a>) != “A_woodhouseii_24711”]).</p>
+</div>
+<div id="note-1" class="section level3">
+<h3 class="hasAnchor">
+<a href="#note-1" class="anchor"></a>Note:</h3>
+<p>If all of your samples are reasonably complete then you don’t need to drop any samples! Variable missing data by sample seems to be mostly an issue with RAD approaches for whatever reason.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">#run function to visualize samples and return informative data.frame object</span>
 <span class="va">miss</span><span class="op">&lt;-</span><span class="fu"><a href="../reference/missing_by_sample.html">missing_by_sample</a></span><span class="op">(</span>vcfR<span class="op">=</span><span class="va">vcfR</span><span class="op">)</span>
@@ -265,13 +278,19 @@
 <span class="co">#update popmap by removing samples that have been filtered out</span>
 <span class="va">popmap</span><span class="op">&lt;-</span><span class="va">popmap</span><span class="op">[</span><span class="va">popmap</span><span class="op">$</span><span class="va">id</span> <span class="op">%in%</span> <span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span><span class="op">(</span><span class="va">vcfR</span><span class="op">@</span><span class="va">gt</span><span class="op">)</span><span class="op">[</span><span class="op">-</span><span class="fl">1</span><span class="op">]</span>,<span class="op">]</span></code></pre></div>
 </div>
-<div id="step-3-set-the-arbitrary-missing-data-cutoff" class="section level3">
-<h3 class="hasAnchor">
-<a href="#step-3-set-the-arbitrary-missing-data-cutoff" class="anchor"></a>Step 3: Set the arbitrary missing data cutoff</h3>
 </div>
-<div id="we-can-visualize-the-effect-that-typical-missing-data-cutoffs-will-have-on-both-the-number-of-snps-retained-and-the-total-missing-data-in-our-entire-dataset--we-want-to-choose-a-cutoff-that-minimizes-the-overall-missing-data-in-the-dataset-while-maximizing-the-total-number-of-loci-retained-" class="section level3">
+<div id="step-4-set-missing-data-per-snp-cutoff" class="section level1">
+<h1 class="hasAnchor">
+<a href="#step-4-set-missing-data-per-snp-cutoff" class="anchor"></a>Step 4: set missing data per SNP cutoff</h1>
+<div id="set-arbitrary-cutoff-for-missing-data-allowed-per-snp-" class="section level3">
 <h3 class="hasAnchor">
-<a href="#we-can-visualize-the-effect-that-typical-missing-data-cutoffs-will-have-on-both-the-number-of-snps-retained-and-the-total-missing-data-in-our-entire-dataset--we-want-to-choose-a-cutoff-that-minimizes-the-overall-missing-data-in-the-dataset-while-maximizing-the-total-number-of-loci-retained-" class="anchor"></a>We can visualize the effect that typical missing data cutoffs will have on both the number of SNPs retained and the total missing data in our entire dataset. We want to choose a cutoff that minimizes the overall missing data in the dataset, while maximizing the total number of loci retained.</h3>
+<a href="#set-arbitrary-cutoff-for-missing-data-allowed-per-snp-" class="anchor"></a>Set arbitrary cutoff for missing data allowed per SNP.</h3>
+<p>We can visualize the effect that typical missing data cutoffs will have on both the number of SNPs retained and the total missing data in our entire dataset.We want to choose a cutoff that minimizes the overall missing data in the dataset, while maximizing the total number of loci retained.</p>
+</div>
+<div id="note-2" class="section level3">
+<h3 class="hasAnchor">
+<a href="#note-2" class="anchor"></a>Note:</h3>
+<p>This filter interacts with the above filter, where we dropped low data samples. A good rule of thumb is that individual samples shouldn’t be above 50% missing data after applying a per-SNP missing data cutoff. So if we are retaining specific low data samples out of necessity or project design, we may have to set a more stringent per-SNP missing data cutoff, at the expense of the total number of SNPs retained for downstream analyses. We can again use the assess_missing_data_pca() function to determine whether all retained samples contain enough data at our chosen cutoff in order to be assigned accurately to their species group.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">#visualize missing data by SNP and the effect of various cutoffs on the missingness of each sample</span>
 <span class="fu"><a href="../reference/missing_by_snp.html">missing_by_snp</a></span><span class="op">(</span><span class="va">vcfR</span><span class="op">)</span>
@@ -290,22 +309,15 @@
 #&gt; 9  0.90  0.02466793            31
 #&gt; 10 0.95  0.00000000            18
 #&gt; 11 1.00  0.00000000            18</code></pre>
-</div>
-<div id="we-can-see-that-there-are-still-some-outlier-samples-with-a-lot-of-missing-data-even-at-high-missing-data-per-snp-thresholds" class="section level3">
-<h3 class="hasAnchor">
-<a href="#we-can-see-that-there-are-still-some-outlier-samples-with-a-lot-of-missing-data-even-at-high-missing-data-per-snp-thresholds" class="anchor"></a>we can see that there are still some outlier samples with a lot of missing data even at high missing data per SNP thresholds</h3>
-<p>#we can check whether this excess missing data in some samples is affecting overall clustering patterns</p>
+<p>We can see that there are still some outlier samples with a lot of missing data even at high missing data per SNP thresholds, which is concerning. We will want to check whether this excess missing data in some samples is affecting overall clustering patterns using the functions assess_missing_data_pca() and assess_missing_data_tsne().</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">#assess missing data effects on clustering</span>
 <span class="fu"><a href="../reference/assess_missing_data_pca.html">assess_missing_data_pca</a></span><span class="op">(</span>vcfR <span class="op">=</span> <span class="va">vcfR</span>, popmap <span class="op">=</span> <span class="va">popmap</span>, thresholds <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">.8</span><span class="op">)</span>, clustering <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
 <span class="co">#&gt; cutoff is specified, filtered vcfR object will be returned</span>
 <span class="co">#&gt; 64.65% of SNPs fell below a completeness cutoff of 0.8 and were removed from the VCF</span>
-<span class="co">#&gt; Loading required namespace: adegenet</span>
-<span class="co">#&gt; Registered S3 method overwritten by 'spdep':</span>
-<span class="co">#&gt;   method   from</span>
-<span class="co">#&gt;   plot.mst ape</span></code></pre></div>
+<span class="co">#&gt; Loading required namespace: adegenet</span></code></pre></div>
 <p><img src="reproducible-vignette_files/figure-html/unnamed-chunk-8-1.png" width="700"><img src="reproducible-vignette_files/figure-html/unnamed-chunk-8-2.png" width="700"><img src="reproducible-vignette_files/figure-html/unnamed-chunk-8-3.png" width="700"></p>
-<pre><code>#&gt; [[1]]
+<pre><code><a href="../reference/assess_missing_data_tsne.html">#&gt; [[1]]
 #&gt;                              PC1        PC2          PC3         PC4
 #&gt; A_californica_333849  -0.5969622 -0.5362690 -0.595508158  0.73945078
 #&gt; A_californica_333854  -0.4693982 -0.9890245 -1.414869592 -1.37005171
@@ -324,33 +336,50 @@
 #&gt; A_coerulescens_396256 -1.1495480  1.3483650  0.060491990  0.14644120
 #&gt; A_coerulescens_396263 -0.8159388  0.6141574  0.121397651 -0.06714767
 #&gt; A_coerulescens_396264 -1.7209210  2.5099257  0.226322176 -0.44587363
-#&gt;                               PC5          PC6          pop   missing
-#&gt; A_californica_333849   1.34940006 -0.217111195  californica 0.2272727
-#&gt; A_californica_333854  -0.31732671 -0.252236192  californica 0.4343434
-#&gt; A_californica_333855   0.79002290 -0.411529451  californica 0.4545455
-#&gt; A_californica_333857  -0.27279109 -0.675313989  californica 0.1818182
-#&gt; A_californica_333860  -0.29414891  1.230546314  californica 0.4343434
-#&gt; A_insularis_334031    -0.11699427  0.010904247    insularis 0.2929293
-#&gt; A_insularis_334032    -0.12438335  0.006458987    insularis 0.1919192
-#&gt; A_insularis_334033    -0.11649650 -0.001424441    insularis 0.1818182
-#&gt; A_insularis_334034    -0.11699427  0.010904247    insularis 0.3535354
-#&gt; A_insularis_334037    -0.11699427  0.010904247    insularis 0.3383838
-#&gt; A_woodhouseii_334133   0.22400118  0.462404897  woodhouseii 0.3181818
-#&gt; A_woodhouseii_334134  -0.05571374  0.543962142  woodhouseii 0.7727273
-#&gt; A_woodhouseii_334142  -1.18389174 -0.521504387  woodhouseii 0.3686869
-#&gt; A_woodhouseii_334153   0.44668940  0.174951057  woodhouseii 0.4898990
-#&gt; A_coerulescens_396256  0.01905756  0.014972030 coerulescens 0.6111111
-#&gt; A_coerulescens_396263  0.03051154 -0.599271664 coerulescens 0.7424242
-#&gt; A_coerulescens_396264 -0.14394778  0.212383154 coerulescens 0.2070707</code></pre>
-</div>
-<div id="we-can-see-that-at-an-80-per-snp-completeness-cutoff-samples-with-an-excess-of-missing-data-are-leaking-toward-the-center-specifically-coerulescens-samples-indicating-that-they-cant-be-reliably-clustered-due-to-excess-missing-data" class="section level3">
-<h3 class="hasAnchor">
-<a href="#we-can-see-that-at-an-80-per-snp-completeness-cutoff-samples-with-an-excess-of-missing-data-are-leaking-toward-the-center-specifically-coerulescens-samples-indicating-that-they-cant-be-reliably-clustered-due-to-excess-missing-data" class="anchor"></a>we can see that at an 80% per SNP completeness cutoff, samples with an excess of missing data are leaking toward the center (specifically coerulescens samples), indicating that they can’t be reliably clustered due to excess missing data</h3>
-</div>
-<div id="this-means-we-still-need-to-target-specific-samples-with-too-much-missing-data-even-at-high-filtering-thresholds-for-removal" class="section level3">
-<h3 class="hasAnchor">
-<a href="#this-means-we-still-need-to-target-specific-samples-with-too-much-missing-data-even-at-high-filtering-thresholds-for-removal" class="anchor"></a>This means we still need to target specific samples with too much missing data even at high filtering thresholds, for removal</h3>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+#&gt;                               PC5          PC6          pop    missing
+#&gt; A_californica_333849   1.34940006 -0.217111195  californica 0.01428571
+#&gt; A_californica_333854  -0.31732671 -0.252236192  californica 0.08571429
+#&gt; A_californica_333855   0.79002290 -0.411529451  californica 0.07142857
+#&gt; A_californica_333857  -0.27279109 -0.675313989  californica 0.00000000
+#&gt; A_californica_333860  -0.29414891  1.230546314  californica 0.01428571
+#&gt; A_insularis_334031    -0.11699427  0.010904247    insularis 0.00000000
+#&gt; A_insularis_334032    -0.12438335  0.006458987    insularis 0.00000000
+#&gt; A_insularis_334033    -0.11649650 -0.001424441    insularis 0.01428571
+#&gt; A_insularis_334034    -0.11699427  0.010904247    insularis 0.00000000
+#&gt; A_insularis_334037    -0.11699427  0.010904247    insularis 0.00000000
+#&gt; A_woodhouseii_334133   0.22400118  0.462404897  woodhouseii 0.01428571
+#&gt; A_woodhouseii_334134  -0.05571374  0.543962142  woodhouseii 0.48571429
+#&gt; A_woodhouseii_334142  -1.18389174 -0.521504387  woodhouseii 0.04285714
+#&gt; A_woodhouseii_334153   0.44668940  0.174951057  woodhouseii 0.04285714
+#&gt; A_coerulescens_396256  0.01905756  0.014972030 coerulescens 0.21428571
+#&gt; A_coerulescens_396263  0.03051154 -0.599271664 coerulescens 0.51428571
+#&gt; A_coerulescens_396264 -0.14394778  0.212383154 coerulescens 0.01428571
+assess_missing_data_tsne(vcfR = vcfR, popmap = popmap, thresholds = c(.8), clustering = FALSE)
+#&gt; cutoff is specified, filtered vcfR object will be returned
+#&gt; 64.65% of SNPs fell below a completeness cutoff of 0.8 and were removed from the VCF</a></code></pre>
+<p><img src="reproducible-vignette_files/figure-html/unnamed-chunk-8-4.png" width="700"><img src="reproducible-vignette_files/figure-html/unnamed-chunk-8-5.png" width="700"><img src="reproducible-vignette_files/figure-html/unnamed-chunk-8-6.png" width="700"></p>
+<pre><code>#&gt; [[1]]
+#&gt;             V1         V2          pop    missing
+#&gt; 1  -13.9925801   2.901471  californica 0.01428571
+#&gt; 2  -64.0064110 -28.467924  californica 0.08571429
+#&gt; 3  -25.8858131  12.247583  californica 0.07142857
+#&gt; 4  -46.0768572 -21.169087  californica 0.00000000
+#&gt; 5  -55.0052465 -15.918423  californica 0.01428571
+#&gt; 6   60.1421159  41.965635    insularis 0.00000000
+#&gt; 7   81.5167145  29.477146    insularis 0.00000000
+#&gt; 8   72.6342897  38.737758    insularis 0.01428571
+#&gt; 9   59.9068982  28.690072    insularis 0.00000000
+#&gt; 10  70.5535246  21.813366    insularis 0.00000000
+#&gt; 11 -25.9448356  -5.199745  woodhouseii 0.01428571
+#&gt; 12 -37.4868416  -8.878838  woodhouseii 0.48571429
+#&gt; 13 -29.8583365 -27.519217  woodhouseii 0.04285714
+#&gt; 14 -49.6919137   4.135243  woodhouseii 0.04285714
+#&gt; 15   0.3881401 -24.911728 coerulescens 0.21428571
+#&gt; 16  -9.5737824 -19.889508 coerulescens 0.51428571
+#&gt; 17  12.3809345 -28.013803 coerulescens 0.01428571</code></pre>
+<p>We can see that at an 80% per SNP completeness cutoff, samples with an excess of missing data are leaking toward the center (specifically coerulescens samples), indicating that they can’t be reliably clustered due to excess missing data.</p>
+<p>We can go back and target specific samples with too much missing data even at high filtering thresholds for removal using the following code:</p>
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">#show me the samples with the most missing data at an 80% completeness threshold</span>
 <span class="va">filt</span><span class="op">&lt;-</span><span class="va">miss</span><span class="op">[</span><span class="va">miss</span><span class="op">$</span><span class="va">filt</span> <span class="op">==</span> <span class="fl">.8</span>,<span class="op">]</span>
 <span class="va">filt</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/order.html">order</a></span><span class="op">(</span><span class="va">filt</span><span class="op">$</span><span class="va">snps.retained</span><span class="op">)</span>,<span class="op">]</span>
@@ -383,7 +412,7 @@
 <span class="va">vcfR</span><span class="op">&lt;-</span><span class="fu"><a href="../reference/min_mac.html">min_mac</a></span><span class="op">(</span><span class="va">vcfR</span>, min.mac <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>
 <span class="co">#&gt; 3.54% of SNPs fell below a minor allele count of 1 and were removed from the VCF</span></code></pre></div>
 <p><img src="reproducible-vignette_files/figure-html/unnamed-chunk-9-1.png" width="384"></p>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">vcfR</span>
 <span class="co">#&gt; ***** Object of Class vcfR *****</span>
 <span class="co">#&gt; 14 samples</span>
@@ -395,12 +424,10 @@
 
 <span class="co">#update popmap by removing samples that have been filtered out</span>
 <span class="va">popmap</span><span class="op">&lt;-</span><span class="va">popmap</span><span class="op">[</span><span class="va">popmap</span><span class="op">$</span><span class="va">id</span> <span class="op">%in%</span> <span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span><span class="op">(</span><span class="va">vcfR</span><span class="op">@</span><span class="va">gt</span><span class="op">)</span><span class="op">[</span><span class="op">-</span><span class="fl">1</span><span class="op">]</span>,<span class="op">]</span></code></pre></div>
-</div>
-<div id="re-visualize-missing-data-by-snp-and-the-effect-of-various-cutoffs-on-the-missingness-of-each-sample-and-set-a-reasonable-missing-data-cutoff" class="section level3">
-<h3 class="hasAnchor">
-<a href="#re-visualize-missing-data-by-snp-and-the-effect-of-various-cutoffs-on-the-missingness-of-each-sample-and-set-a-reasonable-missing-data-cutoff" class="anchor"></a>re-visualize missing data by SNP and the effect of various cutoffs on the missingness of each sample and set a reasonable missing data cutoff</h3>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/missing_by_snp.html">missing_by_snp</a></span><span class="op">(</span><span class="va">vcfR</span><span class="op">)</span>
+<p>Re-visualize missing data by SNP and the effect of various cutoffs on the missingness of each sample and set a reasonable missing data cutoff.</p>
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co">#visualize missing data at various completeness thresholds</span>
+<span class="fu"><a href="../reference/missing_by_snp.html">missing_by_snp</a></span><span class="op">(</span><span class="va">vcfR</span><span class="op">)</span>
 <span class="co">#&gt; cutoff is not specified, exploratory visualizations will be generated</span>
 <span class="co">#&gt; Picking joint bandwidth of 0.124</span></code></pre></div>
 <p><img src="reproducible-vignette_files/figure-html/unnamed-chunk-10-1.png" width="384"><img src="reproducible-vignette_files/figure-html/unnamed-chunk-10-2.png" width="384"></p>
@@ -423,26 +450,46 @@ vcfR&lt;-missing_by_snp(vcfR, cutoff = .6)
 #&gt; cutoff is specified, filtered vcfR object will be returned
 #&gt; 38.22% of SNPs fell below a completeness cutoff of 0.6 and were removed from the VCF</code></pre>
 <p><img src="reproducible-vignette_files/figure-html/unnamed-chunk-10-3.png" width="384"></p>
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
-<code class="sourceCode R">
-<span class="co">#look at final stats for our filtered vcf file</span>
-<span class="va">vcfR</span>
-<span class="co">#&gt; ***** Object of Class vcfR *****</span>
-<span class="co">#&gt; 14 samples</span>
-<span class="co">#&gt; 1 CHROMs</span>
-<span class="co">#&gt; 118 variants</span>
-<span class="co">#&gt; Object size: 0.2 Mb</span>
-<span class="co">#&gt; 10.59 percent missing data</span>
-<span class="co">#&gt; *****        *****         *****</span></code></pre></div>
 </div>
-<div id="we-can-now-use-the-convenient-function-vcfrwrite-vcf-to-export-our-filtered-vcf-file-for-downstream-analyses" class="section level3">
-<h3 class="hasAnchor">
-<a href="#we-can-now-use-the-convenient-function-vcfrwrite-vcf-to-export-our-filtered-vcf-file-for-downstream-analyses" class="anchor"></a>We can now use the convenient function vcfR::write.vcf() to export our filtered vcf file for downstream analyses</h3>
 </div>
-<div id="note-the-function-vcfrwrite-vcf-automatically-writes-a-gzipped-vcf-file-so-be-sure-to-add-the-suffix--gz-to-the-name-of-your-output-file-" class="section level3">
-<h3 class="hasAnchor">
-<a href="#note-the-function-vcfrwrite-vcf-automatically-writes-a-gzipped-vcf-file-so-be-sure-to-add-the-suffix--gz-to-the-name-of-your-output-file-" class="anchor"></a>Note: the function vcfR::write.vcf() automatically writes a gzipped vcf file, so be sure to add the suffix .gz to the name of your output file.</h3>
+<div id="step-5-quality-unaware-filters" class="section level1">
+<h1 class="hasAnchor">
+<a href="#step-5-quality-unaware-filters" class="anchor"></a>Step 5: quality unaware filters</h1>
+<p>We can now implement filters that are blind to genotype quality like a Minor Allele Count (MAC) threshold, and a distance-based filtering threshold, both of which may serve to increase the signal to noise ratio of our dataset in downstream analyses.</p>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co">#remove singletons (loci with only a single variant allele which have no phylogenetic signal)</span>
+<span class="va">vcfR</span><span class="op">&lt;-</span><span class="fu"><a href="../reference/min_mac.html">min_mac</a></span><span class="op">(</span>vcfR <span class="op">=</span> <span class="va">vcfR</span>, min.mac <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>
+<span class="co">#&gt; 38.14% of SNPs fell below a minor allele count of 2 and were removed from the VCF</span></code></pre></div>
+<p><img src="reproducible-vignette_files/figure-html/unnamed-chunk-11-1.png" width="700"></p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="co">#linkage filter vcf to thin SNPs to one per 500bp</span></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>vcfR<span class="ot">&lt;-</span><span class="fu">distance_thin</span>(vcfR, <span class="at">min.distance =</span> <span class="dv">500</span>)</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>  <span class="er">|</span>                                                                      <span class="er">|</span>   <span class="dv">0</span>%</span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>  <span class="er">|======================================================================|</span> <span class="dv">100</span>%</span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 61 out of 73 input SNPs were not located within 500 base-pairs of another SNP and were retained despite filtering</span></span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a><span class="co">#look at final stats for our filtered vcf file</span></span>
+<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a>vcfR</span>
+<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ***** Object of Class vcfR *****</span></span>
+<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 14 samples</span></span>
+<span id="cb21-15"><a href="#cb21-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 CHROMs</span></span>
+<span id="cb21-16"><a href="#cb21-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 61 variants</span></span>
+<span id="cb21-17"><a href="#cb21-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Object size: 0.1 Mb</span></span>
+<span id="cb21-18"><a href="#cb21-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 12.76 percent missing data</span></span>
+<span id="cb21-19"><a href="#cb21-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; *****        *****         *****</span></span></code></pre></div>
+</div>
+<div id="step-6-write-out-files-for-downstream-analysis" class="section level1">
+<h1 class="hasAnchor">
+<a href="#step-6-write-out-files-for-downstream-analysis" class="anchor"></a>Step 6: write out files for downstream analysis</h1>
+<p>We can now use the convenient function vcfR::write.vcf() to export our filtered vcf file for downstream analyses</p>
+<div id="note-3" class="section level3">
+<h3 class="hasAnchor">
+<a href="#note-3" class="anchor"></a>Note:</h3>
+<p>the function vcfR::write.vcf() automatically writes a gzipped vcf file, so be sure to add the suffix .gz to the name of your output file.</p>
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">#write out vcf</span>
 <span class="co">#vcfR::write.vcf(vcfR, file = "~/Downloads/scrub.jay.example.filtered.vcf.gz")</span></code></pre></div>
 </div>

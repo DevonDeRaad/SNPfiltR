@@ -1,10 +1,11 @@
-pandoc: 2.11.4
+pandoc: 2.14.0.3
 pkgdown: 1.6.1
 pkgdown_sha: ~
 articles:
+  accuracy-benchmarking: accuracy-benchmarking.html
   performance-benchmarking: performance-benchmarking.html
   reproducible-vignette: reproducible-vignette.html
   scrub-jay-RADseq-vignette: scrub-jay-RADseq-vignette.html
   scrub-jay-UCE-vignette: scrub-jay-UCE-vignette.html
-last_built: 2021-12-26T19:04Z
+last_built: 2022-03-01T22:40Z
 

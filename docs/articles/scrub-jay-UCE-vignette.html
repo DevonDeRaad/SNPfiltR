@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">SNPfiltR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.1</span>
       </span>
     </div>
 
@@ -61,7 +61,10 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="../articles/performance-benchmarking.html">Performance benchmark</a>
+      <a href="../articles/accuracy-benchmarking.html">Accuracy benchmarking</a>
+    </li>
+    <li>
+      <a href="../articles/performance-benchmarking.html">Performance benchmarking</a>
     </li>
     <li>
       <a href="../articles/reproducible-vignette.html">reproducible-vignette</a>
@@ -195,7 +198,7 @@ vcfR&lt;-filter_biallelic(vcfR)
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">#execute allele balance filter</span>
 <span class="va">vcfR</span><span class="op">&lt;-</span><span class="fu"><a href="../reference/filter_allele_balance.html">filter_allele_balance</a></span><span class="op">(</span><span class="va">vcfR</span><span class="op">)</span>
-<span class="co">#&gt; 38.85% of het genotypes (6.12% of all genotypes) fall outside of .25 - .75 allele balance and were converted to NA</span></code></pre></div>
+<span class="co">#&gt; 38.85% of het genotypes (6.12% of all genotypes) fall outside of 0.25 - 0.75 allele balance ratio and were converted to NA</span></code></pre></div>
 <p><img src="scrub-jay-UCE-vignette_files/figure-html/unnamed-chunk-6-1.png" width="900"></p>
 <p>Now we can execute a max depth filter (super high depth loci are likely multiple loci stuck together into a single paralogous locus).</p>
 </div>
@@ -266,10 +269,7 @@ vcfR&lt;-filter_biallelic(vcfR)
 <span class="va">clust</span><span class="op">&lt;-</span><span class="fu"><a href="../reference/assess_missing_data_pca.html">assess_missing_data_pca</a></span><span class="op">(</span>vcfR<span class="op">=</span><span class="va">vcfR</span>, popmap <span class="op">=</span> <span class="va">popmap</span>, thresholds <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">.75</span>,<span class="fl">.8</span>,<span class="fl">.85</span><span class="op">)</span>, clustering <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
 <span class="co">#&gt; cutoff is specified, filtered vcfR object will be returned</span>
 <span class="co">#&gt; 83.72% of SNPs fell below a completeness cutoff of 0.75 and were removed from the VCF</span>
-<span class="co">#&gt; Loading required namespace: adegenet</span>
-<span class="co">#&gt; Registered S3 method overwritten by 'spdep':</span>
-<span class="co">#&gt;   method   from</span>
-<span class="co">#&gt;   plot.mst ape</span></code></pre></div>
+<span class="co">#&gt; Loading required namespace: adegenet</span></code></pre></div>
 <p><img src="scrub-jay-UCE-vignette_files/figure-html/unnamed-chunk-10-1.png" width="700"><img src="scrub-jay-UCE-vignette_files/figure-html/unnamed-chunk-10-2.png" width="700"></p>
 <pre><code>#&gt; cutoff is specified, filtered vcfR object will be returned</code></pre>
 <p><img src="scrub-jay-UCE-vignette_files/figure-html/unnamed-chunk-10-3.png" width="700"></p>
@@ -396,7 +396,7 @@ miss&lt;-assess_missing_data_tsne(vcfR=vcfR, popmap = popmap, thresholds = c(.75
 <div id="macmaf-cutoffs-can-be-helpful-in-removing-spurious-and-uninformative-loci-from-the-dataset-but-also-have-the-potential-to-bias-downstream-inferences--linck-and-battey-2019-have-an-excellent-paper-on-just-this-topic--from-the-paper-" class="section level4">
 <h4 class="hasAnchor">
 <a href="#macmaf-cutoffs-can-be-helpful-in-removing-spurious-and-uninformative-loci-from-the-dataset-but-also-have-the-potential-to-bias-downstream-inferences--linck-and-battey-2019-have-an-excellent-paper-on-just-this-topic--from-the-paper-" class="anchor"></a>MAC/MAF cutoffs can be helpful in removing spurious and uninformative loci from the dataset, but also have the potential to bias downstream inferences. Linck and Battey (2019) have an excellent paper on just this topic. From the paper-</h4>
-<p>“We recommend researchers using model‐based programs to describe population structure observe the following best practices: (a) duplicate analyses with nonparametric methods suchas PCA and DAPC with cross validation (b) exclude singletons (c) compare alignments with multiple assembly parameters When seeking to exclude only singletons in alignments with missing data (a ubiquitous problem for reduced‐representation library preparation methods), it is preferable to filter by the count (rather than frequency) of the minor allele, because variation in the amount of missing data across an alignment will cause a static frequency cutoff to remove different SFS classes at different sites”"</p>
+<p>“We recommend researchers using model‐based programs to describe population structure observe the following best practices: (a) duplicate analyses with nonparametric methods suchas PCA and DAPC with cross validation (b) exclude singletons (c) compare alignments with multiple assembly parameters When seeking to exclude only singletons in alignments with missing data (a ubiquitous problem for reduced‐representation library preparation methods), it is preferable to filter by the count (rather than frequency) of the minor allele, because variation in the amount of missing data across an alignment will cause a static frequency cutoff to remove different SFS classes at different sites””</p>
 </div>
 <div id="our-package-contains-a-convenient-wrapper-functions-that-can-filter-based-on-minor-allele-count-mac-and-streamline-investigation-of-the-effects-of-various-filtering-parameters-on-sample-clustering-patterns-" class="section level4">
 <h4 class="hasAnchor">

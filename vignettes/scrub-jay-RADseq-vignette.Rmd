@@ -2,7 +2,7 @@
 title: "scrub-jay-RADseq-vignette"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{scrub-jay-example-vignette}
+  %\VignetteIndexEntry{scrub-jay-RADseq-vignette}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -143,11 +143,11 @@ missing_by_snp(vcfR)
 #check if these cutoffs prevent samples from clustering
 #by patterns of missing data in a PCA
 miss<-assess_missing_data_pca(vcfR=vcfR, popmap = popmap,
-                              thresholds = c(.75,.85), clustering = FALSE)
+                              thresholds = c(.75,.85,.95), clustering = FALSE)
 
 #check what t-SNE clustering looks like at an 85% threshold
 miss<-assess_missing_data_tsne(vcfR=vcfR, popmap = popmap,
-                              thresholds = .85, clustering = FALSE)
+                              thresholds = c(.75,.85,.95), clustering = FALSE)
 
 #choose a cutoff resulting in an acceptable amount of missing data in each sample, and maximizes SNPs retained while minimizing overall missing data, and filter vcf
 vcfR<-missing_by_snp(vcfR, cutoff = .85)
