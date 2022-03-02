@@ -87,6 +87,41 @@ table(r.10k@gt == bash.10k@gt)
 table(r.20k@gt == bash.20k@gt)
 table(r.50k@gt == bash.50k@gt)
 ```
+# Validate the min_mac() function
+
+### Filter each vcf with SNPfiltR
+```{r}
+#perform filtering on each vcf file and save the result
+r.10k<-min_mac(vcfR = read.vcfR("~/Desktop/benchmarking.vcfs/benchmark.10K.vcf.gz"),min.mac = 2)
+r.20k<-min_mac(vcfR = read.vcfR("~/Desktop/benchmarking.vcfs/benchmark.20K.vcf.gz"),min.mac = 2)
+r.50k<-min_mac(vcfR = read.vcfR("~/Desktop/benchmarking.vcfs/benchmark.50K.vcf.gz"),min.mac = 2)
+```
+
+### Filter each with VCFtools
+```{bash}
+cd /Users/devder/Desktop/benchmarking.vcfs
+/Users/devder/Downloads/vcftools/src/cpp/vcftools --gzvcf benchmark.10K.vcf.gz --mac 2 --recode --recode-INFO-all --out 10K.filtered
+
+/Users/devder/Downloads/vcftools/src/cpp/vcftools --gzvcf benchmark.20K.vcf.gz --mac 2 --recode --recode-INFO-all --out 20K.filtered
+
+/Users/devder/Downloads/vcftools/src/cpp/vcftools --gzvcf benchmark.50K.vcf.gz --mac 2 --recode --recode-INFO-all --out 50K.filtered
+```
+
+### Read in VCFtools files
+```{r}
+#read in all the vcftools files
+bash.10k<-read.vcfR("~/Desktop/benchmarking.vcfs/10k.filtered.recode.vcf")
+bash.20k<-read.vcfR("~/Desktop/benchmarking.vcfs/20k.filtered.recode.vcf")
+bash.50k<-read.vcfR("~/Desktop/benchmarking.vcfs/50k.filtered.recode.vcf")
+```
+
+### check that every cell in the genotpye matrix matches for each file
+```{r}
+#Does every cell in the genotype matrix for each camparable vcf match?
+table(r.10k@gt == bash.10k@gt)
+table(r.20k@gt == bash.20k@gt)
+table(r.50k@gt == bash.50k@gt)
+```
 
 # Validate the distance_thin() function
 
@@ -122,9 +157,14 @@ bash.50k<-read.vcfR("~/Desktop/benchmarking.vcfs/50k.filtered.recode.vcf")
 dim(r.10k@gt)
 dim(bash.10k@gt)
 
+dim(r.20k@gt)
+dim(bash.20k@gt)
+
+dim(r.50k@gt)
+dim(bash.50k@gt)
 #right away we can see that the dimensions of these vcf files don't match, indicating that the results differ.
 
-#Let'scalculate distance between SNPs in each vcf by hand to see who was more accurate.
+#Let's calculate distance between SNPs in each vcf by hand to make sure both methods work as promised.
 
 ### Start with SNPfiltR thinned vcf:
 ##
@@ -189,7 +229,10 @@ order.df<-keep.df[match(paste(df$CHROM,df$POS), paste(keep.df$CHROM,keep.df$POS)
 order.df<-order.df[order(order.df$dist),]
 
 #show the lower distribution of SNP distances to see if any fall below the 100bp threshold
-hist(order.df$dist, xlim =c(0,1000), breaks = 50000, main = "thinning using SNPfiltR")
+hist(order.df$dist, xlim =c(0,1000), breaks = 50000, main = "thinning using SNPfiltR",
+          xlab = "Distance from nearest SNP (base pairs)")
+abline(v=100, col="red")
+
 head(order.df) #show the tail of SNP distances
 
 ### repeat for the VCFtools filtered vcf
@@ -255,48 +298,71 @@ order.df<-keep.df[match(paste(df$CHROM,df$POS), paste(keep.df$CHROM,keep.df$POS)
 order.df<-order.df[order(order.df$dist),]
 
 #show the lower distribution of SNP distances
-hist(order.df$dist, xlim =c(0,1000), breaks = 50000, main = "thinning using VCFtools")
+hist(order.df$dist, xlim =c(0,1000), breaks = 50000, main = "thinning using VCFtools",
+     xlab = "Distance from nearest SNP (base pairs)")
+abline(v=100, col="red")
 head(order.df) #show the tail of SNP distances
 
 #putting the dataframe in chromosomal order, we can see right away that SNPs less than 100bp apart have been retained
 order.df<-order.df[with(order.df, order(CHROM, POS)),]
 order.df[1:10,]
 
-#I don't know why this is happening? Potentially VCFtools is not recognizing the way the chromosomes are named in the vcf or something? Either way, safer to use SNPfiltR distance_thin() which we validated here.
+#see how many retained SNPs overlap between the two approaches for each file
+table(with(as.data.frame(r.10k@fix), paste0(CHROM,POS)) %in% with(as.data.frame(bash.10k@fix), paste0(CHROM,POS)))
+table(with(as.data.frame(r.20k@fix), paste0(CHROM,POS)) %in% with(as.data.frame(bash.20k@fix), paste0(CHROM,POS)))
+table(with(as.data.frame(r.50k@fix), paste0(CHROM,POS)) %in% with(as.data.frame(bash.50k@fix), paste0(CHROM,POS)))
+
+#store number of SNPs for each approach as a vector
+r.snps<-c()
+r.snps[1]<-nrow(r.10k@gt)
+r.snps[2]<-nrow(r.20k@gt)
+r.snps[3]<-nrow(r.50k@gt)
+
+#store number of bash SNPs
+bash.snps<-c()
+bash.snps[1]<-nrow(bash.10k@gt)
+bash.snps[2]<-nrow(bash.20k@gt)
+bash.snps[3]<-nrow(bash.50k@gt)
+
+bar.frame<-data.frame(snps=c(r.snps,bash.snps),
+                      approach=c("SNPfiltR::distance_thin()","SNPfiltR::distance_thin()","SNPfiltR::distance_thin()",
+                               "VCFtools --thin","VCFtools --thin","VCFtools --thin"),
+                      input.snps=c("10K","20K","50K",
+                                   "10K","20K","50K")
+                      )
+
+## Grouped bar plot
+ggplot(bar.frame, aes(fill=approach, y=snps, x=input.snps)) + 
+  geom_bar(position="dodge", stat="identity")+
+  xlab("SNPs in input vcf file")+
+  ylab("Number of thinned SNPs")+
+  theme_classic()
 ```
 
-# Validate the min_mac() function
-
-### Filter each vcf with SNPfiltR
+### Make final table showing genotpye concordance across comparisons
 ```{r}
-#perform filtering on each vcf file and save the result
-r.10k<-min_mac(vcfR = read.vcfR("~/Desktop/benchmarking.vcfs/benchmark.10K.vcf.gz"),min.mac = 2)
-r.20k<-min_mac(vcfR = read.vcfR("~/Desktop/benchmarking.vcfs/benchmark.20K.vcf.gz"),min.mac = 2)
-r.50k<-min_mac(vcfR = read.vcfR("~/Desktop/benchmarking.vcfs/benchmark.50K.vcf.gz"),min.mac = 2)
+# print table showing concordance
+concord<-data.frame(concordance=c(1,1,1,1,1,1,1,1,1,
+                                  sum(with(as.data.frame(r.10k@fix), paste0(CHROM,POS)) %in% with(as.data.frame(bash.10k@fix), paste0(CHROM,POS)))/nrow(as.data.frame(r.10k@fix)),
+                                  sum(with(as.data.frame(r.20k@fix), paste0(CHROM,POS)) %in% with(as.data.frame(bash.20k@fix), paste0(CHROM,POS)))/nrow(as.data.frame(r.20k@fix)),
+                                  sum(with(as.data.frame(r.50k@fix), paste0(CHROM,POS)) %in% with(as.data.frame(bash.50k@fix), paste0(CHROM,POS)))/nrow(as.data.frame(r.50k@fix))),
+                      filtering=c("GQ","GQ","GQ","missing data","missing data","missing data",
+                                  "MAC","MAC","MAC","distance thin","distance thin","distance thin"),
+                      input.snps=c("10K","20K","50K",
+                                   "10K","20K","50K",
+                                   "10K","20K","50K",
+                                   "10K","20K","50K")
+                      )
+
+#print table
+heat <- reshape::melt(concord)
+ggplot(data = heat, aes(x=input.snps, y=filtering, fill=value)) + 
+  geom_tile(color = "white", size=1)+
+  geom_text(data=heat,aes(label=round(value, 2)))+
+  theme_minimal()+
+  scale_fill_gradient2(low = "white", high = "cornflowerblue", space = "Lab", name="genotype\nconcordance")+
+  ylab("type of filtering")+
+  xlab("Number of SNPs in input vcf file")
+
 ```
 
-### Filter each with VCFtools
-```{bash}
-cd /Users/devder/Desktop/benchmarking.vcfs
-/Users/devder/Downloads/vcftools/src/cpp/vcftools --gzvcf benchmark.10K.vcf.gz --mac 2 --recode --recode-INFO-all --out 10K.filtered
-
-/Users/devder/Downloads/vcftools/src/cpp/vcftools --gzvcf benchmark.20K.vcf.gz --mac 2 --recode --recode-INFO-all --out 20K.filtered
-
-/Users/devder/Downloads/vcftools/src/cpp/vcftools --gzvcf benchmark.50K.vcf.gz --mac 2 --recode --recode-INFO-all --out 50K.filtered
-```
-
-### Read in VCFtools files
-```{r}
-#read in all the vcftools files
-bash.10k<-read.vcfR("~/Desktop/benchmarking.vcfs/10k.filtered.recode.vcf")
-bash.20k<-read.vcfR("~/Desktop/benchmarking.vcfs/20k.filtered.recode.vcf")
-bash.50k<-read.vcfR("~/Desktop/benchmarking.vcfs/50k.filtered.recode.vcf")
-```
-
-### check that every cell in the genotpye matrix matches for each file
-```{r}
-#Does every cell in the genotype matrix for each camparable vcf match?
-table(r.10k@gt == bash.10k@gt)
-table(r.20k@gt == bash.20k@gt)
-table(r.50k@gt == bash.50k@gt)
-```

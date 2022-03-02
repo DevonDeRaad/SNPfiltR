@@ -154,10 +154,10 @@ Processed variant 8000
 Processed variant 9000
 Processed variant 10000
 Processed variant: 10000
-## All variants processed</code></pre>
-<pre><code>## 28.84% of genotypes fall below a read depth of 5 and were converted to NA</code></pre>
-<pre><code>## 1.31% of genotypes fall below a genotype quality of 30 and were converted to NA</code></pre>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+## All variants processed
+## [1] "32.58% of genotypes fall below a read depth of 5 and were converted to NA"
+## [1] "1.36% of genotypes fall below a genotype quality of 30 and were converted to NA"</code></pre>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">r.20k</span><span class="op">&lt;-</span><span class="fu"><a href="../reference/hard_filter.html">hard_filter</a></span><span class="op">(</span>vcfR <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/vcfR/man/io_vcfR.html">read.vcfR</a></span><span class="op">(</span><span class="st">"~/Desktop/benchmarking.vcfs/benchmark.20K.vcf.gz"</span><span class="op">)</span>,depth <span class="op">=</span> <span class="fl">5</span>,gq <span class="op">=</span> <span class="fl">30</span><span class="op">)</span></code></pre></div>
 <pre><code>## Scanning file to determine attributes.
 ## File attributes:
@@ -197,10 +197,10 @@ Processed variant 18000
 Processed variant 19000
 Processed variant 20000
 Processed variant: 20000
-## All variants processed</code></pre>
-<pre><code>## 29.06% of genotypes fall below a read depth of 5 and were converted to NA</code></pre>
-<pre><code>## 1.29% of genotypes fall below a genotype quality of 30 and were converted to NA</code></pre>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+## All variants processed
+## [1] "30.09% of genotypes fall below a read depth of 5 and were converted to NA"
+## [1] "1.43% of genotypes fall below a genotype quality of 30 and were converted to NA"</code></pre>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">r.50k</span><span class="op">&lt;-</span><span class="fu"><a href="../reference/hard_filter.html">hard_filter</a></span><span class="op">(</span>vcfR <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/vcfR/man/io_vcfR.html">read.vcfR</a></span><span class="op">(</span><span class="st">"~/Desktop/benchmarking.vcfs/benchmark.50K.vcf.gz"</span><span class="op">)</span>,depth <span class="op">=</span> <span class="fl">5</span>,gq <span class="op">=</span> <span class="fl">30</span><span class="op">)</span></code></pre></div>
 <pre><code>## Scanning file to determine attributes.
 ## File attributes:
@@ -270,19 +270,19 @@ Processed variant 48000
 Processed variant 49000
 Processed variant 50000
 Processed variant: 50000
-## All variants processed</code></pre>
-<pre><code>## 29.34% of genotypes fall below a read depth of 5 and were converted to NA</code></pre>
-<pre><code>## 1.33% of genotypes fall below a genotype quality of 30 and were converted to NA</code></pre>
+## All variants processed
+## [1] "31.18% of genotypes fall below a read depth of 5 and were converted to NA"
+## [1] "1.37% of genotypes fall below a genotype quality of 30 and were converted to NA"</code></pre>
 </div>
 <div id="filter-each-with-vcftools" class="section level3">
 <h3 class="hasAnchor">
 <a href="#filter-each-with-vcftools" class="anchor"></a>Filter each with VCFtools</h3>
-<div class="sourceCode" id="cb16"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> /Users/devder/Desktop/benchmarking.vcfs</span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="ex">/Users/devder/Downloads/vcftools/src/cpp/vcftools</span> <span class="at">--gzvcf</span> benchmark.10K.vcf.gz <span class="at">--minGQ</span> 30 <span class="at">--minDP</span> 5 <span class="at">--recode</span> <span class="at">--recode-INFO-all</span> <span class="at">--out</span> 10K.filtered</span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="ex">/Users/devder/Downloads/vcftools/src/cpp/vcftools</span> <span class="at">--gzvcf</span> benchmark.20K.vcf.gz <span class="at">--minGQ</span> 30 <span class="at">--minDP</span> 5 <span class="at">--recode</span> <span class="at">--recode-INFO-all</span> <span class="at">--out</span> 20K.filtered</span>
-<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a><span class="ex">/Users/devder/Downloads/vcftools/src/cpp/vcftools</span> <span class="at">--gzvcf</span> benchmark.50K.vcf.gz <span class="at">--minGQ</span> 30 <span class="at">--minDP</span> 5 <span class="at">--recode</span> <span class="at">--recode-INFO-all</span> <span class="at">--out</span> 50K.filtered</span></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> /Users/devder/Desktop/benchmarking.vcfs</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="ex">/Users/devder/Downloads/vcftools/src/cpp/vcftools</span> <span class="at">--gzvcf</span> benchmark.10K.vcf.gz <span class="at">--minGQ</span> 30 <span class="at">--minDP</span> 5 <span class="at">--recode</span> <span class="at">--recode-INFO-all</span> <span class="at">--out</span> 10K.filtered</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="ex">/Users/devder/Downloads/vcftools/src/cpp/vcftools</span> <span class="at">--gzvcf</span> benchmark.20K.vcf.gz <span class="at">--minGQ</span> 30 <span class="at">--minDP</span> 5 <span class="at">--recode</span> <span class="at">--recode-INFO-all</span> <span class="at">--out</span> 20K.filtered</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="ex">/Users/devder/Downloads/vcftools/src/cpp/vcftools</span> <span class="at">--gzvcf</span> benchmark.50K.vcf.gz <span class="at">--minGQ</span> 30 <span class="at">--minDP</span> 5 <span class="at">--recode</span> <span class="at">--recode-INFO-all</span> <span class="at">--out</span> 50K.filtered</span></code></pre></div>
 <pre><code>## 
 ## VCFtools - 0.1.17
 ## (C) Adam Auton and Anthony Marcketta 2009
@@ -299,7 +299,7 @@ Processed variant: 50000
 ## After filtering, kept 100 out of 100 Individuals
 ## Outputting VCF file...
 ## After filtering, kept 10000 out of a possible 10000 Sites
-## Run Time = 2.00 seconds
+## Run Time = 1.00 seconds
 ## 
 ## VCFtools - 0.1.17
 ## (C) Adam Auton and Anthony Marcketta 2009
@@ -333,12 +333,12 @@ Processed variant: 50000
 ## After filtering, kept 100 out of 100 Individuals
 ## Outputting VCF file...
 ## After filtering, kept 50000 out of a possible 50000 Sites
-## Run Time = 6.00 seconds</code></pre>
+## Run Time = 5.00 seconds</code></pre>
 </div>
 <div id="read-in-vcftools-files" class="section level3">
 <h3 class="hasAnchor">
 <a href="#read-in-vcftools-files" class="anchor"></a>Read in VCFtools files</h3>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">#read in all the vcftools files</span>
 <span class="va">bash.10k</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/pkg/vcfR/man/io_vcfR.html">read.vcfR</a></span><span class="op">(</span><span class="st">"~/Desktop/benchmarking.vcfs/10k.filtered.recode.vcf"</span><span class="op">)</span></code></pre></div>
 <pre><code>## Scanning file to determine attributes.
@@ -370,7 +370,7 @@ Processed variant 9000
 Processed variant 10000
 Processed variant: 10000
 ## All variants processed</code></pre>
-<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">bash.20k</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/pkg/vcfR/man/io_vcfR.html">read.vcfR</a></span><span class="op">(</span><span class="st">"~/Desktop/benchmarking.vcfs/20k.filtered.recode.vcf"</span><span class="op">)</span></code></pre></div>
 <pre><code>## Scanning file to determine attributes.
 ## File attributes:
@@ -411,7 +411,7 @@ Processed variant 19000
 Processed variant 20000
 Processed variant: 20000
 ## All variants processed</code></pre>
-<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">bash.50k</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/pkg/vcfR/man/io_vcfR.html">read.vcfR</a></span><span class="op">(</span><span class="st">"~/Desktop/benchmarking.vcfs/50k.filtered.recode.vcf"</span><span class="op">)</span></code></pre></div>
 <pre><code>## Scanning file to determine attributes.
 ## File attributes:
@@ -486,22 +486,22 @@ Processed variant: 50000
 <div id="check-that-every-cell-in-the-genotpye-matrix-matches-for-each-file" class="section level3">
 <h3 class="hasAnchor">
 <a href="#check-that-every-cell-in-the-genotpye-matrix-matches-for-each-file" class="anchor"></a>check that every cell in the genotpye matrix matches for each file</h3>
-<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">#Does every cell in the genotype matrix for each camparable vcf match?</span>
 <span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op">(</span><span class="va">r.10k</span><span class="op">@</span><span class="va">gt</span> <span class="op">==</span> <span class="va">bash.10k</span><span class="op">@</span><span class="va">gt</span><span class="op">)</span></code></pre></div>
 <pre><code>## 
 ##   TRUE 
-## 160694</code></pre>
-<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
+## 127966</code></pre>
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op">(</span><span class="va">r.20k</span><span class="op">@</span><span class="va">gt</span> <span class="op">==</span> <span class="va">bash.20k</span><span class="op">@</span><span class="va">gt</span><span class="op">)</span></code></pre></div>
 <pre><code>## 
 ##   TRUE 
-## 316967</code></pre>
-<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
+## 282173</code></pre>
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op">(</span><span class="va">r.50k</span><span class="op">@</span><span class="va">gt</span> <span class="op">==</span> <span class="va">bash.50k</span><span class="op">@</span><span class="va">gt</span><span class="op">)</span></code></pre></div>
 <pre><code>## 
 ##   TRUE 
-## 781671</code></pre>
+## 664803</code></pre>
 </div>
 </div>
 <div id="validate-the-missing_by_snp-function" class="section level1">
@@ -510,7 +510,7 @@ Processed variant: 50000
 <div id="filter-each-vcf-with-snpfiltr-1" class="section level3">
 <h3 class="hasAnchor">
 <a href="#filter-each-vcf-with-snpfiltr-1" class="anchor"></a>Filter each vcf with SNPfiltR</h3>
-<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">#perform filtering on each vcf file and save the result</span>
 <span class="va">r.10k</span><span class="op">&lt;-</span><span class="fu"><a href="../reference/missing_by_snp.html">missing_by_snp</a></span><span class="op">(</span>vcfR <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/vcfR/man/io_vcfR.html">read.vcfR</a></span><span class="op">(</span><span class="st">"~/Desktop/benchmarking.vcfs/benchmark.10K.vcf.gz"</span><span class="op">)</span>,cutoff<span class="op">=</span><span class="fl">.5</span><span class="op">)</span></code></pre></div>
 <pre><code>## Scanning file to determine attributes.
@@ -541,11 +541,11 @@ Processed variant 8000
 Processed variant 9000
 Processed variant 10000
 Processed variant: 10000
-## All variants processed</code></pre>
-<pre><code>## cutoff is specified, filtered vcfR object will be returned</code></pre>
-<pre><code>## 80.93% of SNPs fell below a completeness cutoff of 0.5 and were removed from the VCF</code></pre>
+## All variants processed
+## [1] "cutoff is specified, filtered vcfR object will be returned"</code></pre>
 <p><img src="accuracy-benchmarking_files/figure-html/unnamed-chunk-6-1.png" width="700"></p>
-<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
+<pre><code>## [1] "85.65% of SNPs fell below a completeness cutoff of 0.5 and were removed from the VCF"</code></pre>
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">r.20k</span><span class="op">&lt;-</span><span class="fu"><a href="../reference/missing_by_snp.html">missing_by_snp</a></span><span class="op">(</span>vcfR <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/vcfR/man/io_vcfR.html">read.vcfR</a></span><span class="op">(</span><span class="st">"~/Desktop/benchmarking.vcfs/benchmark.20K.vcf.gz"</span><span class="op">)</span>,cutoff<span class="op">=</span><span class="fl">.5</span><span class="op">)</span></code></pre></div>
 <pre><code>## Scanning file to determine attributes.
 ## File attributes:
@@ -585,11 +585,11 @@ Processed variant 18000
 Processed variant 19000
 Processed variant 20000
 Processed variant: 20000
-## All variants processed</code></pre>
-<pre><code>## cutoff is specified, filtered vcfR object will be returned</code></pre>
-<pre><code>## 81.22% of SNPs fell below a completeness cutoff of 0.5 and were removed from the VCF</code></pre>
+## All variants processed
+## [1] "cutoff is specified, filtered vcfR object will be returned"</code></pre>
 <p><img src="accuracy-benchmarking_files/figure-html/unnamed-chunk-6-2.png" width="700"></p>
-<div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
+<pre><code>## [1] "83.8% of SNPs fell below a completeness cutoff of 0.5 and were removed from the VCF"</code></pre>
+<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">r.50k</span><span class="op">&lt;-</span><span class="fu"><a href="../reference/missing_by_snp.html">missing_by_snp</a></span><span class="op">(</span>vcfR <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/vcfR/man/io_vcfR.html">read.vcfR</a></span><span class="op">(</span><span class="st">"~/Desktop/benchmarking.vcfs/benchmark.50K.vcf.gz"</span><span class="op">)</span>,cutoff<span class="op">=</span><span class="fl">.5</span><span class="op">)</span></code></pre></div>
 <pre><code>## Scanning file to determine attributes.
 ## File attributes:
@@ -659,20 +659,20 @@ Processed variant 48000
 Processed variant 49000
 Processed variant 50000
 Processed variant: 50000
-## All variants processed</code></pre>
-<pre><code>## cutoff is specified, filtered vcfR object will be returned</code></pre>
-<pre><code>## 81.51% of SNPs fell below a completeness cutoff of 0.5 and were removed from the VCF</code></pre>
+## All variants processed
+## [1] "cutoff is specified, filtered vcfR object will be returned"</code></pre>
 <p><img src="accuracy-benchmarking_files/figure-html/unnamed-chunk-6-3.png" width="700"></p>
+<pre><code>## [1] "84.44% of SNPs fell below a completeness cutoff of 0.5 and were removed from the VCF"</code></pre>
 </div>
 <div id="filter-each-with-vcftools-1" class="section level3">
 <h3 class="hasAnchor">
 <a href="#filter-each-with-vcftools-1" class="anchor"></a>Filter each with VCFtools</h3>
-<div class="sourceCode" id="cb42"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> /Users/devder/Desktop/benchmarking.vcfs</span>
-<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a><span class="ex">/Users/devder/Downloads/vcftools/src/cpp/vcftools</span> <span class="at">--gzvcf</span> benchmark.10K.vcf.gz <span class="at">--max-missing</span> 0.5 <span class="at">--recode</span> <span class="at">--recode-INFO-all</span> <span class="at">--out</span> 10K.filtered</span>
-<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a><span class="ex">/Users/devder/Downloads/vcftools/src/cpp/vcftools</span> <span class="at">--gzvcf</span> benchmark.20K.vcf.gz <span class="at">--max-missing</span> 0.5 <span class="at">--recode</span> <span class="at">--recode-INFO-all</span> <span class="at">--out</span> 20K.filtered</span>
-<span id="cb42-5"><a href="#cb42-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb42-6"><a href="#cb42-6" aria-hidden="true" tabindex="-1"></a><span class="ex">/Users/devder/Downloads/vcftools/src/cpp/vcftools</span> <span class="at">--gzvcf</span> benchmark.50K.vcf.gz <span class="at">--max-missing</span> 0.5 <span class="at">--recode</span> <span class="at">--recode-INFO-all</span> <span class="at">--out</span> 50K.filtered</span></code></pre></div>
+<div class="sourceCode" id="cb33"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> /Users/devder/Desktop/benchmarking.vcfs</span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a><span class="ex">/Users/devder/Downloads/vcftools/src/cpp/vcftools</span> <span class="at">--gzvcf</span> benchmark.10K.vcf.gz <span class="at">--max-missing</span> 0.5 <span class="at">--recode</span> <span class="at">--recode-INFO-all</span> <span class="at">--out</span> 10K.filtered</span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a><span class="ex">/Users/devder/Downloads/vcftools/src/cpp/vcftools</span> <span class="at">--gzvcf</span> benchmark.20K.vcf.gz <span class="at">--max-missing</span> 0.5 <span class="at">--recode</span> <span class="at">--recode-INFO-all</span> <span class="at">--out</span> 20K.filtered</span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a><span class="ex">/Users/devder/Downloads/vcftools/src/cpp/vcftools</span> <span class="at">--gzvcf</span> benchmark.50K.vcf.gz <span class="at">--max-missing</span> 0.5 <span class="at">--recode</span> <span class="at">--recode-INFO-all</span> <span class="at">--out</span> 50K.filtered</span></code></pre></div>
 <pre><code>## 
 ## VCFtools - 0.1.17
 ## (C) Adam Auton and Anthony Marcketta 2009
@@ -687,8 +687,8 @@ Processed variant: 50000
 ## Using zlib version: 1.2.11
 ## After filtering, kept 100 out of 100 Individuals
 ## Outputting VCF file...
-## After filtering, kept 1907 out of a possible 10000 Sites
-## Run Time = 0.00 seconds
+## After filtering, kept 1435 out of a possible 10000 Sites
+## Run Time = 1.00 seconds
 ## 
 ## VCFtools - 0.1.17
 ## (C) Adam Auton and Anthony Marcketta 2009
@@ -703,8 +703,8 @@ Processed variant: 50000
 ## Using zlib version: 1.2.11
 ## After filtering, kept 100 out of 100 Individuals
 ## Outputting VCF file...
-## After filtering, kept 3757 out of a possible 20000 Sites
-## Run Time = 1.00 seconds
+## After filtering, kept 3241 out of a possible 20000 Sites
+## Run Time = 0.00 seconds
 ## 
 ## VCFtools - 0.1.17
 ## (C) Adam Auton and Anthony Marcketta 2009
@@ -719,76 +719,133 @@ Processed variant: 50000
 ## Using zlib version: 1.2.11
 ## After filtering, kept 100 out of 100 Individuals
 ## Outputting VCF file...
-## After filtering, kept 9243 out of a possible 50000 Sites
+## After filtering, kept 7782 out of a possible 50000 Sites
 ## Run Time = 3.00 seconds</code></pre>
 </div>
 <div id="read-in-vcftools-files-1" class="section level3">
 <h3 class="hasAnchor">
 <a href="#read-in-vcftools-files-1" class="anchor"></a>Read in VCFtools files</h3>
-<div class="sourceCode" id="cb44"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">#read in all the vcftools files</span>
 <span class="va">bash.10k</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/pkg/vcfR/man/io_vcfR.html">read.vcfR</a></span><span class="op">(</span><span class="st">"~/Desktop/benchmarking.vcfs/10k.filtered.recode.vcf"</span><span class="op">)</span></code></pre></div>
 <pre><code>## Scanning file to determine attributes.
 ## File attributes:
 ##   meta lines: 14
 ##   header_line: 15
-##   variant count: 1907
+##   variant count: 1435
 ##   column count: 109
 ## 
 Meta line 14 read in.
 ## All meta lines processed.
 ## gt matrix initialized.
 ## Character matrix gt created.
-##   Character matrix gt rows: 1907
+##   Character matrix gt rows: 1435
 ##   Character matrix gt cols: 109
 ##   skip: 0
-##   nrows: 1907
+##   nrows: 1435
 ##   row_num: 0
 ## 
 Processed variant 1000
-Processed variant: 1907
+Processed variant: 1435
 ## All variants processed</code></pre>
-<div class="sourceCode" id="cb46"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">bash.20k</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/pkg/vcfR/man/io_vcfR.html">read.vcfR</a></span><span class="op">(</span><span class="st">"~/Desktop/benchmarking.vcfs/20k.filtered.recode.vcf"</span><span class="op">)</span></code></pre></div>
 <pre><code>## Scanning file to determine attributes.
 ## File attributes:
 ##   meta lines: 14
 ##   header_line: 15
-##   variant count: 3757
+##   variant count: 3241
 ##   column count: 109
 ## 
 Meta line 14 read in.
 ## All meta lines processed.
 ## gt matrix initialized.
 ## Character matrix gt created.
-##   Character matrix gt rows: 3757
+##   Character matrix gt rows: 3241
 ##   Character matrix gt cols: 109
 ##   skip: 0
-##   nrows: 3757
+##   nrows: 3241
 ##   row_num: 0
 ## 
 Processed variant 1000
 Processed variant 2000
 Processed variant 3000
-Processed variant: 3757
+Processed variant: 3241
 ## All variants processed</code></pre>
-<div class="sourceCode" id="cb48"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb39"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">bash.50k</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/pkg/vcfR/man/io_vcfR.html">read.vcfR</a></span><span class="op">(</span><span class="st">"~/Desktop/benchmarking.vcfs/50k.filtered.recode.vcf"</span><span class="op">)</span></code></pre></div>
 <pre><code>## Scanning file to determine attributes.
 ## File attributes:
 ##   meta lines: 14
 ##   header_line: 15
-##   variant count: 9243
+##   variant count: 7782
 ##   column count: 109
 ## 
 Meta line 14 read in.
 ## All meta lines processed.
 ## gt matrix initialized.
 ## Character matrix gt created.
-##   Character matrix gt rows: 9243
+##   Character matrix gt rows: 7782
 ##   Character matrix gt cols: 109
 ##   skip: 0
-##   nrows: 9243
+##   nrows: 7782
+##   row_num: 0
+## 
+Processed variant 1000
+Processed variant 2000
+Processed variant 3000
+Processed variant 4000
+Processed variant 5000
+Processed variant 6000
+Processed variant 7000
+Processed variant: 7782
+## All variants processed</code></pre>
+</div>
+<div id="check-that-every-cell-in-the-genotpye-matrix-matches-for-each-file-1" class="section level3">
+<h3 class="hasAnchor">
+<a href="#check-that-every-cell-in-the-genotpye-matrix-matches-for-each-file-1" class="anchor"></a>check that every cell in the genotpye matrix matches for each file</h3>
+<div class="sourceCode" id="cb41"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co">#Does every cell in the genotype matrix for each camparable vcf match?</span>
+<span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op">(</span><span class="va">r.10k</span><span class="op">@</span><span class="va">gt</span> <span class="op">==</span> <span class="va">bash.10k</span><span class="op">@</span><span class="va">gt</span><span class="op">)</span></code></pre></div>
+<pre><code>## 
+##   TRUE 
+## 122778</code></pre>
+<div class="sourceCode" id="cb43"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op">(</span><span class="va">r.20k</span><span class="op">@</span><span class="va">gt</span> <span class="op">==</span> <span class="va">bash.20k</span><span class="op">@</span><span class="va">gt</span><span class="op">)</span></code></pre></div>
+<pre><code>## 
+##   TRUE 
+## 277322</code></pre>
+<div class="sourceCode" id="cb45"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op">(</span><span class="va">r.50k</span><span class="op">@</span><span class="va">gt</span> <span class="op">==</span> <span class="va">bash.50k</span><span class="op">@</span><span class="va">gt</span><span class="op">)</span></code></pre></div>
+<pre><code>## 
+##   TRUE 
+## 652933</code></pre>
+</div>
+</div>
+<div id="validate-the-min_mac-function" class="section level1">
+<h1 class="hasAnchor">
+<a href="#validate-the-min_mac-function" class="anchor"></a>Validate the min_mac() function</h1>
+<div id="filter-each-vcf-with-snpfiltr-2" class="section level3">
+<h3 class="hasAnchor">
+<a href="#filter-each-vcf-with-snpfiltr-2" class="anchor"></a>Filter each vcf with SNPfiltR</h3>
+<div class="sourceCode" id="cb47"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co">#perform filtering on each vcf file and save the result</span>
+<span class="va">r.10k</span><span class="op">&lt;-</span><span class="fu"><a href="../reference/min_mac.html">min_mac</a></span><span class="op">(</span>vcfR <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/vcfR/man/io_vcfR.html">read.vcfR</a></span><span class="op">(</span><span class="st">"~/Desktop/benchmarking.vcfs/benchmark.10K.vcf.gz"</span><span class="op">)</span>,min.mac <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></code></pre></div>
+<pre><code>## Scanning file to determine attributes.
+## File attributes:
+##   meta lines: 14
+##   header_line: 15
+##   variant count: 10000
+##   column count: 109
+## 
+Meta line 14 read in.
+## All meta lines processed.
+## gt matrix initialized.
+## Character matrix gt created.
+##   Character matrix gt rows: 10000
+##   Character matrix gt cols: 109
+##   skip: 0
+##   nrows: 10000
 ##   row_num: 0
 ## 
 Processed variant 1000
@@ -800,37 +857,315 @@ Processed variant 6000
 Processed variant 7000
 Processed variant 8000
 Processed variant 9000
-Processed variant: 9243
+Processed variant 10000
+Processed variant: 10000
+## All variants processed</code></pre>
+<p><img src="accuracy-benchmarking_files/figure-html/unnamed-chunk-10-1.png" width="700"></p>
+<pre><code>## [1] "59.1% of SNPs fell below a minor allele count of 2 and were removed from the VCF"</code></pre>
+<div class="sourceCode" id="cb50"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">r.20k</span><span class="op">&lt;-</span><span class="fu"><a href="../reference/min_mac.html">min_mac</a></span><span class="op">(</span>vcfR <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/vcfR/man/io_vcfR.html">read.vcfR</a></span><span class="op">(</span><span class="st">"~/Desktop/benchmarking.vcfs/benchmark.20K.vcf.gz"</span><span class="op">)</span>,min.mac <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></code></pre></div>
+<pre><code>## Scanning file to determine attributes.
+## File attributes:
+##   meta lines: 14
+##   header_line: 15
+##   variant count: 20000
+##   column count: 109
+## 
+Meta line 14 read in.
+## All meta lines processed.
+## gt matrix initialized.
+## Character matrix gt created.
+##   Character matrix gt rows: 20000
+##   Character matrix gt cols: 109
+##   skip: 0
+##   nrows: 20000
+##   row_num: 0
+## 
+Processed variant 1000
+Processed variant 2000
+Processed variant 3000
+Processed variant 4000
+Processed variant 5000
+Processed variant 6000
+Processed variant 7000
+Processed variant 8000
+Processed variant 9000
+Processed variant 10000
+Processed variant 11000
+Processed variant 12000
+Processed variant 13000
+Processed variant 14000
+Processed variant 15000
+Processed variant 16000
+Processed variant 17000
+Processed variant 18000
+Processed variant 19000
+Processed variant 20000
+Processed variant: 20000
+## All variants processed</code></pre>
+<p><img src="accuracy-benchmarking_files/figure-html/unnamed-chunk-10-2.png" width="700"></p>
+<pre><code>## [1] "58.26% of SNPs fell below a minor allele count of 2 and were removed from the VCF"</code></pre>
+<div class="sourceCode" id="cb53"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">r.50k</span><span class="op">&lt;-</span><span class="fu"><a href="../reference/min_mac.html">min_mac</a></span><span class="op">(</span>vcfR <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/vcfR/man/io_vcfR.html">read.vcfR</a></span><span class="op">(</span><span class="st">"~/Desktop/benchmarking.vcfs/benchmark.50K.vcf.gz"</span><span class="op">)</span>,min.mac <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></code></pre></div>
+<pre><code>## Scanning file to determine attributes.
+## File attributes:
+##   meta lines: 14
+##   header_line: 15
+##   variant count: 50000
+##   column count: 109
+## 
+Meta line 14 read in.
+## All meta lines processed.
+## gt matrix initialized.
+## Character matrix gt created.
+##   Character matrix gt rows: 50000
+##   Character matrix gt cols: 109
+##   skip: 0
+##   nrows: 50000
+##   row_num: 0
+## 
+Processed variant 1000
+Processed variant 2000
+Processed variant 3000
+Processed variant 4000
+Processed variant 5000
+Processed variant 6000
+Processed variant 7000
+Processed variant 8000
+Processed variant 9000
+Processed variant 10000
+Processed variant 11000
+Processed variant 12000
+Processed variant 13000
+Processed variant 14000
+Processed variant 15000
+Processed variant 16000
+Processed variant 17000
+Processed variant 18000
+Processed variant 19000
+Processed variant 20000
+Processed variant 21000
+Processed variant 22000
+Processed variant 23000
+Processed variant 24000
+Processed variant 25000
+Processed variant 26000
+Processed variant 27000
+Processed variant 28000
+Processed variant 29000
+Processed variant 30000
+Processed variant 31000
+Processed variant 32000
+Processed variant 33000
+Processed variant 34000
+Processed variant 35000
+Processed variant 36000
+Processed variant 37000
+Processed variant 38000
+Processed variant 39000
+Processed variant 40000
+Processed variant 41000
+Processed variant 42000
+Processed variant 43000
+Processed variant 44000
+Processed variant 45000
+Processed variant 46000
+Processed variant 47000
+Processed variant 48000
+Processed variant 49000
+Processed variant 50000
+Processed variant: 50000
+## All variants processed</code></pre>
+<p><img src="accuracy-benchmarking_files/figure-html/unnamed-chunk-10-3.png" width="700"></p>
+<pre><code>## [1] "57.94% of SNPs fell below a minor allele count of 2 and were removed from the VCF"</code></pre>
+</div>
+<div id="filter-each-with-vcftools-2" class="section level3">
+<h3 class="hasAnchor">
+<a href="#filter-each-with-vcftools-2" class="anchor"></a>Filter each with VCFtools</h3>
+<div class="sourceCode" id="cb56"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> /Users/devder/Desktop/benchmarking.vcfs</span>
+<span id="cb56-2"><a href="#cb56-2" aria-hidden="true" tabindex="-1"></a><span class="ex">/Users/devder/Downloads/vcftools/src/cpp/vcftools</span> <span class="at">--gzvcf</span> benchmark.10K.vcf.gz <span class="at">--mac</span> 2 <span class="at">--recode</span> <span class="at">--recode-INFO-all</span> <span class="at">--out</span> 10K.filtered</span>
+<span id="cb56-3"><a href="#cb56-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb56-4"><a href="#cb56-4" aria-hidden="true" tabindex="-1"></a><span class="ex">/Users/devder/Downloads/vcftools/src/cpp/vcftools</span> <span class="at">--gzvcf</span> benchmark.20K.vcf.gz <span class="at">--mac</span> 2 <span class="at">--recode</span> <span class="at">--recode-INFO-all</span> <span class="at">--out</span> 20K.filtered</span>
+<span id="cb56-5"><a href="#cb56-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb56-6"><a href="#cb56-6" aria-hidden="true" tabindex="-1"></a><span class="ex">/Users/devder/Downloads/vcftools/src/cpp/vcftools</span> <span class="at">--gzvcf</span> benchmark.50K.vcf.gz <span class="at">--mac</span> 2 <span class="at">--recode</span> <span class="at">--recode-INFO-all</span> <span class="at">--out</span> 50K.filtered</span></code></pre></div>
+<pre><code>## 
+## VCFtools - 0.1.17
+## (C) Adam Auton and Anthony Marcketta 2009
+## 
+## Parameters as interpreted:
+##  --gzvcf benchmark.10K.vcf.gz
+##  --recode-INFO-all
+##  --mac 2
+##  --out 10K.filtered
+##  --recode
+## 
+## Using zlib version: 1.2.11
+## After filtering, kept 100 out of 100 Individuals
+## Outputting VCF file...
+## After filtering, kept 4090 out of a possible 10000 Sites
+## Run Time = 1.00 seconds
+## 
+## VCFtools - 0.1.17
+## (C) Adam Auton and Anthony Marcketta 2009
+## 
+## Parameters as interpreted:
+##  --gzvcf benchmark.20K.vcf.gz
+##  --recode-INFO-all
+##  --mac 2
+##  --out 20K.filtered
+##  --recode
+## 
+## Using zlib version: 1.2.11
+## After filtering, kept 100 out of 100 Individuals
+## Outputting VCF file...
+## After filtering, kept 8348 out of a possible 20000 Sites
+## Run Time = 1.00 seconds
+## 
+## VCFtools - 0.1.17
+## (C) Adam Auton and Anthony Marcketta 2009
+## 
+## Parameters as interpreted:
+##  --gzvcf benchmark.50K.vcf.gz
+##  --recode-INFO-all
+##  --mac 2
+##  --out 50K.filtered
+##  --recode
+## 
+## Using zlib version: 1.2.11
+## After filtering, kept 100 out of 100 Individuals
+## Outputting VCF file...
+## After filtering, kept 21031 out of a possible 50000 Sites
+## Run Time = 3.00 seconds</code></pre>
+</div>
+<div id="read-in-vcftools-files-2" class="section level3">
+<h3 class="hasAnchor">
+<a href="#read-in-vcftools-files-2" class="anchor"></a>Read in VCFtools files</h3>
+<div class="sourceCode" id="cb58"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co">#read in all the vcftools files</span>
+<span class="va">bash.10k</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/pkg/vcfR/man/io_vcfR.html">read.vcfR</a></span><span class="op">(</span><span class="st">"~/Desktop/benchmarking.vcfs/10k.filtered.recode.vcf"</span><span class="op">)</span></code></pre></div>
+<pre><code>## Scanning file to determine attributes.
+## File attributes:
+##   meta lines: 14
+##   header_line: 15
+##   variant count: 4090
+##   column count: 109
+## 
+Meta line 14 read in.
+## All meta lines processed.
+## gt matrix initialized.
+## Character matrix gt created.
+##   Character matrix gt rows: 4090
+##   Character matrix gt cols: 109
+##   skip: 0
+##   nrows: 4090
+##   row_num: 0
+## 
+Processed variant 1000
+Processed variant 2000
+Processed variant 3000
+Processed variant 4000
+Processed variant: 4090
+## All variants processed</code></pre>
+<div class="sourceCode" id="cb60"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">bash.20k</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/pkg/vcfR/man/io_vcfR.html">read.vcfR</a></span><span class="op">(</span><span class="st">"~/Desktop/benchmarking.vcfs/20k.filtered.recode.vcf"</span><span class="op">)</span></code></pre></div>
+<pre><code>## Scanning file to determine attributes.
+## File attributes:
+##   meta lines: 14
+##   header_line: 15
+##   variant count: 8348
+##   column count: 109
+## 
+Meta line 14 read in.
+## All meta lines processed.
+## gt matrix initialized.
+## Character matrix gt created.
+##   Character matrix gt rows: 8348
+##   Character matrix gt cols: 109
+##   skip: 0
+##   nrows: 8348
+##   row_num: 0
+## 
+Processed variant 1000
+Processed variant 2000
+Processed variant 3000
+Processed variant 4000
+Processed variant 5000
+Processed variant 6000
+Processed variant 7000
+Processed variant 8000
+Processed variant: 8348
+## All variants processed</code></pre>
+<div class="sourceCode" id="cb62"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">bash.50k</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/pkg/vcfR/man/io_vcfR.html">read.vcfR</a></span><span class="op">(</span><span class="st">"~/Desktop/benchmarking.vcfs/50k.filtered.recode.vcf"</span><span class="op">)</span></code></pre></div>
+<pre><code>## Scanning file to determine attributes.
+## File attributes:
+##   meta lines: 14
+##   header_line: 15
+##   variant count: 21031
+##   column count: 109
+## 
+Meta line 14 read in.
+## All meta lines processed.
+## gt matrix initialized.
+## Character matrix gt created.
+##   Character matrix gt rows: 21031
+##   Character matrix gt cols: 109
+##   skip: 0
+##   nrows: 21031
+##   row_num: 0
+## 
+Processed variant 1000
+Processed variant 2000
+Processed variant 3000
+Processed variant 4000
+Processed variant 5000
+Processed variant 6000
+Processed variant 7000
+Processed variant 8000
+Processed variant 9000
+Processed variant 10000
+Processed variant 11000
+Processed variant 12000
+Processed variant 13000
+Processed variant 14000
+Processed variant 15000
+Processed variant 16000
+Processed variant 17000
+Processed variant 18000
+Processed variant 19000
+Processed variant 20000
+Processed variant 21000
+Processed variant: 21031
 ## All variants processed</code></pre>
 </div>
-<div id="check-that-every-cell-in-the-genotpye-matrix-matches-for-each-file-1" class="section level3">
+<div id="check-that-every-cell-in-the-genotpye-matrix-matches-for-each-file-2" class="section level3">
 <h3 class="hasAnchor">
-<a href="#check-that-every-cell-in-the-genotpye-matrix-matches-for-each-file-1" class="anchor"></a>check that every cell in the genotpye matrix matches for each file</h3>
-<div class="sourceCode" id="cb50"><pre class="downlit sourceCode r">
+<a href="#check-that-every-cell-in-the-genotpye-matrix-matches-for-each-file-2" class="anchor"></a>check that every cell in the genotpye matrix matches for each file</h3>
+<div class="sourceCode" id="cb64"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">#Does every cell in the genotype matrix for each camparable vcf match?</span>
 <span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op">(</span><span class="va">r.10k</span><span class="op">@</span><span class="va">gt</span> <span class="op">==</span> <span class="va">bash.10k</span><span class="op">@</span><span class="va">gt</span><span class="op">)</span></code></pre></div>
 <pre><code>## 
 ##   TRUE 
-## 160911</code></pre>
-<div class="sourceCode" id="cb52"><pre class="downlit sourceCode r">
+## 107663</code></pre>
+<div class="sourceCode" id="cb66"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op">(</span><span class="va">r.20k</span><span class="op">@</span><span class="va">gt</span> <span class="op">==</span> <span class="va">bash.20k</span><span class="op">@</span><span class="va">gt</span><span class="op">)</span></code></pre></div>
 <pre><code>## 
 ##   TRUE 
-## 316502</code></pre>
-<div class="sourceCode" id="cb54"><pre class="downlit sourceCode r">
+## 231584</code></pre>
+<div class="sourceCode" id="cb68"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op">(</span><span class="va">r.50k</span><span class="op">@</span><span class="va">gt</span> <span class="op">==</span> <span class="va">bash.50k</span><span class="op">@</span><span class="va">gt</span><span class="op">)</span></code></pre></div>
 <pre><code>## 
 ##   TRUE 
-## 779516</code></pre>
+## 554511</code></pre>
 </div>
 </div>
 <div id="validate-the-distance_thin-function" class="section level1">
 <h1 class="hasAnchor">
 <a href="#validate-the-distance_thin-function" class="anchor"></a>Validate the distance_thin() function</h1>
-<div id="filter-each-vcf-with-snpfiltr-2" class="section level3">
+<div id="filter-each-vcf-with-snpfiltr-3" class="section level3">
 <h3 class="hasAnchor">
-<a href="#filter-each-vcf-with-snpfiltr-2" class="anchor"></a>Filter each vcf with SNPfiltR</h3>
-<div class="sourceCode" id="cb56"><pre class="downlit sourceCode r">
+<a href="#filter-each-vcf-with-snpfiltr-3" class="anchor"></a>Filter each vcf with SNPfiltR</h3>
+<div class="sourceCode" id="cb70"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">#perform filtering on each vcf file and save the result</span>
 <span class="va">r.10k</span><span class="op">&lt;-</span><span class="fu"><a href="../reference/distance_thin.html">distance_thin</a></span><span class="op">(</span>vcfR <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/vcfR/man/io_vcfR.html">read.vcfR</a></span><span class="op">(</span><span class="st">"~/Desktop/benchmarking.vcfs/benchmark.10K.vcf.gz"</span><span class="op">)</span>,min.distance<span class="op">=</span><span class="fl">100</span><span class="op">)</span></code></pre></div>
 <pre><code>## Scanning file to determine attributes.
@@ -866,69 +1201,9 @@ Processed variant: 10000
   |                                                                            
   |                                                                      |   0%
   |                                                                            
-  |==                                                                    |   3%
-  |                                                                            
-  |=====                                                                 |   6%
-  |                                                                            
-  |=======                                                               |  10%
-  |                                                                            
-  |=========                                                             |  13%
-  |                                                                            
-  |===========                                                           |  16%
-  |                                                                            
-  |==============                                                        |  19%
-  |                                                                            
-  |================                                                      |  23%
-  |                                                                            
-  |==================                                                    |  26%
-  |                                                                            
-  |====================                                                  |  29%
-  |                                                                            
-  |=======================                                               |  32%
-  |                                                                            
-  |=========================                                             |  35%
-  |                                                                            
-  |===========================                                           |  39%
-  |                                                                            
-  |=============================                                         |  42%
-  |                                                                            
-  |================================                                      |  45%
-  |                                                                            
-  |==================================                                    |  48%
-  |                                                                            
-  |====================================                                  |  52%
-  |                                                                            
-  |======================================                                |  55%
-  |                                                                            
-  |=========================================                             |  58%
-  |                                                                            
-  |===========================================                           |  61%
-  |                                                                            
-  |=============================================                         |  65%
-  |                                                                            
-  |===============================================                       |  68%
-  |                                                                            
-  |==================================================                    |  71%
-  |                                                                            
-  |====================================================                  |  74%
-  |                                                                            
-  |======================================================                |  77%
-  |                                                                            
-  |========================================================              |  81%
-  |                                                                            
-  |===========================================================           |  84%
-  |                                                                            
-  |=============================================================         |  87%
-  |                                                                            
-  |===============================================================       |  90%
-  |                                                                            
-  |=================================================================     |  94%
-  |                                                                            
-  |====================================================================  |  97%
-  |                                                                            
-  |======================================================================| 100%</code></pre>
-<pre><code>## 9399 out of 10000 input SNPs were not located within 100 base-pairs of another SNP and were retained despite filtering</code></pre>
-<div class="sourceCode" id="cb59"><pre class="downlit sourceCode r">
+  |======================================================================| 100%
+## [1] "2791 out of 10000 input SNPs were not located within 100 base-pairs of another SNP and were retained despite filtering"</code></pre>
+<div class="sourceCode" id="cb72"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">r.20k</span><span class="op">&lt;-</span><span class="fu"><a href="../reference/distance_thin.html">distance_thin</a></span><span class="op">(</span>vcfR <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/vcfR/man/io_vcfR.html">read.vcfR</a></span><span class="op">(</span><span class="st">"~/Desktop/benchmarking.vcfs/benchmark.20K.vcf.gz"</span><span class="op">)</span>,min.distance<span class="op">=</span><span class="fl">100</span><span class="op">)</span></code></pre></div>
 <pre><code>## Scanning file to determine attributes.
 ## File attributes:
@@ -973,75 +1248,13 @@ Processed variant: 20000
   |                                                                            
   |                                                                      |   0%
   |                                                                            
-  |==                                                                    |   3%
+  |=======================                                               |  33%
   |                                                                            
-  |====                                                                  |   6%
+  |===============================================                       |  67%
   |                                                                            
-  |======                                                                |   9%
-  |                                                                            
-  |========                                                              |  12%
-  |                                                                            
-  |==========                                                            |  15%
-  |                                                                            
-  |============                                                          |  18%
-  |                                                                            
-  |==============                                                        |  21%
-  |                                                                            
-  |================                                                      |  24%
-  |                                                                            
-  |===================                                                   |  26%
-  |                                                                            
-  |=====================                                                 |  29%
-  |                                                                            
-  |=======================                                               |  32%
-  |                                                                            
-  |=========================                                             |  35%
-  |                                                                            
-  |===========================                                           |  38%
-  |                                                                            
-  |=============================                                         |  41%
-  |                                                                            
-  |===============================                                       |  44%
-  |                                                                            
-  |=================================                                     |  47%
-  |                                                                            
-  |===================================                                   |  50%
-  |                                                                            
-  |=====================================                                 |  53%
-  |                                                                            
-  |=======================================                               |  56%
-  |                                                                            
-  |=========================================                             |  59%
-  |                                                                            
-  |===========================================                           |  62%
-  |                                                                            
-  |=============================================                         |  65%
-  |                                                                            
-  |===============================================                       |  68%
-  |                                                                            
-  |=================================================                     |  71%
-  |                                                                            
-  |===================================================                   |  74%
-  |                                                                            
-  |======================================================                |  76%
-  |                                                                            
-  |========================================================              |  79%
-  |                                                                            
-  |==========================================================            |  82%
-  |                                                                            
-  |============================================================          |  85%
-  |                                                                            
-  |==============================================================        |  88%
-  |                                                                            
-  |================================================================      |  91%
-  |                                                                            
-  |==================================================================    |  94%
-  |                                                                            
-  |====================================================================  |  97%
-  |                                                                            
-  |======================================================================| 100%</code></pre>
-<pre><code>## 17745 out of 20000 input SNPs were not located within 100 base-pairs of another SNP and were retained despite filtering</code></pre>
-<div class="sourceCode" id="cb62"><pre class="downlit sourceCode r">
+  |======================================================================| 100%
+## [1] "5618 out of 20000 input SNPs were not located within 100 base-pairs of another SNP and were retained despite filtering"</code></pre>
+<div class="sourceCode" id="cb74"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">r.50k</span><span class="op">&lt;-</span><span class="fu"><a href="../reference/distance_thin.html">distance_thin</a></span><span class="op">(</span>vcfR <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/vcfR/man/io_vcfR.html">read.vcfR</a></span><span class="op">(</span><span class="st">"~/Desktop/benchmarking.vcfs/benchmark.50K.vcf.gz"</span><span class="op">)</span>,min.distance<span class="op">=</span><span class="fl">100</span><span class="op">)</span></code></pre></div>
 <pre><code>## Scanning file to determine attributes.
 ## File attributes:
@@ -1116,86 +1329,30 @@ Processed variant: 50000
   |                                                                            
   |                                                                      |   0%
   |                                                                            
-  |==                                                                    |   3%
-  |                                                                            
-  |====                                                                  |   6%
-  |                                                                            
-  |======                                                                |   9%
-  |                                                                            
-  |========                                                              |  11%
-  |                                                                            
   |==========                                                            |  14%
-  |                                                                            
-  |============                                                          |  17%
-  |                                                                            
-  |==============                                                        |  20%
-  |                                                                            
-  |================                                                      |  23%
-  |                                                                            
-  |==================                                                    |  26%
   |                                                                            
   |====================                                                  |  29%
   |                                                                            
-  |======================                                                |  31%
-  |                                                                            
-  |========================                                              |  34%
-  |                                                                            
-  |==========================                                            |  37%
-  |                                                                            
-  |============================                                          |  40%
-  |                                                                            
   |==============================                                        |  43%
-  |                                                                            
-  |================================                                      |  46%
-  |                                                                            
-  |==================================                                    |  49%
-  |                                                                            
-  |====================================                                  |  51%
-  |                                                                            
-  |======================================                                |  54%
   |                                                                            
   |========================================                              |  57%
   |                                                                            
-  |==========================================                            |  60%
-  |                                                                            
-  |============================================                          |  63%
-  |                                                                            
-  |==============================================                        |  66%
-  |                                                                            
-  |================================================                      |  69%
-  |                                                                            
   |==================================================                    |  71%
-  |                                                                            
-  |====================================================                  |  74%
-  |                                                                            
-  |======================================================                |  77%
-  |                                                                            
-  |========================================================              |  80%
-  |                                                                            
-  |==========================================================            |  83%
   |                                                                            
   |============================================================          |  86%
   |                                                                            
-  |==============================================================        |  89%
-  |                                                                            
-  |================================================================      |  91%
-  |                                                                            
-  |==================================================================    |  94%
-  |                                                                            
-  |====================================================================  |  97%
-  |                                                                            
-  |======================================================================| 100%</code></pre>
-<pre><code>## 38371 out of 50000 input SNPs were not located within 100 base-pairs of another SNP and were retained despite filtering</code></pre>
+  |======================================================================| 100%
+## [1] "14478 out of 50000 input SNPs were not located within 100 base-pairs of another SNP and were retained despite filtering"</code></pre>
 </div>
-<div id="filter-each-with-vcftools-2" class="section level3">
+<div id="filter-each-with-vcftools-3" class="section level3">
 <h3 class="hasAnchor">
-<a href="#filter-each-with-vcftools-2" class="anchor"></a>Filter each with VCFtools</h3>
-<div class="sourceCode" id="cb65"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> /Users/devder/Desktop/benchmarking.vcfs</span>
-<span id="cb65-2"><a href="#cb65-2" aria-hidden="true" tabindex="-1"></a><span class="ex">/Users/devder/Downloads/vcftools/src/cpp/vcftools</span> <span class="at">--gzvcf</span> benchmark.10K.vcf.gz <span class="at">--thin</span> 100 <span class="at">--recode</span> <span class="at">--recode-INFO-all</span> <span class="at">--out</span> 10K.filtered</span>
-<span id="cb65-3"><a href="#cb65-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb65-4"><a href="#cb65-4" aria-hidden="true" tabindex="-1"></a><span class="ex">/Users/devder/Downloads/vcftools/src/cpp/vcftools</span> <span class="at">--gzvcf</span> benchmark.20K.vcf.gz <span class="at">--thin</span> 100 <span class="at">--recode</span> <span class="at">--recode-INFO-all</span> <span class="at">--out</span> 20K.filtered</span>
-<span id="cb65-5"><a href="#cb65-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb65-6"><a href="#cb65-6" aria-hidden="true" tabindex="-1"></a><span class="ex">/Users/devder/Downloads/vcftools/src/cpp/vcftools</span> <span class="at">--gzvcf</span> benchmark.50K.vcf.gz <span class="at">--thin</span> 100 <span class="at">--recode</span> <span class="at">--recode-INFO-all</span> <span class="at">--out</span> 50K.filtered</span></code></pre></div>
+<a href="#filter-each-with-vcftools-3" class="anchor"></a>Filter each with VCFtools</h3>
+<div class="sourceCode" id="cb76"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb76-1"><a href="#cb76-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> /Users/devder/Desktop/benchmarking.vcfs</span>
+<span id="cb76-2"><a href="#cb76-2" aria-hidden="true" tabindex="-1"></a><span class="ex">/Users/devder/Downloads/vcftools/src/cpp/vcftools</span> <span class="at">--gzvcf</span> benchmark.10K.vcf.gz <span class="at">--thin</span> 100 <span class="at">--recode</span> <span class="at">--recode-INFO-all</span> <span class="at">--out</span> 10K.filtered</span>
+<span id="cb76-3"><a href="#cb76-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb76-4"><a href="#cb76-4" aria-hidden="true" tabindex="-1"></a><span class="ex">/Users/devder/Downloads/vcftools/src/cpp/vcftools</span> <span class="at">--gzvcf</span> benchmark.20K.vcf.gz <span class="at">--thin</span> 100 <span class="at">--recode</span> <span class="at">--recode-INFO-all</span> <span class="at">--out</span> 20K.filtered</span>
+<span id="cb76-5"><a href="#cb76-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb76-6"><a href="#cb76-6" aria-hidden="true" tabindex="-1"></a><span class="ex">/Users/devder/Downloads/vcftools/src/cpp/vcftools</span> <span class="at">--gzvcf</span> benchmark.50K.vcf.gz <span class="at">--thin</span> 100 <span class="at">--recode</span> <span class="at">--recode-INFO-all</span> <span class="at">--out</span> 50K.filtered</span></code></pre></div>
 <pre><code>## 
 ## VCFtools - 0.1.17
 ## (C) Adam Auton and Anthony Marcketta 2009
@@ -1210,8 +1367,8 @@ Processed variant: 50000
 ## Using zlib version: 1.2.11
 ## After filtering, kept 100 out of 100 Individuals
 ## Outputting VCF file...
-## After filtering, kept 9464 out of a possible 10000 Sites
-## Run Time = 1.00 seconds
+## After filtering, kept 2408 out of a possible 10000 Sites
+## Run Time = 0.00 seconds
 ## 
 ## VCFtools - 0.1.17
 ## (C) Adam Auton and Anthony Marcketta 2009
@@ -1226,8 +1383,8 @@ Processed variant: 50000
 ## Using zlib version: 1.2.11
 ## After filtering, kept 100 out of 100 Individuals
 ## Outputting VCF file...
-## After filtering, kept 18947 out of a possible 20000 Sites
-## Run Time = 3.00 seconds
+## After filtering, kept 4826 out of a possible 20000 Sites
+## Run Time = 0.00 seconds
 ## 
 ## VCFtools - 0.1.17
 ## (C) Adam Auton and Anthony Marcketta 2009
@@ -1242,99 +1399,78 @@ Processed variant: 50000
 ## Using zlib version: 1.2.11
 ## After filtering, kept 100 out of 100 Individuals
 ## Outputting VCF file...
-## After filtering, kept 47218 out of a possible 50000 Sites
-## Run Time = 5.00 seconds</code></pre>
+## After filtering, kept 12541 out of a possible 50000 Sites
+## Run Time = 2.00 seconds</code></pre>
 </div>
-<div id="read-in-vcftools-files-2" class="section level3">
+<div id="read-in-vcftools-files-3" class="section level3">
 <h3 class="hasAnchor">
-<a href="#read-in-vcftools-files-2" class="anchor"></a>Read in VCFtools files</h3>
-<div class="sourceCode" id="cb67"><pre class="downlit sourceCode r">
+<a href="#read-in-vcftools-files-3" class="anchor"></a>Read in VCFtools files</h3>
+<div class="sourceCode" id="cb78"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">#read in all the vcftools files</span>
 <span class="va">bash.10k</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/pkg/vcfR/man/io_vcfR.html">read.vcfR</a></span><span class="op">(</span><span class="st">"~/Desktop/benchmarking.vcfs/10k.filtered.recode.vcf"</span><span class="op">)</span></code></pre></div>
 <pre><code>## Scanning file to determine attributes.
 ## File attributes:
 ##   meta lines: 14
 ##   header_line: 15
-##   variant count: 9464
+##   variant count: 2408
 ##   column count: 109
 ## 
 Meta line 14 read in.
 ## All meta lines processed.
 ## gt matrix initialized.
 ## Character matrix gt created.
-##   Character matrix gt rows: 9464
+##   Character matrix gt rows: 2408
 ##   Character matrix gt cols: 109
 ##   skip: 0
-##   nrows: 9464
+##   nrows: 2408
 ##   row_num: 0
 ## 
 Processed variant 1000
 Processed variant 2000
-Processed variant 3000
-Processed variant 4000
-Processed variant 5000
-Processed variant 6000
-Processed variant 7000
-Processed variant 8000
-Processed variant 9000
-Processed variant: 9464
+Processed variant: 2408
 ## All variants processed</code></pre>
-<div class="sourceCode" id="cb69"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb80"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">bash.20k</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/pkg/vcfR/man/io_vcfR.html">read.vcfR</a></span><span class="op">(</span><span class="st">"~/Desktop/benchmarking.vcfs/20k.filtered.recode.vcf"</span><span class="op">)</span></code></pre></div>
 <pre><code>## Scanning file to determine attributes.
 ## File attributes:
 ##   meta lines: 14
 ##   header_line: 15
-##   variant count: 18947
+##   variant count: 4826
 ##   column count: 109
 ## 
 Meta line 14 read in.
 ## All meta lines processed.
 ## gt matrix initialized.
 ## Character matrix gt created.
-##   Character matrix gt rows: 18947
+##   Character matrix gt rows: 4826
 ##   Character matrix gt cols: 109
 ##   skip: 0
-##   nrows: 18947
+##   nrows: 4826
 ##   row_num: 0
 ## 
 Processed variant 1000
 Processed variant 2000
 Processed variant 3000
 Processed variant 4000
-Processed variant 5000
-Processed variant 6000
-Processed variant 7000
-Processed variant 8000
-Processed variant 9000
-Processed variant 10000
-Processed variant 11000
-Processed variant 12000
-Processed variant 13000
-Processed variant 14000
-Processed variant 15000
-Processed variant 16000
-Processed variant 17000
-Processed variant 18000
-Processed variant: 18947
+Processed variant: 4826
 ## All variants processed</code></pre>
-<div class="sourceCode" id="cb71"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb82"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">bash.50k</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/pkg/vcfR/man/io_vcfR.html">read.vcfR</a></span><span class="op">(</span><span class="st">"~/Desktop/benchmarking.vcfs/50k.filtered.recode.vcf"</span><span class="op">)</span></code></pre></div>
 <pre><code>## Scanning file to determine attributes.
 ## File attributes:
 ##   meta lines: 14
 ##   header_line: 15
-##   variant count: 47218
+##   variant count: 12541
 ##   column count: 109
 ## 
 Meta line 14 read in.
 ## All meta lines processed.
 ## gt matrix initialized.
 ## Character matrix gt created.
-##   Character matrix gt rows: 47218
+##   Character matrix gt rows: 12541
 ##   Character matrix gt cols: 109
 ##   skip: 0
-##   nrows: 47218
+##   nrows: 12541
 ##   row_num: 0
 ## 
 Processed variant 1000
@@ -1349,58 +1485,35 @@ Processed variant 9000
 Processed variant 10000
 Processed variant 11000
 Processed variant 12000
-Processed variant 13000
-Processed variant 14000
-Processed variant 15000
-Processed variant 16000
-Processed variant 17000
-Processed variant 18000
-Processed variant 19000
-Processed variant 20000
-Processed variant 21000
-Processed variant 22000
-Processed variant 23000
-Processed variant 24000
-Processed variant 25000
-Processed variant 26000
-Processed variant 27000
-Processed variant 28000
-Processed variant 29000
-Processed variant 30000
-Processed variant 31000
-Processed variant 32000
-Processed variant 33000
-Processed variant 34000
-Processed variant 35000
-Processed variant 36000
-Processed variant 37000
-Processed variant 38000
-Processed variant 39000
-Processed variant 40000
-Processed variant 41000
-Processed variant 42000
-Processed variant 43000
-Processed variant 44000
-Processed variant 45000
-Processed variant 46000
-Processed variant 47000
-Processed variant: 47218
+Processed variant: 12541
 ## All variants processed</code></pre>
 </div>
-<div id="check-that-every-cell-in-the-genotpye-matrix-matches-for-each-file-2" class="section level3">
+<div id="check-that-every-cell-in-the-genotpye-matrix-matches-for-each-file-3" class="section level3">
 <h3 class="hasAnchor">
-<a href="#check-that-every-cell-in-the-genotpye-matrix-matches-for-each-file-2" class="anchor"></a>check that every cell in the genotpye matrix matches for each file</h3>
-<div class="sourceCode" id="cb73"><pre class="downlit sourceCode r">
+<a href="#check-that-every-cell-in-the-genotpye-matrix-matches-for-each-file-3" class="anchor"></a>check that every cell in the genotpye matrix matches for each file</h3>
+<div class="sourceCode" id="cb84"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">#Does every cell in the genotype matrix for each camparable vcf match?</span>
 <span class="fu"><a href="https://rdrr.io/r/base/dim.html">dim</a></span><span class="op">(</span><span class="va">r.10k</span><span class="op">@</span><span class="va">gt</span><span class="op">)</span></code></pre></div>
-<pre><code>## [1] 9399  101</code></pre>
-<div class="sourceCode" id="cb75"><pre class="downlit sourceCode r">
+<pre><code>## [1] 2791  101</code></pre>
+<div class="sourceCode" id="cb86"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/dim.html">dim</a></span><span class="op">(</span><span class="va">bash.10k</span><span class="op">@</span><span class="va">gt</span><span class="op">)</span></code></pre></div>
-<pre><code>## [1] 9464  101</code></pre>
-<div class="sourceCode" id="cb77"><pre class="downlit sourceCode r">
+<pre><code>## [1] 2408  101</code></pre>
+<div class="sourceCode" id="cb88"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/dim.html">dim</a></span><span class="op">(</span><span class="va">r.20k</span><span class="op">@</span><span class="va">gt</span><span class="op">)</span></code></pre></div>
+<pre><code>## [1] 5618  101</code></pre>
+<div class="sourceCode" id="cb90"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/dim.html">dim</a></span><span class="op">(</span><span class="va">bash.20k</span><span class="op">@</span><span class="va">gt</span><span class="op">)</span></code></pre></div>
+<pre><code>## [1] 4826  101</code></pre>
+<div class="sourceCode" id="cb92"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/dim.html">dim</a></span><span class="op">(</span><span class="va">r.50k</span><span class="op">@</span><span class="va">gt</span><span class="op">)</span></code></pre></div>
+<pre><code>## [1] 14478   101</code></pre>
+<div class="sourceCode" id="cb94"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/dim.html">dim</a></span><span class="op">(</span><span class="va">bash.50k</span><span class="op">@</span><span class="va">gt</span><span class="op">)</span></code></pre></div>
+<pre><code>## [1] 12541   101</code></pre>
+<div class="sourceCode" id="cb96"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">#right away we can see that the dimensions of these vcf files don't match, indicating that the results differ.</span>
 
-<span class="co">#Let'scalculate distance between SNPs in each vcf by hand to see who was more accurate.</span>
+<span class="co">#Let's calculate distance between SNPs in each vcf by hand to make sure both methods work as promised.</span>
 
 <span class="co">### Start with SNPfiltR thinned vcf:</span>
 <span class="co">##</span>
@@ -1465,18 +1578,20 @@ Processed variant: 47218
 <span class="va">order.df</span><span class="op">&lt;-</span><span class="va">order.df</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/order.html">order</a></span><span class="op">(</span><span class="va">order.df</span><span class="op">$</span><span class="va">dist</span><span class="op">)</span>,<span class="op">]</span>
 
 <span class="co">#show the lower distribution of SNP distances to see if any fall below the 100bp threshold</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/hist.html">hist</a></span><span class="op">(</span><span class="va">order.df</span><span class="op">$</span><span class="va">dist</span>, xlim <span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1000</span><span class="op">)</span>, breaks <span class="op">=</span> <span class="fl">50000</span>, main <span class="op">=</span> <span class="st">"thinning using SNPfiltR"</span><span class="op">)</span></code></pre></div>
-<p><img src="accuracy-benchmarking_files/figure-html/unnamed-chunk-13-1.png" width="700"></p>
-<div class="sourceCode" id="cb78"><pre class="downlit sourceCode r">
+<span class="fu"><a href="https://rdrr.io/r/graphics/hist.html">hist</a></span><span class="op">(</span><span class="va">order.df</span><span class="op">$</span><span class="va">dist</span>, xlim <span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1000</span><span class="op">)</span>, breaks <span class="op">=</span> <span class="fl">50000</span>, main <span class="op">=</span> <span class="st">"thinning using SNPfiltR"</span>,
+          xlab <span class="op">=</span> <span class="st">"Distance from nearest SNP (base pairs)"</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/abline.html">abline</a></span><span class="op">(</span>v<span class="op">=</span><span class="fl">100</span>, col<span class="op">=</span><span class="st">"red"</span><span class="op">)</span></code></pre></div>
+<p><img src="accuracy-benchmarking_files/figure-html/unnamed-chunk-17-1.png" width="700"></p>
+<div class="sourceCode" id="cb97"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/vcfR/man/vcfR-method.html">head</a></span><span class="op">(</span><span class="va">order.df</span><span class="op">)</span> <span class="co">#show the tail of SNP distances</span></code></pre></div>
-<pre><code>##             CHROM      POS dist
-## 5896  Pseudo3_dna 37399303  101
-## 1556 Pseudo10_dna 16674460  102
-## 5856  Pseudo3_dna 34435555  103
-## 4399  Pseudo2_dna 84817274  104
-## 3571  Pseudo2_dna 11106890  104
-## 3774  Pseudo2_dna 28178166  105</code></pre>
-<div class="sourceCode" id="cb80"><pre class="downlit sourceCode r">
+<pre><code>##            CHROM     POS dist
+## 220 Pseudo10_dna 2854287  101
+## 331 Pseudo10_dna 3419169  101
+## 333 Pseudo10_dna 3420934  101
+## 467 Pseudo10_dna 4224139  101
+## 469 Pseudo10_dna 4224491  101
+## 532 Pseudo10_dna 4498157  101</code></pre>
+<div class="sourceCode" id="cb99"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">### repeat for the VCFtools filtered vcf</span>
 <span class="co">##</span>
 <span class="co">#</span>
@@ -1540,373 +1655,107 @@ Processed variant: 47218
 <span class="va">order.df</span><span class="op">&lt;-</span><span class="va">order.df</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/order.html">order</a></span><span class="op">(</span><span class="va">order.df</span><span class="op">$</span><span class="va">dist</span><span class="op">)</span>,<span class="op">]</span>
 
 <span class="co">#show the lower distribution of SNP distances</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/hist.html">hist</a></span><span class="op">(</span><span class="va">order.df</span><span class="op">$</span><span class="va">dist</span>, xlim <span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1000</span><span class="op">)</span>, breaks <span class="op">=</span> <span class="fl">50000</span>, main <span class="op">=</span> <span class="st">"thinning using VCFtools"</span><span class="op">)</span></code></pre></div>
-<p><img src="accuracy-benchmarking_files/figure-html/unnamed-chunk-13-2.png" width="700"></p>
-<div class="sourceCode" id="cb81"><pre class="downlit sourceCode r">
+<span class="fu"><a href="https://rdrr.io/r/graphics/hist.html">hist</a></span><span class="op">(</span><span class="va">order.df</span><span class="op">$</span><span class="va">dist</span>, xlim <span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1000</span><span class="op">)</span>, breaks <span class="op">=</span> <span class="fl">50000</span>, main <span class="op">=</span> <span class="st">"thinning using VCFtools"</span>,
+     xlab <span class="op">=</span> <span class="st">"Distance from nearest SNP (base pairs)"</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/abline.html">abline</a></span><span class="op">(</span>v<span class="op">=</span><span class="fl">100</span>, col<span class="op">=</span><span class="st">"red"</span><span class="op">)</span></code></pre></div>
+<p><img src="accuracy-benchmarking_files/figure-html/unnamed-chunk-17-2.png" width="700"></p>
+<div class="sourceCode" id="cb100"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/vcfR/man/vcfR-method.html">head</a></span><span class="op">(</span><span class="va">order.df</span><span class="op">)</span> <span class="co">#show the tail of SNP distances</span></code></pre></div>
-<pre><code>##             CHROM       POS dist
-## 1834 Pseudo12_dna   1042038    1
-## 272   Pseudo1_dna  27993527    1
-## 5451 Pseudo24_dna   3659449    1
-## 8470  Pseudo5_dna  49662826    1
-## 7121  Pseudo4_dna  19499381    1
-## 1080  Pseudo1_dna 106078918    1</code></pre>
-<div class="sourceCode" id="cb83"><pre class="downlit sourceCode r">
+<pre><code>##             CHROM      POS dist
+## 2197 Pseudo10_dna 16289157  100
+## 464  Pseudo10_dna  4498157  101
+## 2257 Pseudo10_dna 16585988  101
+## 163  Pseudo10_dna  2575297  102
+## 1834 Pseudo10_dna 13584214  102
+## 848  Pseudo10_dna  6642570  103</code></pre>
+<div class="sourceCode" id="cb102"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">#putting the dataframe in chromosomal order, we can see right away that SNPs less than 100bp apart have been retained</span>
 <span class="va">order.df</span><span class="op">&lt;-</span><span class="va">order.df</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/with.html">with</a></span><span class="op">(</span><span class="va">order.df</span>, <span class="fu"><a href="https://rdrr.io/r/base/order.html">order</a></span><span class="op">(</span><span class="va">CHROM</span>, <span class="va">POS</span><span class="op">)</span><span class="op">)</span>,<span class="op">]</span>
 <span class="va">order.df</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span>,<span class="op">]</span></code></pre></div>
-<pre><code>##          CHROM     POS   dist
-## 1  Pseudo1_dna   82043     NA
-## 2  Pseudo1_dna  763276 681233
-## 3  Pseudo1_dna  856505  93229
-## 4  Pseudo1_dna  856902    397
-## 5  Pseudo1_dna  856957     55
-## 6  Pseudo1_dna  857001     44
-## 7  Pseudo1_dna  944932  87931
-## 8  Pseudo1_dna 1248096 303164
-## 9  Pseudo1_dna 1248145     49
-## 10 Pseudo1_dna 1290093  41948</code></pre>
-<div class="sourceCode" id="cb85"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co">#I don't know why this is happening? Potentially VCFtools is not recognizing the way the chromosomes are named in the vcf or something? Either way, safer to use SNPfiltR distance_thin() which we validated here.</span></code></pre></div>
-</div>
-</div>
-<div id="validate-the-min_mac-function" class="section level1">
-<h1 class="hasAnchor">
-<a href="#validate-the-min_mac-function" class="anchor"></a>Validate the min_mac() function</h1>
-<div id="filter-each-vcf-with-snpfiltr-3" class="section level3">
-<h3 class="hasAnchor">
-<a href="#filter-each-vcf-with-snpfiltr-3" class="anchor"></a>Filter each vcf with SNPfiltR</h3>
-<div class="sourceCode" id="cb86"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co">#perform filtering on each vcf file and save the result</span>
-<span class="va">r.10k</span><span class="op">&lt;-</span><span class="fu"><a href="../reference/min_mac.html">min_mac</a></span><span class="op">(</span>vcfR <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/vcfR/man/io_vcfR.html">read.vcfR</a></span><span class="op">(</span><span class="st">"~/Desktop/benchmarking.vcfs/benchmark.10K.vcf.gz"</span><span class="op">)</span>,min.mac <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></code></pre></div>
-<pre><code>## Scanning file to determine attributes.
-## File attributes:
-##   meta lines: 14
-##   header_line: 15
-##   variant count: 10000
-##   column count: 109
-## 
-Meta line 14 read in.
-## All meta lines processed.
-## gt matrix initialized.
-## Character matrix gt created.
-##   Character matrix gt rows: 10000
-##   Character matrix gt cols: 109
-##   skip: 0
-##   nrows: 10000
-##   row_num: 0
-## 
-Processed variant 1000
-Processed variant 2000
-Processed variant 3000
-Processed variant 4000
-Processed variant 5000
-Processed variant 6000
-Processed variant 7000
-Processed variant 8000
-Processed variant 9000
-Processed variant 10000
-Processed variant: 10000
-## All variants processed</code></pre>
-<pre><code>## 53.83% of SNPs fell below a minor allele count of 2 and were removed from the VCF</code></pre>
-<p><img src="accuracy-benchmarking_files/figure-html/unnamed-chunk-14-1.png" width="700"></p>
-<div class="sourceCode" id="cb89"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">r.20k</span><span class="op">&lt;-</span><span class="fu"><a href="../reference/min_mac.html">min_mac</a></span><span class="op">(</span>vcfR <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/vcfR/man/io_vcfR.html">read.vcfR</a></span><span class="op">(</span><span class="st">"~/Desktop/benchmarking.vcfs/benchmark.20K.vcf.gz"</span><span class="op">)</span>,min.mac <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></code></pre></div>
-<pre><code>## Scanning file to determine attributes.
-## File attributes:
-##   meta lines: 14
-##   header_line: 15
-##   variant count: 20000
-##   column count: 109
-## 
-Meta line 14 read in.
-## All meta lines processed.
-## gt matrix initialized.
-## Character matrix gt created.
-##   Character matrix gt rows: 20000
-##   Character matrix gt cols: 109
-##   skip: 0
-##   nrows: 20000
-##   row_num: 0
-## 
-Processed variant 1000
-Processed variant 2000
-Processed variant 3000
-Processed variant 4000
-Processed variant 5000
-Processed variant 6000
-Processed variant 7000
-Processed variant 8000
-Processed variant 9000
-Processed variant 10000
-Processed variant 11000
-Processed variant 12000
-Processed variant 13000
-Processed variant 14000
-Processed variant 15000
-Processed variant 16000
-Processed variant 17000
-Processed variant 18000
-Processed variant 19000
-Processed variant 20000
-Processed variant: 20000
-## All variants processed</code></pre>
-<pre><code>## 53.89% of SNPs fell below a minor allele count of 2 and were removed from the VCF</code></pre>
-<p><img src="accuracy-benchmarking_files/figure-html/unnamed-chunk-14-2.png" width="700"></p>
-<div class="sourceCode" id="cb92"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">r.50k</span><span class="op">&lt;-</span><span class="fu"><a href="../reference/min_mac.html">min_mac</a></span><span class="op">(</span>vcfR <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/vcfR/man/io_vcfR.html">read.vcfR</a></span><span class="op">(</span><span class="st">"~/Desktop/benchmarking.vcfs/benchmark.50K.vcf.gz"</span><span class="op">)</span>,min.mac <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></code></pre></div>
-<pre><code>## Scanning file to determine attributes.
-## File attributes:
-##   meta lines: 14
-##   header_line: 15
-##   variant count: 50000
-##   column count: 109
-## 
-Meta line 14 read in.
-## All meta lines processed.
-## gt matrix initialized.
-## Character matrix gt created.
-##   Character matrix gt rows: 50000
-##   Character matrix gt cols: 109
-##   skip: 0
-##   nrows: 50000
-##   row_num: 0
-## 
-Processed variant 1000
-Processed variant 2000
-Processed variant 3000
-Processed variant 4000
-Processed variant 5000
-Processed variant 6000
-Processed variant 7000
-Processed variant 8000
-Processed variant 9000
-Processed variant 10000
-Processed variant 11000
-Processed variant 12000
-Processed variant 13000
-Processed variant 14000
-Processed variant 15000
-Processed variant 16000
-Processed variant 17000
-Processed variant 18000
-Processed variant 19000
-Processed variant 20000
-Processed variant 21000
-Processed variant 22000
-Processed variant 23000
-Processed variant 24000
-Processed variant 25000
-Processed variant 26000
-Processed variant 27000
-Processed variant 28000
-Processed variant 29000
-Processed variant 30000
-Processed variant 31000
-Processed variant 32000
-Processed variant 33000
-Processed variant 34000
-Processed variant 35000
-Processed variant 36000
-Processed variant 37000
-Processed variant 38000
-Processed variant 39000
-Processed variant 40000
-Processed variant 41000
-Processed variant 42000
-Processed variant 43000
-Processed variant 44000
-Processed variant 45000
-Processed variant 46000
-Processed variant 47000
-Processed variant 48000
-Processed variant 49000
-Processed variant 50000
-Processed variant: 50000
-## All variants processed</code></pre>
-<pre><code>## 54.33% of SNPs fell below a minor allele count of 2 and were removed from the VCF</code></pre>
-<p><img src="accuracy-benchmarking_files/figure-html/unnamed-chunk-14-3.png" width="700"></p>
-</div>
-<div id="filter-each-with-vcftools-3" class="section level3">
-<h3 class="hasAnchor">
-<a href="#filter-each-with-vcftools-3" class="anchor"></a>Filter each with VCFtools</h3>
-<div class="sourceCode" id="cb95"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb95-1"><a href="#cb95-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> /Users/devder/Desktop/benchmarking.vcfs</span>
-<span id="cb95-2"><a href="#cb95-2" aria-hidden="true" tabindex="-1"></a><span class="ex">/Users/devder/Downloads/vcftools/src/cpp/vcftools</span> <span class="at">--gzvcf</span> benchmark.10K.vcf.gz <span class="at">--mac</span> 2 <span class="at">--recode</span> <span class="at">--recode-INFO-all</span> <span class="at">--out</span> 10K.filtered</span>
-<span id="cb95-3"><a href="#cb95-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb95-4"><a href="#cb95-4" aria-hidden="true" tabindex="-1"></a><span class="ex">/Users/devder/Downloads/vcftools/src/cpp/vcftools</span> <span class="at">--gzvcf</span> benchmark.20K.vcf.gz <span class="at">--mac</span> 2 <span class="at">--recode</span> <span class="at">--recode-INFO-all</span> <span class="at">--out</span> 20K.filtered</span>
-<span id="cb95-5"><a href="#cb95-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb95-6"><a href="#cb95-6" aria-hidden="true" tabindex="-1"></a><span class="ex">/Users/devder/Downloads/vcftools/src/cpp/vcftools</span> <span class="at">--gzvcf</span> benchmark.50K.vcf.gz <span class="at">--mac</span> 2 <span class="at">--recode</span> <span class="at">--recode-INFO-all</span> <span class="at">--out</span> 50K.filtered</span></code></pre></div>
+<pre><code>##           CHROM    POS  dist
+## 1  Pseudo10_dna  25891    NA
+## 2  Pseudo10_dna  31885  5994
+## 3  Pseudo10_dna  85182 53297
+## 4  Pseudo10_dna 135731 50549
+## 5  Pseudo10_dna 156488 20757
+## 6  Pseudo10_dna 163096  6608
+## 7  Pseudo10_dna 178396 15300
+## 8  Pseudo10_dna 185542  7146
+## 9  Pseudo10_dna 225731 40189
+## 10 Pseudo10_dna 228849  3118</code></pre>
+<div class="sourceCode" id="cb104"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co">#see how many retained SNPs overlap between the two approaches for each file</span>
+<span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/with.html">with</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="va">r.10k</span><span class="op">@</span><span class="va">fix</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="va">CHROM</span>,<span class="va">POS</span><span class="op">)</span><span class="op">)</span> <span class="op">%in%</span> <span class="fu"><a href="https://rdrr.io/r/base/with.html">with</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="va">bash.10k</span><span class="op">@</span><span class="va">fix</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="va">CHROM</span>,<span class="va">POS</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <pre><code>## 
-## VCFtools - 0.1.17
-## (C) Adam Auton and Anthony Marcketta 2009
-## 
-## Parameters as interpreted:
-##  --gzvcf benchmark.10K.vcf.gz
-##  --recode-INFO-all
-##  --mac 2
-##  --out 10K.filtered
-##  --recode
-## 
-## Using zlib version: 1.2.11
-## After filtering, kept 100 out of 100 Individuals
-## Outputting VCF file...
-## After filtering, kept 4617 out of a possible 10000 Sites
-## Run Time = 0.00 seconds
-## 
-## VCFtools - 0.1.17
-## (C) Adam Auton and Anthony Marcketta 2009
-## 
-## Parameters as interpreted:
-##  --gzvcf benchmark.20K.vcf.gz
-##  --recode-INFO-all
-##  --mac 2
-##  --out 20K.filtered
-##  --recode
-## 
-## Using zlib version: 1.2.11
-## After filtering, kept 100 out of 100 Individuals
-## Outputting VCF file...
-## After filtering, kept 9222 out of a possible 20000 Sites
-## Run Time = 2.00 seconds
-## 
-## VCFtools - 0.1.17
-## (C) Adam Auton and Anthony Marcketta 2009
-## 
-## Parameters as interpreted:
-##  --gzvcf benchmark.50K.vcf.gz
-##  --recode-INFO-all
-##  --mac 2
-##  --out 50K.filtered
-##  --recode
-## 
-## Using zlib version: 1.2.11
-## After filtering, kept 100 out of 100 Individuals
-## Outputting VCF file...
-## After filtering, kept 22837 out of a possible 50000 Sites
-## Run Time = 3.00 seconds</code></pre>
+## FALSE  TRUE 
+##  1212  1579</code></pre>
+<div class="sourceCode" id="cb106"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/with.html">with</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="va">r.20k</span><span class="op">@</span><span class="va">fix</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="va">CHROM</span>,<span class="va">POS</span><span class="op">)</span><span class="op">)</span> <span class="op">%in%</span> <span class="fu"><a href="https://rdrr.io/r/base/with.html">with</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="va">bash.20k</span><span class="op">@</span><span class="va">fix</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="va">CHROM</span>,<span class="va">POS</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<pre><code>## 
+## FALSE  TRUE 
+##  2444  3174</code></pre>
+<div class="sourceCode" id="cb108"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/with.html">with</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="va">r.50k</span><span class="op">@</span><span class="va">fix</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="va">CHROM</span>,<span class="va">POS</span><span class="op">)</span><span class="op">)</span> <span class="op">%in%</span> <span class="fu"><a href="https://rdrr.io/r/base/with.html">with</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="va">bash.50k</span><span class="op">@</span><span class="va">fix</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="va">CHROM</span>,<span class="va">POS</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<pre><code>## 
+## FALSE  TRUE 
+##  6170  8308</code></pre>
+<div class="sourceCode" id="cb110"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co">#store number of SNPs for each approach as a vector</span>
+<span class="va">r.snps</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">)</span>
+<span class="va">r.snps</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">r.10k</span><span class="op">@</span><span class="va">gt</span><span class="op">)</span>
+<span class="va">r.snps</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">r.20k</span><span class="op">@</span><span class="va">gt</span><span class="op">)</span>
+<span class="va">r.snps</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">r.50k</span><span class="op">@</span><span class="va">gt</span><span class="op">)</span>
+
+<span class="co">#store number of bash SNPs</span>
+<span class="va">bash.snps</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">)</span>
+<span class="va">bash.snps</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">bash.10k</span><span class="op">@</span><span class="va">gt</span><span class="op">)</span>
+<span class="va">bash.snps</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">bash.20k</span><span class="op">@</span><span class="va">gt</span><span class="op">)</span>
+<span class="va">bash.snps</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">bash.50k</span><span class="op">@</span><span class="va">gt</span><span class="op">)</span>
+
+<span class="va">bar.frame</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>snps<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">r.snps</span>,<span class="va">bash.snps</span><span class="op">)</span>,
+                      approach<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"SNPfiltR::distance_thin()"</span>,<span class="st">"SNPfiltR::distance_thin()"</span>,<span class="st">"SNPfiltR::distance_thin()"</span>,
+                               <span class="st">"VCFtools --thin"</span>,<span class="st">"VCFtools --thin"</span>,<span class="st">"VCFtools --thin"</span><span class="op">)</span>,
+                      input.snps<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"10K"</span>,<span class="st">"20K"</span>,<span class="st">"50K"</span>,
+                                   <span class="st">"10K"</span>,<span class="st">"20K"</span>,<span class="st">"50K"</span><span class="op">)</span>
+                      <span class="op">)</span>
+
+<span class="co">## Grouped bar plot</span>
+<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">bar.frame</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>fill<span class="op">=</span><span class="va">approach</span>, y<span class="op">=</span><span class="va">snps</span>, x<span class="op">=</span><span class="va">input.snps</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> 
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html">geom_bar</a></span><span class="op">(</span>position<span class="op">=</span><span class="st">"dodge"</span>, stat<span class="op">=</span><span class="st">"identity"</span><span class="op">)</span><span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">xlab</a></span><span class="op">(</span><span class="st">"SNPs in input vcf file"</span><span class="op">)</span><span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ylab</a></span><span class="op">(</span><span class="st">"Number of thinned SNPs"</span><span class="op">)</span><span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_classic</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<p><img src="accuracy-benchmarking_files/figure-html/unnamed-chunk-17-3.png" width="700"></p>
 </div>
-<div id="read-in-vcftools-files-3" class="section level3">
+<div id="make-final-table-showing-genotpye-concordance-across-comparisons" class="section level3">
 <h3 class="hasAnchor">
-<a href="#read-in-vcftools-files-3" class="anchor"></a>Read in VCFtools files</h3>
-<div class="sourceCode" id="cb97"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co">#read in all the vcftools files</span>
-<span class="va">bash.10k</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/pkg/vcfR/man/io_vcfR.html">read.vcfR</a></span><span class="op">(</span><span class="st">"~/Desktop/benchmarking.vcfs/10k.filtered.recode.vcf"</span><span class="op">)</span></code></pre></div>
-<pre><code>## Scanning file to determine attributes.
-## File attributes:
-##   meta lines: 14
-##   header_line: 15
-##   variant count: 4617
-##   column count: 109
-## 
-Meta line 14 read in.
-## All meta lines processed.
-## gt matrix initialized.
-## Character matrix gt created.
-##   Character matrix gt rows: 4617
-##   Character matrix gt cols: 109
-##   skip: 0
-##   nrows: 4617
-##   row_num: 0
-## 
-Processed variant 1000
-Processed variant 2000
-Processed variant 3000
-Processed variant 4000
-Processed variant: 4617
-## All variants processed</code></pre>
-<div class="sourceCode" id="cb99"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">bash.20k</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/pkg/vcfR/man/io_vcfR.html">read.vcfR</a></span><span class="op">(</span><span class="st">"~/Desktop/benchmarking.vcfs/20k.filtered.recode.vcf"</span><span class="op">)</span></code></pre></div>
-<pre><code>## Scanning file to determine attributes.
-## File attributes:
-##   meta lines: 14
-##   header_line: 15
-##   variant count: 9222
-##   column count: 109
-## 
-Meta line 14 read in.
-## All meta lines processed.
-## gt matrix initialized.
-## Character matrix gt created.
-##   Character matrix gt rows: 9222
-##   Character matrix gt cols: 109
-##   skip: 0
-##   nrows: 9222
-##   row_num: 0
-## 
-Processed variant 1000
-Processed variant 2000
-Processed variant 3000
-Processed variant 4000
-Processed variant 5000
-Processed variant 6000
-Processed variant 7000
-Processed variant 8000
-Processed variant 9000
-Processed variant: 9222
-## All variants processed</code></pre>
-<div class="sourceCode" id="cb101"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">bash.50k</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/pkg/vcfR/man/io_vcfR.html">read.vcfR</a></span><span class="op">(</span><span class="st">"~/Desktop/benchmarking.vcfs/50k.filtered.recode.vcf"</span><span class="op">)</span></code></pre></div>
-<pre><code>## Scanning file to determine attributes.
-## File attributes:
-##   meta lines: 14
-##   header_line: 15
-##   variant count: 22837
-##   column count: 109
-## 
-Meta line 14 read in.
-## All meta lines processed.
-## gt matrix initialized.
-## Character matrix gt created.
-##   Character matrix gt rows: 22837
-##   Character matrix gt cols: 109
-##   skip: 0
-##   nrows: 22837
-##   row_num: 0
-## 
-Processed variant 1000
-Processed variant 2000
-Processed variant 3000
-Processed variant 4000
-Processed variant 5000
-Processed variant 6000
-Processed variant 7000
-Processed variant 8000
-Processed variant 9000
-Processed variant 10000
-Processed variant 11000
-Processed variant 12000
-Processed variant 13000
-Processed variant 14000
-Processed variant 15000
-Processed variant 16000
-Processed variant 17000
-Processed variant 18000
-Processed variant 19000
-Processed variant 20000
-Processed variant 21000
-Processed variant 22000
-Processed variant: 22837
-## All variants processed</code></pre>
-</div>
-<div id="check-that-every-cell-in-the-genotpye-matrix-matches-for-each-file-3" class="section level3">
-<h3 class="hasAnchor">
-<a href="#check-that-every-cell-in-the-genotpye-matrix-matches-for-each-file-3" class="anchor"></a>check that every cell in the genotpye matrix matches for each file</h3>
-<div class="sourceCode" id="cb103"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co">#Does every cell in the genotype matrix for each camparable vcf match?</span>
-<span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op">(</span><span class="va">r.10k</span><span class="op">@</span><span class="va">gt</span> <span class="op">==</span> <span class="va">bash.10k</span><span class="op">@</span><span class="va">gt</span><span class="op">)</span></code></pre></div>
-<pre><code>## 
-##   TRUE 
-## 137246</code></pre>
-<div class="sourceCode" id="cb105"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op">(</span><span class="va">r.20k</span><span class="op">@</span><span class="va">gt</span> <span class="op">==</span> <span class="va">bash.20k</span><span class="op">@</span><span class="va">gt</span><span class="op">)</span></code></pre></div>
-<pre><code>## 
-##   TRUE 
-## 272988</code></pre>
-<div class="sourceCode" id="cb107"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op">(</span><span class="va">r.50k</span><span class="op">@</span><span class="va">gt</span> <span class="op">==</span> <span class="va">bash.50k</span><span class="op">@</span><span class="va">gt</span><span class="op">)</span></code></pre></div>
-<pre><code>## 
-##   TRUE 
-## 667825</code></pre>
+<a href="#make-final-table-showing-genotpye-concordance-across-comparisons" class="anchor"></a>Make final table showing genotpye concordance across comparisons</h3>
+<div class="sourceCode" id="cb111"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># print table showing concordance</span>
+<span class="va">concord</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>concordance<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">1</span>,
+                                  <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/with.html">with</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="va">r.10k</span><span class="op">@</span><span class="va">fix</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="va">CHROM</span>,<span class="va">POS</span><span class="op">)</span><span class="op">)</span> <span class="op">%in%</span> <span class="fu"><a href="https://rdrr.io/r/base/with.html">with</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="va">bash.10k</span><span class="op">@</span><span class="va">fix</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="va">CHROM</span>,<span class="va">POS</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="va">r.10k</span><span class="op">@</span><span class="va">fix</span><span class="op">)</span><span class="op">)</span>,
+                                  <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/with.html">with</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="va">r.20k</span><span class="op">@</span><span class="va">fix</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="va">CHROM</span>,<span class="va">POS</span><span class="op">)</span><span class="op">)</span> <span class="op">%in%</span> <span class="fu"><a href="https://rdrr.io/r/base/with.html">with</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="va">bash.20k</span><span class="op">@</span><span class="va">fix</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="va">CHROM</span>,<span class="va">POS</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="va">r.20k</span><span class="op">@</span><span class="va">fix</span><span class="op">)</span><span class="op">)</span>,
+                                  <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/with.html">with</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="va">r.50k</span><span class="op">@</span><span class="va">fix</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="va">CHROM</span>,<span class="va">POS</span><span class="op">)</span><span class="op">)</span> <span class="op">%in%</span> <span class="fu"><a href="https://rdrr.io/r/base/with.html">with</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="va">bash.50k</span><span class="op">@</span><span class="va">fix</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="va">CHROM</span>,<span class="va">POS</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="va">r.50k</span><span class="op">@</span><span class="va">fix</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>,
+                      filtering<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"GQ"</span>,<span class="st">"GQ"</span>,<span class="st">"GQ"</span>,<span class="st">"missing data"</span>,<span class="st">"missing data"</span>,<span class="st">"missing data"</span>,
+                                  <span class="st">"MAC"</span>,<span class="st">"MAC"</span>,<span class="st">"MAC"</span>,<span class="st">"distance thin"</span>,<span class="st">"distance thin"</span>,<span class="st">"distance thin"</span><span class="op">)</span>,
+                      input.snps<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"10K"</span>,<span class="st">"20K"</span>,<span class="st">"50K"</span>,
+                                   <span class="st">"10K"</span>,<span class="st">"20K"</span>,<span class="st">"50K"</span>,
+                                   <span class="st">"10K"</span>,<span class="st">"20K"</span>,<span class="st">"50K"</span>,
+                                   <span class="st">"10K"</span>,<span class="st">"20K"</span>,<span class="st">"50K"</span><span class="op">)</span>
+                      <span class="op">)</span>
+
+<span class="co">#print table</span>
+<span class="va">heat</span> <span class="op">&lt;-</span> <span class="fu">reshape</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/reshape/man/melt-24.html">melt</a></span><span class="op">(</span><span class="va">concord</span><span class="op">)</span></code></pre></div>
+<pre><code>## Using filtering, input.snps as id variables</code></pre>
+<div class="sourceCode" id="cb113"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">heat</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x<span class="op">=</span><span class="va">input.snps</span>, y<span class="op">=</span><span class="va">filtering</span>, fill<span class="op">=</span><span class="va">value</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> 
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_tile.html">geom_tile</a></span><span class="op">(</span>color <span class="op">=</span> <span class="st">"white"</span>, size<span class="op">=</span><span class="fl">1</span><span class="op">)</span><span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_text.html">geom_text</a></span><span class="op">(</span>data<span class="op">=</span><span class="va">heat</span>,<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>label<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="va">value</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_minimal</a></span><span class="op">(</span><span class="op">)</span><span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_gradient.html">scale_fill_gradient2</a></span><span class="op">(</span>low <span class="op">=</span> <span class="st">"white"</span>, high <span class="op">=</span> <span class="st">"cornflowerblue"</span>, space <span class="op">=</span> <span class="st">"Lab"</span>, name<span class="op">=</span><span class="st">"genotype\nconcordance"</span><span class="op">)</span><span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ylab</a></span><span class="op">(</span><span class="st">"type of filtering"</span><span class="op">)</span><span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">xlab</a></span><span class="op">(</span><span class="st">"Number of SNPs in input vcf file"</span><span class="op">)</span></code></pre></div>
+<p><img src="accuracy-benchmarking_files/figure-html/unnamed-chunk-18-1.png" width="700"></p>
 </div>
 </div>
   </div>

@@ -134,12 +134,18 @@
 ##    *****       *****      *****       *****</code></pre>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/joshuaulrich/microbenchmark/">microbenchmark</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org">ggplot2</a></span><span class="op">)</span></code></pre></div>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org">ggplot2</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://lubridate.tidyverse.org">lubridate</a></span><span class="op">)</span></code></pre></div>
+<pre><code>## 
+## Attaching package: 'lubridate'</code></pre>
+<pre><code>## The following objects are masked from 'package:base':
+## 
+##     date, intersect, setdiff, union</code></pre>
 </div>
 <div id="benchmark-10k" class="section level1">
 <h1 class="hasAnchor">
 <a href="#benchmark-10k" class="anchor"></a>Benchmark 10K</h1>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">#10K</span>
 
 <span class="co">#now benchmark with having to read in the file itself</span>
@@ -178,8 +184,8 @@ Processed variant 9000
 Processed variant 10000
 Processed variant: 10000
 ## All variants processed
-## [1] "28.84% of genotypes fall below a read depth of 5 and were converted to NA"
-## [1] "1.31% of genotypes fall below a genotype quality of 30 and were converted to NA"
+## [1] "32.58% of genotypes fall below a read depth of 5 and were converted to NA"
+## [1] "1.36% of genotypes fall below a genotype quality of 30 and were converted to NA"
 ## Scanning file to determine attributes.
 ## File attributes:
 ##   meta lines: 14
@@ -209,8 +215,8 @@ Processed variant 9000
 Processed variant 10000
 Processed variant: 10000
 ## All variants processed
-## [1] "28.84% of genotypes fall below a read depth of 5 and were converted to NA"
-## [1] "1.31% of genotypes fall below a genotype quality of 30 and were converted to NA"
+## [1] "32.58% of genotypes fall below a read depth of 5 and were converted to NA"
+## [1] "1.36% of genotypes fall below a genotype quality of 30 and were converted to NA"
 ## Scanning file to determine attributes.
 ## File attributes:
 ##   meta lines: 14
@@ -240,9 +246,9 @@ Processed variant 9000
 Processed variant 10000
 Processed variant: 10000
 ## All variants processed
-## [1] "28.84% of genotypes fall below a read depth of 5 and were converted to NA"
-## [1] "1.31% of genotypes fall below a genotype quality of 30 and were converted to NA"</code></pre>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+## [1] "32.58% of genotypes fall below a read depth of 5 and were converted to NA"
+## [1] "1.36% of genotypes fall below a genotype quality of 30 and were converted to NA"</code></pre>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">#read in 10K benchmarking vcf</span>
 <span class="va">x</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/pkg/vcfR/man/io_vcfR.html">read.vcfR</a></span><span class="op">(</span><span class="st">"~/Desktop/benchmarking.vcfs/benchmark.10K.vcf.gz"</span><span class="op">)</span></code></pre></div>
 <pre><code>## Scanning file to determine attributes.
@@ -274,7 +280,7 @@ Processed variant 9000
 Processed variant 10000
 Processed variant: 10000
 ## All variants processed</code></pre>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">#now benchmark without having to read in the file itself</span>
 <span class="va">z</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/pkg/microbenchmark/man/microbenchmark.html">microbenchmark</a></span><span class="op">(</span>
   <span class="co">#benchmark 20K while having to read in the vcf file</span>
@@ -282,13 +288,13 @@ Processed variant: 10000
   <span class="co">#set number of reps and units as seconds</span>
   times <span class="op">=</span> <span class="fl">3</span>, unit <span class="op">=</span> <span class="st">"s"</span>
 <span class="op">)</span></code></pre></div>
-<pre><code>## [1] "28.84% of genotypes fall below a read depth of 5 and were converted to NA"
-## [1] "1.31% of genotypes fall below a genotype quality of 30 and were converted to NA"
-## [1] "28.84% of genotypes fall below a read depth of 5 and were converted to NA"
-## [1] "1.31% of genotypes fall below a genotype quality of 30 and were converted to NA"
-## [1] "28.84% of genotypes fall below a read depth of 5 and were converted to NA"
-## [1] "1.31% of genotypes fall below a genotype quality of 30 and were converted to NA"</code></pre>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<pre><code>## [1] "32.58% of genotypes fall below a read depth of 5 and were converted to NA"
+## [1] "1.36% of genotypes fall below a genotype quality of 30 and were converted to NA"
+## [1] "32.58% of genotypes fall below a read depth of 5 and were converted to NA"
+## [1] "1.36% of genotypes fall below a genotype quality of 30 and were converted to NA"
+## [1] "32.58% of genotypes fall below a read depth of 5 and were converted to NA"
+## [1] "1.36% of genotypes fall below a genotype quality of 30 and were converted to NA"</code></pre>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">#convert each to a dataframe</span>
 <span class="va">y</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span>
 <span class="va">z</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">z</span><span class="op">)</span>
@@ -299,7 +305,7 @@ Processed variant: 10000
 <div id="benchmark-20k" class="section level1">
 <h1 class="hasAnchor">
 <a href="#benchmark-20k" class="anchor"></a>Benchmark 20K</h1>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">#20K</span>
 <span class="co">#remove objects currently in the working directory to avoid internal memory issues slowing down the functions and affecting benchmarking accuracy</span>
 <span class="fu"><a href="https://rdrr.io/r/base/rm.html">rm</a></span><span class="op">(</span><span class="va">x</span>,<span class="va">y</span>,<span class="va">z</span><span class="op">)</span>
@@ -350,8 +356,8 @@ Processed variant 19000
 Processed variant 20000
 Processed variant: 20000
 ## All variants processed
-## [1] "29.06% of genotypes fall below a read depth of 5 and were converted to NA"
-## [1] "1.29% of genotypes fall below a genotype quality of 30 and were converted to NA"
+## [1] "30.09% of genotypes fall below a read depth of 5 and were converted to NA"
+## [1] "1.43% of genotypes fall below a genotype quality of 30 and were converted to NA"
 ## Scanning file to determine attributes.
 ## File attributes:
 ##   meta lines: 14
@@ -391,8 +397,8 @@ Processed variant 19000
 Processed variant 20000
 Processed variant: 20000
 ## All variants processed
-## [1] "29.06% of genotypes fall below a read depth of 5 and were converted to NA"
-## [1] "1.29% of genotypes fall below a genotype quality of 30 and were converted to NA"
+## [1] "30.09% of genotypes fall below a read depth of 5 and were converted to NA"
+## [1] "1.43% of genotypes fall below a genotype quality of 30 and were converted to NA"
 ## Scanning file to determine attributes.
 ## File attributes:
 ##   meta lines: 14
@@ -432,9 +438,9 @@ Processed variant 19000
 Processed variant 20000
 Processed variant: 20000
 ## All variants processed
-## [1] "29.06% of genotypes fall below a read depth of 5 and were converted to NA"
-## [1] "1.29% of genotypes fall below a genotype quality of 30 and were converted to NA"</code></pre>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+## [1] "30.09% of genotypes fall below a read depth of 5 and were converted to NA"
+## [1] "1.43% of genotypes fall below a genotype quality of 30 and were converted to NA"</code></pre>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">#read in 20K benchmarking vcf</span>
 <span class="va">x</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/pkg/vcfR/man/io_vcfR.html">read.vcfR</a></span><span class="op">(</span><span class="st">"~/Desktop/benchmarking.vcfs/benchmark.20K.vcf.gz"</span><span class="op">)</span></code></pre></div>
 <pre><code>## Scanning file to determine attributes.
@@ -476,7 +482,7 @@ Processed variant 19000
 Processed variant 20000
 Processed variant: 20000
 ## All variants processed</code></pre>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">#now benchmark without having to read in the file itself</span>
 <span class="va">z</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/pkg/microbenchmark/man/microbenchmark.html">microbenchmark</a></span><span class="op">(</span>
   <span class="co">#benchmark 20K while having to read in the vcf file</span>
@@ -484,13 +490,13 @@ Processed variant: 20000
   <span class="co">#set number of reps and units as seconds</span>
   times <span class="op">=</span> <span class="fl">3</span>, unit <span class="op">=</span> <span class="st">"s"</span>
 <span class="op">)</span></code></pre></div>
-<pre><code>## [1] "29.06% of genotypes fall below a read depth of 5 and were converted to NA"
-## [1] "1.29% of genotypes fall below a genotype quality of 30 and were converted to NA"
-## [1] "29.06% of genotypes fall below a read depth of 5 and were converted to NA"
-## [1] "1.29% of genotypes fall below a genotype quality of 30 and were converted to NA"
-## [1] "29.06% of genotypes fall below a read depth of 5 and were converted to NA"
-## [1] "1.29% of genotypes fall below a genotype quality of 30 and were converted to NA"</code></pre>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<pre><code>## [1] "30.09% of genotypes fall below a read depth of 5 and were converted to NA"
+## [1] "1.43% of genotypes fall below a genotype quality of 30 and were converted to NA"
+## [1] "30.09% of genotypes fall below a read depth of 5 and were converted to NA"
+## [1] "1.43% of genotypes fall below a genotype quality of 30 and were converted to NA"
+## [1] "30.09% of genotypes fall below a read depth of 5 and were converted to NA"
+## [1] "1.43% of genotypes fall below a genotype quality of 30 and were converted to NA"</code></pre>
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">#convert each to a dataframe</span>
 <span class="va">y</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span>
 <span class="va">z</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">z</span><span class="op">)</span>
@@ -501,7 +507,7 @@ Processed variant: 20000
 <div id="benchmark-50k" class="section level1">
 <h1 class="hasAnchor">
 <a href="#benchmark-50k" class="anchor"></a>Benchmark 50K</h1>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">#50K</span>
 <span class="co">#remove objects currently in the working directory to avoid internal memory issues slowing down the functions and affecting benchmarking accuracy</span>
 <span class="fu"><a href="https://rdrr.io/r/base/rm.html">rm</a></span><span class="op">(</span><span class="va">x</span>,<span class="va">y</span>,<span class="va">z</span><span class="op">)</span>
@@ -582,8 +588,8 @@ Processed variant 49000
 Processed variant 50000
 Processed variant: 50000
 ## All variants processed
-## [1] "29.34% of genotypes fall below a read depth of 5 and were converted to NA"
-## [1] "1.33% of genotypes fall below a genotype quality of 30 and were converted to NA"
+## [1] "31.18% of genotypes fall below a read depth of 5 and were converted to NA"
+## [1] "1.37% of genotypes fall below a genotype quality of 30 and were converted to NA"
 ## Scanning file to determine attributes.
 ## File attributes:
 ##   meta lines: 14
@@ -653,8 +659,8 @@ Processed variant 49000
 Processed variant 50000
 Processed variant: 50000
 ## All variants processed
-## [1] "29.34% of genotypes fall below a read depth of 5 and were converted to NA"
-## [1] "1.33% of genotypes fall below a genotype quality of 30 and were converted to NA"
+## [1] "31.18% of genotypes fall below a read depth of 5 and were converted to NA"
+## [1] "1.37% of genotypes fall below a genotype quality of 30 and were converted to NA"
 ## Scanning file to determine attributes.
 ## File attributes:
 ##   meta lines: 14
@@ -724,9 +730,9 @@ Processed variant 49000
 Processed variant 50000
 Processed variant: 50000
 ## All variants processed
-## [1] "29.34% of genotypes fall below a read depth of 5 and were converted to NA"
-## [1] "1.33% of genotypes fall below a genotype quality of 30 and were converted to NA"</code></pre>
-<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+## [1] "31.18% of genotypes fall below a read depth of 5 and were converted to NA"
+## [1] "1.37% of genotypes fall below a genotype quality of 30 and were converted to NA"</code></pre>
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">#read in 50K benchmarking vcf</span>
 <span class="va">x</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/pkg/vcfR/man/io_vcfR.html">read.vcfR</a></span><span class="op">(</span><span class="st">"~/Desktop/benchmarking.vcfs/benchmark.50K.vcf.gz"</span><span class="op">)</span></code></pre></div>
 <pre><code>## Scanning file to determine attributes.
@@ -798,7 +804,7 @@ Processed variant 49000
 Processed variant 50000
 Processed variant: 50000
 ## All variants processed</code></pre>
-<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">#now benchmark without having to read in the file itself</span>
 <span class="va">z</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/pkg/microbenchmark/man/microbenchmark.html">microbenchmark</a></span><span class="op">(</span>
   <span class="co">#benchmark 50K while having to read in the vcf file</span>
@@ -806,13 +812,13 @@ Processed variant: 50000
   <span class="co">#set number of reps and units as seconds</span>
   times <span class="op">=</span> <span class="fl">3</span>, unit <span class="op">=</span> <span class="st">"s"</span>
 <span class="op">)</span></code></pre></div>
-<pre><code>## [1] "29.34% of genotypes fall below a read depth of 5 and were converted to NA"
-## [1] "1.33% of genotypes fall below a genotype quality of 30 and were converted to NA"
-## [1] "29.34% of genotypes fall below a read depth of 5 and were converted to NA"
-## [1] "1.33% of genotypes fall below a genotype quality of 30 and were converted to NA"
-## [1] "29.34% of genotypes fall below a read depth of 5 and were converted to NA"
-## [1] "1.33% of genotypes fall below a genotype quality of 30 and were converted to NA"</code></pre>
-<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
+<pre><code>## [1] "31.18% of genotypes fall below a read depth of 5 and were converted to NA"
+## [1] "1.37% of genotypes fall below a genotype quality of 30 and were converted to NA"
+## [1] "31.18% of genotypes fall below a read depth of 5 and were converted to NA"
+## [1] "1.37% of genotypes fall below a genotype quality of 30 and were converted to NA"
+## [1] "31.18% of genotypes fall below a read depth of 5 and were converted to NA"
+## [1] "1.37% of genotypes fall below a genotype quality of 30 and were converted to NA"</code></pre>
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">#convert each to a dataframe</span>
 <span class="va">y</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span>
 <span class="va">z</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">z</span><span class="op">)</span>
@@ -823,7 +829,7 @@ Processed variant: 50000
 <div id="benchmark-100k" class="section level1">
 <h1 class="hasAnchor">
 <a href="#benchmark-100k" class="anchor"></a>Benchmark 100K</h1>
-<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">#100K</span>
 <span class="co">#remove objects currently in the working directory to avoid internal memory issues slowing down the functions and affecting benchmarking accuracy</span>
 <span class="fu"><a href="https://rdrr.io/r/base/rm.html">rm</a></span><span class="op">(</span><span class="va">x</span>,<span class="va">y</span>,<span class="va">z</span><span class="op">)</span>
@@ -954,8 +960,8 @@ Processed variant 99000
 Processed variant 100000
 Processed variant: 100000
 ## All variants processed
-## [1] "29.25% of genotypes fall below a read depth of 5 and were converted to NA"
-## [1] "1.31% of genotypes fall below a genotype quality of 30 and were converted to NA"
+## [1] "30.89% of genotypes fall below a read depth of 5 and were converted to NA"
+## [1] "1.36% of genotypes fall below a genotype quality of 30 and were converted to NA"
 ## Scanning file to determine attributes.
 ## File attributes:
 ##   meta lines: 14
@@ -1075,8 +1081,8 @@ Processed variant 99000
 Processed variant 100000
 Processed variant: 100000
 ## All variants processed
-## [1] "29.25% of genotypes fall below a read depth of 5 and were converted to NA"
-## [1] "1.31% of genotypes fall below a genotype quality of 30 and were converted to NA"
+## [1] "30.89% of genotypes fall below a read depth of 5 and were converted to NA"
+## [1] "1.36% of genotypes fall below a genotype quality of 30 and were converted to NA"
 ## Scanning file to determine attributes.
 ## File attributes:
 ##   meta lines: 14
@@ -1196,9 +1202,9 @@ Processed variant 99000
 Processed variant 100000
 Processed variant: 100000
 ## All variants processed
-## [1] "29.25% of genotypes fall below a read depth of 5 and were converted to NA"
-## [1] "1.31% of genotypes fall below a genotype quality of 30 and were converted to NA"</code></pre>
-<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
+## [1] "30.89% of genotypes fall below a read depth of 5 and were converted to NA"
+## [1] "1.36% of genotypes fall below a genotype quality of 30 and were converted to NA"</code></pre>
+<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">#read in 100K benchmarking vcf</span>
 <span class="va">x</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/pkg/vcfR/man/io_vcfR.html">read.vcfR</a></span><span class="op">(</span><span class="st">"~/Desktop/benchmarking.vcfs/benchmark.100K.vcf.gz"</span><span class="op">)</span></code></pre></div>
 <pre><code>## Scanning file to determine attributes.
@@ -1320,7 +1326,7 @@ Processed variant 99000
 Processed variant 100000
 Processed variant: 100000
 ## All variants processed</code></pre>
-<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">#now benchmark without having to read in the file itself</span>
 <span class="va">z</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/pkg/microbenchmark/man/microbenchmark.html">microbenchmark</a></span><span class="op">(</span>
   <span class="co">#benchmark 100K while having to read in the vcf file</span>
@@ -1328,13 +1334,13 @@ Processed variant: 100000
   <span class="co">#set number of reps and units as seconds</span>
   times <span class="op">=</span> <span class="fl">3</span>, unit <span class="op">=</span> <span class="st">"s"</span>
 <span class="op">)</span></code></pre></div>
-<pre><code>## [1] "29.25% of genotypes fall below a read depth of 5 and were converted to NA"
-## [1] "1.31% of genotypes fall below a genotype quality of 30 and were converted to NA"
-## [1] "29.25% of genotypes fall below a read depth of 5 and were converted to NA"
-## [1] "1.31% of genotypes fall below a genotype quality of 30 and were converted to NA"
-## [1] "29.25% of genotypes fall below a read depth of 5 and were converted to NA"
-## [1] "1.31% of genotypes fall below a genotype quality of 30 and were converted to NA"</code></pre>
-<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
+<pre><code>## [1] "30.89% of genotypes fall below a read depth of 5 and were converted to NA"
+## [1] "1.36% of genotypes fall below a genotype quality of 30 and were converted to NA"
+## [1] "30.89% of genotypes fall below a read depth of 5 and were converted to NA"
+## [1] "1.36% of genotypes fall below a genotype quality of 30 and were converted to NA"
+## [1] "30.89% of genotypes fall below a read depth of 5 and were converted to NA"
+## [1] "1.36% of genotypes fall below a genotype quality of 30 and were converted to NA"</code></pre>
+<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">#convert each to a dataframe</span>
 <span class="va">y</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span>
 <span class="va">z</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">z</span><span class="op">)</span>
@@ -1345,7 +1351,7 @@ Processed variant: 100000
 <div id="benchmark-200k" class="section level1">
 <h1 class="hasAnchor">
 <a href="#benchmark-200k" class="anchor"></a>Benchmark 200K</h1>
-<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">#200K</span>
 <span class="co">#remove objects currently in the working directory to avoid internal memory issues slowing down the functions and affecting benchmarking accuracy</span>
 <span class="fu"><a href="https://rdrr.io/r/base/rm.html">rm</a></span><span class="op">(</span><span class="va">x</span>,<span class="va">y</span>,<span class="va">z</span><span class="op">)</span>
@@ -1576,8 +1582,8 @@ Processed variant 199000
 Processed variant 200000
 Processed variant: 200000
 ## All variants processed
-## [1] "29.29% of genotypes fall below a read depth of 5 and were converted to NA"
-## [1] "1.33% of genotypes fall below a genotype quality of 30 and were converted to NA"
+## [1] "29.5% of genotypes fall below a read depth of 5 and were converted to NA"
+## [1] "1.28% of genotypes fall below a genotype quality of 30 and were converted to NA"
 ## Scanning file to determine attributes.
 ## File attributes:
 ##   meta lines: 14
@@ -1797,8 +1803,8 @@ Processed variant 199000
 Processed variant 200000
 Processed variant: 200000
 ## All variants processed
-## [1] "29.29% of genotypes fall below a read depth of 5 and were converted to NA"
-## [1] "1.33% of genotypes fall below a genotype quality of 30 and were converted to NA"
+## [1] "29.5% of genotypes fall below a read depth of 5 and were converted to NA"
+## [1] "1.28% of genotypes fall below a genotype quality of 30 and were converted to NA"
 ## Scanning file to determine attributes.
 ## File attributes:
 ##   meta lines: 14
@@ -2018,9 +2024,9 @@ Processed variant 199000
 Processed variant 200000
 Processed variant: 200000
 ## All variants processed
-## [1] "29.29% of genotypes fall below a read depth of 5 and were converted to NA"
-## [1] "1.33% of genotypes fall below a genotype quality of 30 and were converted to NA"</code></pre>
-<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
+## [1] "29.5% of genotypes fall below a read depth of 5 and were converted to NA"
+## [1] "1.28% of genotypes fall below a genotype quality of 30 and were converted to NA"</code></pre>
+<div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">#read in 200K benchmarking vcf</span>
 <span class="va">x</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/pkg/vcfR/man/io_vcfR.html">read.vcfR</a></span><span class="op">(</span><span class="st">"~/Desktop/benchmarking.vcfs/benchmark.200K.vcf.gz"</span><span class="op">)</span></code></pre></div>
 <pre><code>## Scanning file to determine attributes.
@@ -2242,7 +2248,7 @@ Processed variant 199000
 Processed variant 200000
 Processed variant: 200000
 ## All variants processed</code></pre>
-<div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">#now benchmark without having to read in the file itself</span>
 <span class="va">z</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/pkg/microbenchmark/man/microbenchmark.html">microbenchmark</a></span><span class="op">(</span>
   <span class="co">#benchmark 200K while having to read in the vcf file</span>
@@ -2250,13 +2256,13 @@ Processed variant: 200000
   <span class="co">#set number of reps and units as seconds</span>
   times <span class="op">=</span> <span class="fl">3</span>, unit <span class="op">=</span> <span class="st">"s"</span>
 <span class="op">)</span></code></pre></div>
-<pre><code>## [1] "29.29% of genotypes fall below a read depth of 5 and were converted to NA"
-## [1] "1.33% of genotypes fall below a genotype quality of 30 and were converted to NA"
-## [1] "29.29% of genotypes fall below a read depth of 5 and were converted to NA"
-## [1] "1.33% of genotypes fall below a genotype quality of 30 and were converted to NA"
-## [1] "29.29% of genotypes fall below a read depth of 5 and were converted to NA"
-## [1] "1.33% of genotypes fall below a genotype quality of 30 and were converted to NA"</code></pre>
-<div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
+<pre><code>## [1] "29.5% of genotypes fall below a read depth of 5 and were converted to NA"
+## [1] "1.28% of genotypes fall below a genotype quality of 30 and were converted to NA"
+## [1] "29.5% of genotypes fall below a read depth of 5 and were converted to NA"
+## [1] "1.28% of genotypes fall below a genotype quality of 30 and were converted to NA"
+## [1] "29.5% of genotypes fall below a read depth of 5 and were converted to NA"
+## [1] "1.28% of genotypes fall below a genotype quality of 30 and were converted to NA"</code></pre>
+<div class="sourceCode" id="cb40"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">#convert each to a dataframe</span>
 <span class="va">y</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span>
 <span class="va">z</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">z</span><span class="op">)</span>
@@ -2267,7 +2273,7 @@ Processed variant: 200000
 <div id="benchmark-300k" class="section level1">
 <h1 class="hasAnchor">
 <a href="#benchmark-300k" class="anchor"></a>Benchmark 300K</h1>
-<div class="sourceCode" id="cb39"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb41"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">#300K</span>
 <span class="co">#remove objects currently in the working directory to avoid internal memory issues slowing down the functions and affecting benchmarking accuracy</span>
 <span class="fu"><a href="https://rdrr.io/r/base/rm.html">rm</a></span><span class="op">(</span><span class="va">x</span>,<span class="va">y</span>,<span class="va">z</span><span class="op">)</span>
@@ -2599,7 +2605,7 @@ Processed variant 300000
 Processed variant: 300000
 ## All variants processed
 ## [1] "29.3% of genotypes fall below a read depth of 5 and were converted to NA"
-## [1] "1.32% of genotypes fall below a genotype quality of 30 and were converted to NA"
+## [1] "1.29% of genotypes fall below a genotype quality of 30 and were converted to NA"
 ## Scanning file to determine attributes.
 ## File attributes:
 ##   meta lines: 14
@@ -2920,7 +2926,7 @@ Processed variant 300000
 Processed variant: 300000
 ## All variants processed
 ## [1] "29.3% of genotypes fall below a read depth of 5 and were converted to NA"
-## [1] "1.32% of genotypes fall below a genotype quality of 30 and were converted to NA"
+## [1] "1.29% of genotypes fall below a genotype quality of 30 and were converted to NA"
 ## Scanning file to determine attributes.
 ## File attributes:
 ##   meta lines: 14
@@ -3241,8 +3247,8 @@ Processed variant 300000
 Processed variant: 300000
 ## All variants processed
 ## [1] "29.3% of genotypes fall below a read depth of 5 and were converted to NA"
-## [1] "1.32% of genotypes fall below a genotype quality of 30 and were converted to NA"</code></pre>
-<div class="sourceCode" id="cb41"><pre class="downlit sourceCode r">
+## [1] "1.29% of genotypes fall below a genotype quality of 30 and were converted to NA"</code></pre>
+<div class="sourceCode" id="cb43"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">#read in 300K benchmarking vcf</span>
 <span class="va">x</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/pkg/vcfR/man/io_vcfR.html">read.vcfR</a></span><span class="op">(</span><span class="st">"~/Desktop/benchmarking.vcfs/benchmark.300K.vcf.gz"</span><span class="op">)</span></code></pre></div>
 <pre><code>## Scanning file to determine attributes.
@@ -3564,7 +3570,7 @@ Processed variant 299000
 Processed variant 300000
 Processed variant: 300000
 ## All variants processed</code></pre>
-<div class="sourceCode" id="cb43"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb45"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">#now benchmark without having to read in the file itself</span>
 <span class="va">z</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/pkg/microbenchmark/man/microbenchmark.html">microbenchmark</a></span><span class="op">(</span>
   <span class="co">#benchmark 300K while having to read in the vcf file</span>
@@ -3573,12 +3579,12 @@ Processed variant: 300000
   times <span class="op">=</span> <span class="fl">3</span>, unit <span class="op">=</span> <span class="st">"s"</span>
 <span class="op">)</span></code></pre></div>
 <pre><code>## [1] "29.3% of genotypes fall below a read depth of 5 and were converted to NA"
-## [1] "1.32% of genotypes fall below a genotype quality of 30 and were converted to NA"
+## [1] "1.29% of genotypes fall below a genotype quality of 30 and were converted to NA"
 ## [1] "29.3% of genotypes fall below a read depth of 5 and were converted to NA"
-## [1] "1.32% of genotypes fall below a genotype quality of 30 and were converted to NA"
+## [1] "1.29% of genotypes fall below a genotype quality of 30 and were converted to NA"
 ## [1] "29.3% of genotypes fall below a read depth of 5 and were converted to NA"
-## [1] "1.32% of genotypes fall below a genotype quality of 30 and were converted to NA"</code></pre>
-<div class="sourceCode" id="cb45"><pre class="downlit sourceCode r">
+## [1] "1.29% of genotypes fall below a genotype quality of 30 and were converted to NA"</code></pre>
+<div class="sourceCode" id="cb47"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">#convert each to a dataframe</span>
 <span class="va">y</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span>
 <span class="va">z</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">z</span><span class="op">)</span>
@@ -3586,7 +3592,7 @@ Processed variant: 300000
 <span class="co">#add these results into the full dataframe</span>
 <span class="va">sum.df</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html">rbind</a></span><span class="op">(</span><span class="va">sum.df</span>,<span class="va">y</span>,<span class="va">z</span><span class="op">)</span></code></pre></div>
 <p>#Benchmark 400K</p>
-<div class="sourceCode" id="cb46"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb48"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">#400K</span>
 <span class="co">#remove objects currently in the working directory to avoid internal memory issues slowing down the functions and affecting benchmarking accuracy</span>
 <span class="fu"><a href="https://rdrr.io/r/base/rm.html">rm</a></span><span class="op">(</span><span class="va">x</span>,<span class="va">y</span>,<span class="va">z</span><span class="op">)</span>
@@ -4017,8 +4023,8 @@ Processed variant 399000
 Processed variant 400000
 Processed variant: 400000
 ## All variants processed
-## [1] "29.32% of genotypes fall below a read depth of 5 and were converted to NA"
-## [1] "1.32% of genotypes fall below a genotype quality of 30 and were converted to NA"
+## [1] "29.2% of genotypes fall below a read depth of 5 and were converted to NA"
+## [1] "1.31% of genotypes fall below a genotype quality of 30 and were converted to NA"
 ## Scanning file to determine attributes.
 ## File attributes:
 ##   meta lines: 14
@@ -4438,8 +4444,8 @@ Processed variant 399000
 Processed variant 400000
 Processed variant: 400000
 ## All variants processed
-## [1] "29.32% of genotypes fall below a read depth of 5 and were converted to NA"
-## [1] "1.32% of genotypes fall below a genotype quality of 30 and were converted to NA"
+## [1] "29.2% of genotypes fall below a read depth of 5 and were converted to NA"
+## [1] "1.31% of genotypes fall below a genotype quality of 30 and were converted to NA"
 ## Scanning file to determine attributes.
 ## File attributes:
 ##   meta lines: 14
@@ -4859,9 +4865,9 @@ Processed variant 399000
 Processed variant 400000
 Processed variant: 400000
 ## All variants processed
-## [1] "29.32% of genotypes fall below a read depth of 5 and were converted to NA"
-## [1] "1.32% of genotypes fall below a genotype quality of 30 and were converted to NA"</code></pre>
-<div class="sourceCode" id="cb48"><pre class="downlit sourceCode r">
+## [1] "29.2% of genotypes fall below a read depth of 5 and were converted to NA"
+## [1] "1.31% of genotypes fall below a genotype quality of 30 and were converted to NA"</code></pre>
+<div class="sourceCode" id="cb50"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">#read in 400K benchmarking vcf</span>
 <span class="va">x</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/pkg/vcfR/man/io_vcfR.html">read.vcfR</a></span><span class="op">(</span><span class="st">"~/Desktop/benchmarking.vcfs/benchmark.400K.vcf.gz"</span><span class="op">)</span></code></pre></div>
 <pre><code>## Scanning file to determine attributes.
@@ -5283,7 +5289,7 @@ Processed variant 399000
 Processed variant 400000
 Processed variant: 400000
 ## All variants processed</code></pre>
-<div class="sourceCode" id="cb50"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb52"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">#now benchmark without having to read in the file itself</span>
 <span class="va">z</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/pkg/microbenchmark/man/microbenchmark.html">microbenchmark</a></span><span class="op">(</span>
   <span class="co">#benchmark 400K while having to read in the vcf file</span>
@@ -5291,13 +5297,13 @@ Processed variant: 400000
   <span class="co">#set number of reps and units as seconds</span>
   times <span class="op">=</span> <span class="fl">3</span>, unit <span class="op">=</span> <span class="st">"s"</span>
 <span class="op">)</span></code></pre></div>
-<pre><code>## [1] "29.32% of genotypes fall below a read depth of 5 and were converted to NA"
-## [1] "1.32% of genotypes fall below a genotype quality of 30 and were converted to NA"
-## [1] "29.32% of genotypes fall below a read depth of 5 and were converted to NA"
-## [1] "1.32% of genotypes fall below a genotype quality of 30 and were converted to NA"
-## [1] "29.32% of genotypes fall below a read depth of 5 and were converted to NA"
-## [1] "1.32% of genotypes fall below a genotype quality of 30 and were converted to NA"</code></pre>
-<div class="sourceCode" id="cb52"><pre class="downlit sourceCode r">
+<pre><code>## [1] "29.2% of genotypes fall below a read depth of 5 and were converted to NA"
+## [1] "1.31% of genotypes fall below a genotype quality of 30 and were converted to NA"
+## [1] "29.2% of genotypes fall below a read depth of 5 and were converted to NA"
+## [1] "1.31% of genotypes fall below a genotype quality of 30 and were converted to NA"
+## [1] "29.2% of genotypes fall below a read depth of 5 and were converted to NA"
+## [1] "1.31% of genotypes fall below a genotype quality of 30 and were converted to NA"</code></pre>
+<div class="sourceCode" id="cb54"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">#convert each to a dataframe</span>
 <span class="va">y</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span>
 <span class="va">z</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">z</span><span class="op">)</span>
@@ -5308,7 +5314,7 @@ Processed variant: 400000
 <div id="benchmark-500k" class="section level1">
 <h1 class="hasAnchor">
 <a href="#benchmark-500k" class="anchor"></a>Benchmark 500K</h1>
-<div class="sourceCode" id="cb53"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb55"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">#500K</span>
 <span class="co">#remove objects currently in the working directory to avoid internal memory issues slowing down the functions and affecting benchmarking accuracy</span>
 <span class="fu"><a href="https://rdrr.io/r/base/rm.html">rm</a></span><span class="op">(</span><span class="va">x</span>,<span class="va">y</span>,<span class="va">z</span><span class="op">)</span>
@@ -6883,7 +6889,7 @@ Processed variant: 500000
 ## All variants processed
 ## [1] "29.3% of genotypes fall below a read depth of 5 and were converted to NA"
 ## [1] "1.32% of genotypes fall below a genotype quality of 30 and were converted to NA"</code></pre>
-<div class="sourceCode" id="cb55"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb57"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">#read in 500K benchmarking vcf</span>
 <span class="va">x</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/pkg/vcfR/man/io_vcfR.html">read.vcfR</a></span><span class="op">(</span><span class="st">"~/Desktop/benchmarking.vcfs/benchmark.500K.vcf.gz"</span><span class="op">)</span></code></pre></div>
 <pre><code>## Scanning file to determine attributes.
@@ -7405,7 +7411,7 @@ Processed variant 499000
 Processed variant 500000
 Processed variant: 500000
 ## All variants processed</code></pre>
-<div class="sourceCode" id="cb57"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb59"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">#now benchmark without having to read in the file itself</span>
 <span class="va">z</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/pkg/microbenchmark/man/microbenchmark.html">microbenchmark</a></span><span class="op">(</span>
   <span class="co">#benchmark 500K while having to read in the vcf file</span>
@@ -7419,7 +7425,7 @@ Processed variant: 500000
 ## [1] "1.32% of genotypes fall below a genotype quality of 30 and were converted to NA"
 ## [1] "29.3% of genotypes fall below a read depth of 5 and were converted to NA"
 ## [1] "1.32% of genotypes fall below a genotype quality of 30 and were converted to NA"</code></pre>
-<div class="sourceCode" id="cb59"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb61"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">#convert each to a dataframe</span>
 <span class="va">y</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span>
 <span class="va">z</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">z</span><span class="op">)</span>
@@ -7429,7 +7435,7 @@ Processed variant: 500000
 <div id="now-add-informative-columns-to-the-dataframe" class="section level3">
 <h3 class="hasAnchor">
 <a href="#now-add-informative-columns-to-the-dataframe" class="anchor"></a>Now add informative columns to the dataframe</h3>
-<div class="sourceCode" id="cb60"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb62"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">sum.df</span><span class="op">$</span><span class="va">approach</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"SNPfiltR+vcfR"</span>,<span class="st">"SNPfiltR"</span><span class="op">)</span>, times <span class="op">=</span> <span class="fl">8</span><span class="op">)</span>
 
 <span class="va">sum.df</span><span class="op">$</span><span class="va">SNPs</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">10000</span>,<span class="fl">10000</span>,<span class="fl">20000</span>,<span class="fl">20000</span>,<span class="fl">50000</span>,<span class="fl">50000</span>,<span class="fl">100000</span>,<span class="fl">100000</span>,
@@ -7445,93 +7451,93 @@ Processed variant: 500000
 <div id="vcftools-benchmark-10k" class="section level1">
 <h1 class="hasAnchor">
 <a href="#vcftools-benchmark-10k" class="anchor"></a>VCFtools benchmark 10K</h1>
-<div class="sourceCode" id="cb61"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> /Users/devder/Desktop/benchmarking.vcfs</span>
-<span id="cb61-2"><a href="#cb61-2" aria-hidden="true" tabindex="-1"></a><span class="kw">{</span> <span class="bu">time</span> /Users/devder/Downloads/vcftools/src/cpp/vcftools <span class="at">--gzvcf</span> benchmark.10K.vcf.gz <span class="at">--minGQ</span> 30 <span class="at">--minDP</span> 5 <span class="at">--recode</span> <span class="at">--recode-INFO-all</span> <span class="kw">;</span> <span class="kw">}</span> <span class="dv">2</span><span class="op">&gt;&amp;</span><span class="dv">1</span> <span class="kw">|</span>  <span class="fu">cat</span> <span class="op">&gt;</span> time.txt</span>
-<span id="cb61-3"><a href="#cb61-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb61-4"><a href="#cb61-4" aria-hidden="true" tabindex="-1"></a><span class="kw">{</span> <span class="bu">time</span> /Users/devder/Downloads/vcftools/src/cpp/vcftools <span class="at">--gzvcf</span> benchmark.10K.vcf.gz <span class="at">--minGQ</span> 30 <span class="at">--minDP</span> 5 <span class="at">--recode</span> <span class="at">--recode-INFO-all</span> <span class="kw">;</span> <span class="kw">}</span> <span class="dv">2</span><span class="op">&gt;&amp;</span><span class="dv">1</span> <span class="kw">|</span>  <span class="fu">cat</span> <span class="op">&gt;&gt;</span> time.txt</span>
-<span id="cb61-5"><a href="#cb61-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb61-6"><a href="#cb61-6" aria-hidden="true" tabindex="-1"></a><span class="kw">{</span> <span class="bu">time</span> /Users/devder/Downloads/vcftools/src/cpp/vcftools <span class="at">--gzvcf</span> benchmark.10K.vcf.gz <span class="at">--minGQ</span> 30 <span class="at">--minDP</span> 5 <span class="at">--recode</span> <span class="at">--recode-INFO-all</span> <span class="kw">;</span> <span class="kw">}</span> <span class="dv">2</span><span class="op">&gt;&amp;</span><span class="dv">1</span> <span class="kw">|</span>  <span class="fu">cat</span> <span class="op">&gt;&gt;</span> time.txt</span></code></pre></div>
+<div class="sourceCode" id="cb63"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> /Users/devder/Desktop/benchmarking.vcfs</span>
+<span id="cb63-2"><a href="#cb63-2" aria-hidden="true" tabindex="-1"></a><span class="kw">{</span> <span class="bu">time</span> /Users/devder/Downloads/vcftools/src/cpp/vcftools <span class="at">--gzvcf</span> benchmark.10K.vcf.gz <span class="at">--minGQ</span> 30 <span class="at">--minDP</span> 5 <span class="at">--recode</span> <span class="at">--recode-INFO-all</span> <span class="kw">;</span> <span class="kw">}</span> <span class="dv">2</span><span class="op">&gt;&amp;</span><span class="dv">1</span> <span class="kw">|</span>  <span class="fu">cat</span> <span class="op">&gt;</span> time.txt</span>
+<span id="cb63-3"><a href="#cb63-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb63-4"><a href="#cb63-4" aria-hidden="true" tabindex="-1"></a><span class="kw">{</span> <span class="bu">time</span> /Users/devder/Downloads/vcftools/src/cpp/vcftools <span class="at">--gzvcf</span> benchmark.10K.vcf.gz <span class="at">--minGQ</span> 30 <span class="at">--minDP</span> 5 <span class="at">--recode</span> <span class="at">--recode-INFO-all</span> <span class="kw">;</span> <span class="kw">}</span> <span class="dv">2</span><span class="op">&gt;&amp;</span><span class="dv">1</span> <span class="kw">|</span>  <span class="fu">cat</span> <span class="op">&gt;&gt;</span> time.txt</span>
+<span id="cb63-5"><a href="#cb63-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb63-6"><a href="#cb63-6" aria-hidden="true" tabindex="-1"></a><span class="kw">{</span> <span class="bu">time</span> /Users/devder/Downloads/vcftools/src/cpp/vcftools <span class="at">--gzvcf</span> benchmark.10K.vcf.gz <span class="at">--minGQ</span> 30 <span class="at">--minDP</span> 5 <span class="at">--recode</span> <span class="at">--recode-INFO-all</span> <span class="kw">;</span> <span class="kw">}</span> <span class="dv">2</span><span class="op">&gt;&amp;</span><span class="dv">1</span> <span class="kw">|</span>  <span class="fu">cat</span> <span class="op">&gt;&gt;</span> time.txt</span></code></pre></div>
 </div>
 <div id="vcftools-benchmark-20k" class="section level1">
 <h1 class="hasAnchor">
 <a href="#vcftools-benchmark-20k" class="anchor"></a>VCFtools benchmark 20K</h1>
-<div class="sourceCode" id="cb62"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> /Users/devder/Desktop/benchmarking.vcfs</span>
-<span id="cb62-2"><a href="#cb62-2" aria-hidden="true" tabindex="-1"></a><span class="kw">{</span> <span class="bu">time</span> /Users/devder/Downloads/vcftools/src/cpp/vcftools <span class="at">--gzvcf</span> benchmark.20K.vcf.gz <span class="at">--minGQ</span> 30 <span class="at">--minDP</span> 5 <span class="at">--recode</span> <span class="at">--recode-INFO-all</span> <span class="kw">;</span> <span class="kw">}</span> <span class="dv">2</span><span class="op">&gt;&amp;</span><span class="dv">1</span> <span class="kw">|</span>  <span class="fu">cat</span> <span class="op">&gt;&gt;</span> time.txt</span>
-<span id="cb62-3"><a href="#cb62-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb62-4"><a href="#cb62-4" aria-hidden="true" tabindex="-1"></a><span class="kw">{</span> <span class="bu">time</span> /Users/devder/Downloads/vcftools/src/cpp/vcftools <span class="at">--gzvcf</span> benchmark.20K.vcf.gz <span class="at">--minGQ</span> 30 <span class="at">--minDP</span> 5 <span class="at">--recode</span> <span class="at">--recode-INFO-all</span> <span class="kw">;</span> <span class="kw">}</span> <span class="dv">2</span><span class="op">&gt;&amp;</span><span class="dv">1</span> <span class="kw">|</span>  <span class="fu">cat</span> <span class="op">&gt;&gt;</span> time.txt</span>
-<span id="cb62-5"><a href="#cb62-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb62-6"><a href="#cb62-6" aria-hidden="true" tabindex="-1"></a><span class="kw">{</span> <span class="bu">time</span> /Users/devder/Downloads/vcftools/src/cpp/vcftools <span class="at">--gzvcf</span> benchmark.20K.vcf.gz <span class="at">--minGQ</span> 30 <span class="at">--minDP</span> 5 <span class="at">--recode</span> <span class="at">--recode-INFO-all</span> <span class="kw">;</span> <span class="kw">}</span> <span class="dv">2</span><span class="op">&gt;&amp;</span><span class="dv">1</span> <span class="kw">|</span>  <span class="fu">cat</span> <span class="op">&gt;&gt;</span> time.txt</span></code></pre></div>
+<div class="sourceCode" id="cb64"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> /Users/devder/Desktop/benchmarking.vcfs</span>
+<span id="cb64-2"><a href="#cb64-2" aria-hidden="true" tabindex="-1"></a><span class="kw">{</span> <span class="bu">time</span> /Users/devder/Downloads/vcftools/src/cpp/vcftools <span class="at">--gzvcf</span> benchmark.20K.vcf.gz <span class="at">--minGQ</span> 30 <span class="at">--minDP</span> 5 <span class="at">--recode</span> <span class="at">--recode-INFO-all</span> <span class="kw">;</span> <span class="kw">}</span> <span class="dv">2</span><span class="op">&gt;&amp;</span><span class="dv">1</span> <span class="kw">|</span>  <span class="fu">cat</span> <span class="op">&gt;&gt;</span> time.txt</span>
+<span id="cb64-3"><a href="#cb64-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb64-4"><a href="#cb64-4" aria-hidden="true" tabindex="-1"></a><span class="kw">{</span> <span class="bu">time</span> /Users/devder/Downloads/vcftools/src/cpp/vcftools <span class="at">--gzvcf</span> benchmark.20K.vcf.gz <span class="at">--minGQ</span> 30 <span class="at">--minDP</span> 5 <span class="at">--recode</span> <span class="at">--recode-INFO-all</span> <span class="kw">;</span> <span class="kw">}</span> <span class="dv">2</span><span class="op">&gt;&amp;</span><span class="dv">1</span> <span class="kw">|</span>  <span class="fu">cat</span> <span class="op">&gt;&gt;</span> time.txt</span>
+<span id="cb64-5"><a href="#cb64-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb64-6"><a href="#cb64-6" aria-hidden="true" tabindex="-1"></a><span class="kw">{</span> <span class="bu">time</span> /Users/devder/Downloads/vcftools/src/cpp/vcftools <span class="at">--gzvcf</span> benchmark.20K.vcf.gz <span class="at">--minGQ</span> 30 <span class="at">--minDP</span> 5 <span class="at">--recode</span> <span class="at">--recode-INFO-all</span> <span class="kw">;</span> <span class="kw">}</span> <span class="dv">2</span><span class="op">&gt;&amp;</span><span class="dv">1</span> <span class="kw">|</span>  <span class="fu">cat</span> <span class="op">&gt;&gt;</span> time.txt</span></code></pre></div>
 </div>
 <div id="vcftools-benchmark-50k" class="section level1">
 <h1 class="hasAnchor">
 <a href="#vcftools-benchmark-50k" class="anchor"></a>VCFtools benchmark 50K</h1>
-<div class="sourceCode" id="cb63"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> /Users/devder/Desktop/benchmarking.vcfs</span>
-<span id="cb63-2"><a href="#cb63-2" aria-hidden="true" tabindex="-1"></a><span class="kw">{</span> <span class="bu">time</span> /Users/devder/Downloads/vcftools/src/cpp/vcftools <span class="at">--gzvcf</span> benchmark.50K.vcf.gz <span class="at">--minGQ</span> 30 <span class="at">--minDP</span> 5 <span class="at">--recode</span> <span class="at">--recode-INFO-all</span> <span class="kw">;</span> <span class="kw">}</span> <span class="dv">2</span><span class="op">&gt;&amp;</span><span class="dv">1</span> <span class="kw">|</span>  <span class="fu">cat</span> <span class="op">&gt;&gt;</span> time.txt</span>
-<span id="cb63-3"><a href="#cb63-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb63-4"><a href="#cb63-4" aria-hidden="true" tabindex="-1"></a><span class="kw">{</span> <span class="bu">time</span> /Users/devder/Downloads/vcftools/src/cpp/vcftools <span class="at">--gzvcf</span> benchmark.50K.vcf.gz <span class="at">--minGQ</span> 30 <span class="at">--minDP</span> 5 <span class="at">--recode</span> <span class="at">--recode-INFO-all</span> <span class="kw">;</span> <span class="kw">}</span> <span class="dv">2</span><span class="op">&gt;&amp;</span><span class="dv">1</span> <span class="kw">|</span>  <span class="fu">cat</span> <span class="op">&gt;&gt;</span> time.txt</span>
-<span id="cb63-5"><a href="#cb63-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb63-6"><a href="#cb63-6" aria-hidden="true" tabindex="-1"></a><span class="kw">{</span> <span class="bu">time</span> /Users/devder/Downloads/vcftools/src/cpp/vcftools <span class="at">--gzvcf</span> benchmark.50K.vcf.gz <span class="at">--minGQ</span> 30 <span class="at">--minDP</span> 5 <span class="at">--recode</span> <span class="at">--recode-INFO-all</span> <span class="kw">;</span> <span class="kw">}</span> <span class="dv">2</span><span class="op">&gt;&amp;</span><span class="dv">1</span> <span class="kw">|</span>  <span class="fu">cat</span> <span class="op">&gt;&gt;</span> time.txt</span></code></pre></div>
+<div class="sourceCode" id="cb65"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> /Users/devder/Desktop/benchmarking.vcfs</span>
+<span id="cb65-2"><a href="#cb65-2" aria-hidden="true" tabindex="-1"></a><span class="kw">{</span> <span class="bu">time</span> /Users/devder/Downloads/vcftools/src/cpp/vcftools <span class="at">--gzvcf</span> benchmark.50K.vcf.gz <span class="at">--minGQ</span> 30 <span class="at">--minDP</span> 5 <span class="at">--recode</span> <span class="at">--recode-INFO-all</span> <span class="kw">;</span> <span class="kw">}</span> <span class="dv">2</span><span class="op">&gt;&amp;</span><span class="dv">1</span> <span class="kw">|</span>  <span class="fu">cat</span> <span class="op">&gt;&gt;</span> time.txt</span>
+<span id="cb65-3"><a href="#cb65-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb65-4"><a href="#cb65-4" aria-hidden="true" tabindex="-1"></a><span class="kw">{</span> <span class="bu">time</span> /Users/devder/Downloads/vcftools/src/cpp/vcftools <span class="at">--gzvcf</span> benchmark.50K.vcf.gz <span class="at">--minGQ</span> 30 <span class="at">--minDP</span> 5 <span class="at">--recode</span> <span class="at">--recode-INFO-all</span> <span class="kw">;</span> <span class="kw">}</span> <span class="dv">2</span><span class="op">&gt;&amp;</span><span class="dv">1</span> <span class="kw">|</span>  <span class="fu">cat</span> <span class="op">&gt;&gt;</span> time.txt</span>
+<span id="cb65-5"><a href="#cb65-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb65-6"><a href="#cb65-6" aria-hidden="true" tabindex="-1"></a><span class="kw">{</span> <span class="bu">time</span> /Users/devder/Downloads/vcftools/src/cpp/vcftools <span class="at">--gzvcf</span> benchmark.50K.vcf.gz <span class="at">--minGQ</span> 30 <span class="at">--minDP</span> 5 <span class="at">--recode</span> <span class="at">--recode-INFO-all</span> <span class="kw">;</span> <span class="kw">}</span> <span class="dv">2</span><span class="op">&gt;&amp;</span><span class="dv">1</span> <span class="kw">|</span>  <span class="fu">cat</span> <span class="op">&gt;&gt;</span> time.txt</span></code></pre></div>
 </div>
 <div id="vcftools-benchmark-100k" class="section level1">
 <h1 class="hasAnchor">
 <a href="#vcftools-benchmark-100k" class="anchor"></a>VCFtools benchmark 100K</h1>
-<div class="sourceCode" id="cb64"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> /Users/devder/Desktop/benchmarking.vcfs</span>
-<span id="cb64-2"><a href="#cb64-2" aria-hidden="true" tabindex="-1"></a><span class="kw">{</span> <span class="bu">time</span> /Users/devder/Downloads/vcftools/src/cpp/vcftools <span class="at">--gzvcf</span> benchmark.100K.vcf.gz <span class="at">--minGQ</span> 30 <span class="at">--minDP</span> 5 <span class="at">--recode</span> <span class="at">--recode-INFO-all</span> <span class="kw">;</span> <span class="kw">}</span> <span class="dv">2</span><span class="op">&gt;&amp;</span><span class="dv">1</span> <span class="kw">|</span>  <span class="fu">cat</span> <span class="op">&gt;&gt;</span> time.txt</span>
-<span id="cb64-3"><a href="#cb64-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb64-4"><a href="#cb64-4" aria-hidden="true" tabindex="-1"></a><span class="kw">{</span> <span class="bu">time</span> /Users/devder/Downloads/vcftools/src/cpp/vcftools <span class="at">--gzvcf</span> benchmark.100K.vcf.gz <span class="at">--minGQ</span> 30 <span class="at">--minDP</span> 5 <span class="at">--recode</span> <span class="at">--recode-INFO-all</span> <span class="kw">;</span> <span class="kw">}</span> <span class="dv">2</span><span class="op">&gt;&amp;</span><span class="dv">1</span> <span class="kw">|</span>  <span class="fu">cat</span> <span class="op">&gt;&gt;</span> time.txt</span>
-<span id="cb64-5"><a href="#cb64-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb64-6"><a href="#cb64-6" aria-hidden="true" tabindex="-1"></a><span class="kw">{</span> <span class="bu">time</span> /Users/devder/Downloads/vcftools/src/cpp/vcftools <span class="at">--gzvcf</span> benchmark.100K.vcf.gz <span class="at">--minGQ</span> 30 <span class="at">--minDP</span> 5 <span class="at">--recode</span> <span class="at">--recode-INFO-all</span> <span class="kw">;</span> <span class="kw">}</span> <span class="dv">2</span><span class="op">&gt;&amp;</span><span class="dv">1</span> <span class="kw">|</span>  <span class="fu">cat</span> <span class="op">&gt;&gt;</span> time.txt</span></code></pre></div>
+<div class="sourceCode" id="cb66"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> /Users/devder/Desktop/benchmarking.vcfs</span>
+<span id="cb66-2"><a href="#cb66-2" aria-hidden="true" tabindex="-1"></a><span class="kw">{</span> <span class="bu">time</span> /Users/devder/Downloads/vcftools/src/cpp/vcftools <span class="at">--gzvcf</span> benchmark.100K.vcf.gz <span class="at">--minGQ</span> 30 <span class="at">--minDP</span> 5 <span class="at">--recode</span> <span class="at">--recode-INFO-all</span> <span class="kw">;</span> <span class="kw">}</span> <span class="dv">2</span><span class="op">&gt;&amp;</span><span class="dv">1</span> <span class="kw">|</span>  <span class="fu">cat</span> <span class="op">&gt;&gt;</span> time.txt</span>
+<span id="cb66-3"><a href="#cb66-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-4"><a href="#cb66-4" aria-hidden="true" tabindex="-1"></a><span class="kw">{</span> <span class="bu">time</span> /Users/devder/Downloads/vcftools/src/cpp/vcftools <span class="at">--gzvcf</span> benchmark.100K.vcf.gz <span class="at">--minGQ</span> 30 <span class="at">--minDP</span> 5 <span class="at">--recode</span> <span class="at">--recode-INFO-all</span> <span class="kw">;</span> <span class="kw">}</span> <span class="dv">2</span><span class="op">&gt;&amp;</span><span class="dv">1</span> <span class="kw">|</span>  <span class="fu">cat</span> <span class="op">&gt;&gt;</span> time.txt</span>
+<span id="cb66-5"><a href="#cb66-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-6"><a href="#cb66-6" aria-hidden="true" tabindex="-1"></a><span class="kw">{</span> <span class="bu">time</span> /Users/devder/Downloads/vcftools/src/cpp/vcftools <span class="at">--gzvcf</span> benchmark.100K.vcf.gz <span class="at">--minGQ</span> 30 <span class="at">--minDP</span> 5 <span class="at">--recode</span> <span class="at">--recode-INFO-all</span> <span class="kw">;</span> <span class="kw">}</span> <span class="dv">2</span><span class="op">&gt;&amp;</span><span class="dv">1</span> <span class="kw">|</span>  <span class="fu">cat</span> <span class="op">&gt;&gt;</span> time.txt</span></code></pre></div>
 </div>
 <div id="vcftools-benchmark-200k" class="section level1">
 <h1 class="hasAnchor">
 <a href="#vcftools-benchmark-200k" class="anchor"></a>VCFtools benchmark 200K</h1>
-<div class="sourceCode" id="cb65"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> /Users/devder/Desktop/benchmarking.vcfs</span>
-<span id="cb65-2"><a href="#cb65-2" aria-hidden="true" tabindex="-1"></a><span class="kw">{</span> <span class="bu">time</span> /Users/devder/Downloads/vcftools/src/cpp/vcftools <span class="at">--gzvcf</span> benchmark.200K.vcf.gz <span class="at">--minGQ</span> 30 <span class="at">--minDP</span> 5 <span class="at">--recode</span> <span class="at">--recode-INFO-all</span> <span class="kw">;</span> <span class="kw">}</span> <span class="dv">2</span><span class="op">&gt;&amp;</span><span class="dv">1</span> <span class="kw">|</span>  <span class="fu">cat</span> <span class="op">&gt;&gt;</span> time.txt</span>
-<span id="cb65-3"><a href="#cb65-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb65-4"><a href="#cb65-4" aria-hidden="true" tabindex="-1"></a><span class="kw">{</span> <span class="bu">time</span> /Users/devder/Downloads/vcftools/src/cpp/vcftools <span class="at">--gzvcf</span> benchmark.200K.vcf.gz <span class="at">--minGQ</span> 30 <span class="at">--minDP</span> 5 <span class="at">--recode</span> <span class="at">--recode-INFO-all</span> <span class="kw">;</span> <span class="kw">}</span> <span class="dv">2</span><span class="op">&gt;&amp;</span><span class="dv">1</span> <span class="kw">|</span>  <span class="fu">cat</span> <span class="op">&gt;&gt;</span> time.txt</span>
-<span id="cb65-5"><a href="#cb65-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb65-6"><a href="#cb65-6" aria-hidden="true" tabindex="-1"></a><span class="kw">{</span> <span class="bu">time</span> /Users/devder/Downloads/vcftools/src/cpp/vcftools <span class="at">--gzvcf</span> benchmark.200K.vcf.gz <span class="at">--minGQ</span> 30 <span class="at">--minDP</span> 5 <span class="at">--recode</span> <span class="at">--recode-INFO-all</span> <span class="kw">;</span> <span class="kw">}</span> <span class="dv">2</span><span class="op">&gt;&amp;</span><span class="dv">1</span> <span class="kw">|</span>  <span class="fu">cat</span> <span class="op">&gt;&gt;</span> time.txt</span></code></pre></div>
+<div class="sourceCode" id="cb67"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb67-1"><a href="#cb67-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> /Users/devder/Desktop/benchmarking.vcfs</span>
+<span id="cb67-2"><a href="#cb67-2" aria-hidden="true" tabindex="-1"></a><span class="kw">{</span> <span class="bu">time</span> /Users/devder/Downloads/vcftools/src/cpp/vcftools <span class="at">--gzvcf</span> benchmark.200K.vcf.gz <span class="at">--minGQ</span> 30 <span class="at">--minDP</span> 5 <span class="at">--recode</span> <span class="at">--recode-INFO-all</span> <span class="kw">;</span> <span class="kw">}</span> <span class="dv">2</span><span class="op">&gt;&amp;</span><span class="dv">1</span> <span class="kw">|</span>  <span class="fu">cat</span> <span class="op">&gt;&gt;</span> time.txt</span>
+<span id="cb67-3"><a href="#cb67-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb67-4"><a href="#cb67-4" aria-hidden="true" tabindex="-1"></a><span class="kw">{</span> <span class="bu">time</span> /Users/devder/Downloads/vcftools/src/cpp/vcftools <span class="at">--gzvcf</span> benchmark.200K.vcf.gz <span class="at">--minGQ</span> 30 <span class="at">--minDP</span> 5 <span class="at">--recode</span> <span class="at">--recode-INFO-all</span> <span class="kw">;</span> <span class="kw">}</span> <span class="dv">2</span><span class="op">&gt;&amp;</span><span class="dv">1</span> <span class="kw">|</span>  <span class="fu">cat</span> <span class="op">&gt;&gt;</span> time.txt</span>
+<span id="cb67-5"><a href="#cb67-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb67-6"><a href="#cb67-6" aria-hidden="true" tabindex="-1"></a><span class="kw">{</span> <span class="bu">time</span> /Users/devder/Downloads/vcftools/src/cpp/vcftools <span class="at">--gzvcf</span> benchmark.200K.vcf.gz <span class="at">--minGQ</span> 30 <span class="at">--minDP</span> 5 <span class="at">--recode</span> <span class="at">--recode-INFO-all</span> <span class="kw">;</span> <span class="kw">}</span> <span class="dv">2</span><span class="op">&gt;&amp;</span><span class="dv">1</span> <span class="kw">|</span>  <span class="fu">cat</span> <span class="op">&gt;&gt;</span> time.txt</span></code></pre></div>
 </div>
 <div id="vcftools-benchmark-300k" class="section level1">
 <h1 class="hasAnchor">
 <a href="#vcftools-benchmark-300k" class="anchor"></a>VCFtools benchmark 300K</h1>
-<div class="sourceCode" id="cb66"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> /Users/devder/Desktop/benchmarking.vcfs</span>
-<span id="cb66-2"><a href="#cb66-2" aria-hidden="true" tabindex="-1"></a><span class="kw">{</span> <span class="bu">time</span> /Users/devder/Downloads/vcftools/src/cpp/vcftools <span class="at">--gzvcf</span> benchmark.300K.vcf.gz <span class="at">--minGQ</span> 30 <span class="at">--minDP</span> 5 <span class="at">--recode</span> <span class="at">--recode-INFO-all</span> <span class="kw">;</span> <span class="kw">}</span> <span class="dv">2</span><span class="op">&gt;&amp;</span><span class="dv">1</span> <span class="kw">|</span>  <span class="fu">cat</span> <span class="op">&gt;&gt;</span> time.txt</span>
-<span id="cb66-3"><a href="#cb66-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb66-4"><a href="#cb66-4" aria-hidden="true" tabindex="-1"></a><span class="kw">{</span> <span class="bu">time</span> /Users/devder/Downloads/vcftools/src/cpp/vcftools <span class="at">--gzvcf</span> benchmark.300K.vcf.gz <span class="at">--minGQ</span> 30 <span class="at">--minDP</span> 5 <span class="at">--recode</span> <span class="at">--recode-INFO-all</span> <span class="kw">;</span> <span class="kw">}</span> <span class="dv">2</span><span class="op">&gt;&amp;</span><span class="dv">1</span> <span class="kw">|</span>  <span class="fu">cat</span> <span class="op">&gt;&gt;</span> time.txt</span>
-<span id="cb66-5"><a href="#cb66-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb66-6"><a href="#cb66-6" aria-hidden="true" tabindex="-1"></a><span class="kw">{</span> <span class="bu">time</span> /Users/devder/Downloads/vcftools/src/cpp/vcftools <span class="at">--gzvcf</span> benchmark.300K.vcf.gz <span class="at">--minGQ</span> 30 <span class="at">--minDP</span> 5 <span class="at">--recode</span> <span class="at">--recode-INFO-all</span> <span class="kw">;</span> <span class="kw">}</span> <span class="dv">2</span><span class="op">&gt;&amp;</span><span class="dv">1</span> <span class="kw">|</span>  <span class="fu">cat</span> <span class="op">&gt;&gt;</span> time.txt</span></code></pre></div>
+<div class="sourceCode" id="cb68"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> /Users/devder/Desktop/benchmarking.vcfs</span>
+<span id="cb68-2"><a href="#cb68-2" aria-hidden="true" tabindex="-1"></a><span class="kw">{</span> <span class="bu">time</span> /Users/devder/Downloads/vcftools/src/cpp/vcftools <span class="at">--gzvcf</span> benchmark.300K.vcf.gz <span class="at">--minGQ</span> 30 <span class="at">--minDP</span> 5 <span class="at">--recode</span> <span class="at">--recode-INFO-all</span> <span class="kw">;</span> <span class="kw">}</span> <span class="dv">2</span><span class="op">&gt;&amp;</span><span class="dv">1</span> <span class="kw">|</span>  <span class="fu">cat</span> <span class="op">&gt;&gt;</span> time.txt</span>
+<span id="cb68-3"><a href="#cb68-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb68-4"><a href="#cb68-4" aria-hidden="true" tabindex="-1"></a><span class="kw">{</span> <span class="bu">time</span> /Users/devder/Downloads/vcftools/src/cpp/vcftools <span class="at">--gzvcf</span> benchmark.300K.vcf.gz <span class="at">--minGQ</span> 30 <span class="at">--minDP</span> 5 <span class="at">--recode</span> <span class="at">--recode-INFO-all</span> <span class="kw">;</span> <span class="kw">}</span> <span class="dv">2</span><span class="op">&gt;&amp;</span><span class="dv">1</span> <span class="kw">|</span>  <span class="fu">cat</span> <span class="op">&gt;&gt;</span> time.txt</span>
+<span id="cb68-5"><a href="#cb68-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb68-6"><a href="#cb68-6" aria-hidden="true" tabindex="-1"></a><span class="kw">{</span> <span class="bu">time</span> /Users/devder/Downloads/vcftools/src/cpp/vcftools <span class="at">--gzvcf</span> benchmark.300K.vcf.gz <span class="at">--minGQ</span> 30 <span class="at">--minDP</span> 5 <span class="at">--recode</span> <span class="at">--recode-INFO-all</span> <span class="kw">;</span> <span class="kw">}</span> <span class="dv">2</span><span class="op">&gt;&amp;</span><span class="dv">1</span> <span class="kw">|</span>  <span class="fu">cat</span> <span class="op">&gt;&gt;</span> time.txt</span></code></pre></div>
 </div>
 <div id="vcftools-benchmark-400k" class="section level1">
 <h1 class="hasAnchor">
 <a href="#vcftools-benchmark-400k" class="anchor"></a>VCFtools benchmark 400K</h1>
-<div class="sourceCode" id="cb67"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb67-1"><a href="#cb67-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> /Users/devder/Desktop/benchmarking.vcfs</span>
-<span id="cb67-2"><a href="#cb67-2" aria-hidden="true" tabindex="-1"></a><span class="kw">{</span> <span class="bu">time</span> /Users/devder/Downloads/vcftools/src/cpp/vcftools <span class="at">--gzvcf</span> benchmark.400K.vcf.gz <span class="at">--minGQ</span> 30 <span class="at">--minDP</span> 5 <span class="at">--recode</span> <span class="at">--recode-INFO-all</span> <span class="kw">;</span> <span class="kw">}</span> <span class="dv">2</span><span class="op">&gt;&amp;</span><span class="dv">1</span> <span class="kw">|</span>  <span class="fu">cat</span> <span class="op">&gt;&gt;</span> time.txt</span>
-<span id="cb67-3"><a href="#cb67-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb67-4"><a href="#cb67-4" aria-hidden="true" tabindex="-1"></a><span class="kw">{</span> <span class="bu">time</span> /Users/devder/Downloads/vcftools/src/cpp/vcftools <span class="at">--gzvcf</span> benchmark.400K.vcf.gz <span class="at">--minGQ</span> 30 <span class="at">--minDP</span> 5 <span class="at">--recode</span> <span class="at">--recode-INFO-all</span> <span class="kw">;</span> <span class="kw">}</span> <span class="dv">2</span><span class="op">&gt;&amp;</span><span class="dv">1</span> <span class="kw">|</span>  <span class="fu">cat</span> <span class="op">&gt;&gt;</span> time.txt</span>
-<span id="cb67-5"><a href="#cb67-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb67-6"><a href="#cb67-6" aria-hidden="true" tabindex="-1"></a><span class="kw">{</span> <span class="bu">time</span> /Users/devder/Downloads/vcftools/src/cpp/vcftools <span class="at">--gzvcf</span> benchmark.400K.vcf.gz <span class="at">--minGQ</span> 30 <span class="at">--minDP</span> 5 <span class="at">--recode</span> <span class="at">--recode-INFO-all</span> <span class="kw">;</span> <span class="kw">}</span> <span class="dv">2</span><span class="op">&gt;&amp;</span><span class="dv">1</span> <span class="kw">|</span>  <span class="fu">cat</span> <span class="op">&gt;&gt;</span> time.txt</span></code></pre></div>
+<div class="sourceCode" id="cb69"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> /Users/devder/Desktop/benchmarking.vcfs</span>
+<span id="cb69-2"><a href="#cb69-2" aria-hidden="true" tabindex="-1"></a><span class="kw">{</span> <span class="bu">time</span> /Users/devder/Downloads/vcftools/src/cpp/vcftools <span class="at">--gzvcf</span> benchmark.400K.vcf.gz <span class="at">--minGQ</span> 30 <span class="at">--minDP</span> 5 <span class="at">--recode</span> <span class="at">--recode-INFO-all</span> <span class="kw">;</span> <span class="kw">}</span> <span class="dv">2</span><span class="op">&gt;&amp;</span><span class="dv">1</span> <span class="kw">|</span>  <span class="fu">cat</span> <span class="op">&gt;&gt;</span> time.txt</span>
+<span id="cb69-3"><a href="#cb69-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb69-4"><a href="#cb69-4" aria-hidden="true" tabindex="-1"></a><span class="kw">{</span> <span class="bu">time</span> /Users/devder/Downloads/vcftools/src/cpp/vcftools <span class="at">--gzvcf</span> benchmark.400K.vcf.gz <span class="at">--minGQ</span> 30 <span class="at">--minDP</span> 5 <span class="at">--recode</span> <span class="at">--recode-INFO-all</span> <span class="kw">;</span> <span class="kw">}</span> <span class="dv">2</span><span class="op">&gt;&amp;</span><span class="dv">1</span> <span class="kw">|</span>  <span class="fu">cat</span> <span class="op">&gt;&gt;</span> time.txt</span>
+<span id="cb69-5"><a href="#cb69-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb69-6"><a href="#cb69-6" aria-hidden="true" tabindex="-1"></a><span class="kw">{</span> <span class="bu">time</span> /Users/devder/Downloads/vcftools/src/cpp/vcftools <span class="at">--gzvcf</span> benchmark.400K.vcf.gz <span class="at">--minGQ</span> 30 <span class="at">--minDP</span> 5 <span class="at">--recode</span> <span class="at">--recode-INFO-all</span> <span class="kw">;</span> <span class="kw">}</span> <span class="dv">2</span><span class="op">&gt;&amp;</span><span class="dv">1</span> <span class="kw">|</span>  <span class="fu">cat</span> <span class="op">&gt;&gt;</span> time.txt</span></code></pre></div>
 </div>
 <div id="vcftools-benchmark-500k" class="section level1">
 <h1 class="hasAnchor">
 <a href="#vcftools-benchmark-500k" class="anchor"></a>VCFtools benchmark 500K</h1>
-<div class="sourceCode" id="cb68"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> /Users/devder/Desktop/benchmarking.vcfs</span>
-<span id="cb68-2"><a href="#cb68-2" aria-hidden="true" tabindex="-1"></a><span class="kw">{</span> <span class="bu">time</span> /Users/devder/Downloads/vcftools/src/cpp/vcftools <span class="at">--gzvcf</span> benchmark.500K.vcf.gz <span class="at">--minGQ</span> 30 <span class="at">--minDP</span> 5 <span class="at">--recode</span> <span class="at">--recode-INFO-all</span> <span class="kw">;</span> <span class="kw">}</span> <span class="dv">2</span><span class="op">&gt;&amp;</span><span class="dv">1</span> <span class="kw">|</span>  <span class="fu">cat</span> <span class="op">&gt;&gt;</span> time.txt</span>
-<span id="cb68-3"><a href="#cb68-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb68-4"><a href="#cb68-4" aria-hidden="true" tabindex="-1"></a><span class="kw">{</span> <span class="bu">time</span> /Users/devder/Downloads/vcftools/src/cpp/vcftools <span class="at">--gzvcf</span> benchmark.500K.vcf.gz <span class="at">--minGQ</span> 30 <span class="at">--minDP</span> 5 <span class="at">--recode</span> <span class="at">--recode-INFO-all</span> <span class="kw">;</span> <span class="kw">}</span> <span class="dv">2</span><span class="op">&gt;&amp;</span><span class="dv">1</span> <span class="kw">|</span>  <span class="fu">cat</span> <span class="op">&gt;&gt;</span> time.txt</span>
-<span id="cb68-5"><a href="#cb68-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb68-6"><a href="#cb68-6" aria-hidden="true" tabindex="-1"></a><span class="kw">{</span> <span class="bu">time</span> /Users/devder/Downloads/vcftools/src/cpp/vcftools <span class="at">--gzvcf</span> benchmark.500K.vcf.gz <span class="at">--minGQ</span> 30 <span class="at">--minDP</span> 5 <span class="at">--recode</span> <span class="at">--recode-INFO-all</span> <span class="kw">;</span> <span class="kw">}</span> <span class="dv">2</span><span class="op">&gt;&amp;</span><span class="dv">1</span> <span class="kw">|</span>  <span class="fu">cat</span> <span class="op">&gt;&gt;</span> time.txt</span></code></pre></div>
+<div class="sourceCode" id="cb70"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> /Users/devder/Desktop/benchmarking.vcfs</span>
+<span id="cb70-2"><a href="#cb70-2" aria-hidden="true" tabindex="-1"></a><span class="kw">{</span> <span class="bu">time</span> /Users/devder/Downloads/vcftools/src/cpp/vcftools <span class="at">--gzvcf</span> benchmark.500K.vcf.gz <span class="at">--minGQ</span> 30 <span class="at">--minDP</span> 5 <span class="at">--recode</span> <span class="at">--recode-INFO-all</span> <span class="kw">;</span> <span class="kw">}</span> <span class="dv">2</span><span class="op">&gt;&amp;</span><span class="dv">1</span> <span class="kw">|</span>  <span class="fu">cat</span> <span class="op">&gt;&gt;</span> time.txt</span>
+<span id="cb70-3"><a href="#cb70-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb70-4"><a href="#cb70-4" aria-hidden="true" tabindex="-1"></a><span class="kw">{</span> <span class="bu">time</span> /Users/devder/Downloads/vcftools/src/cpp/vcftools <span class="at">--gzvcf</span> benchmark.500K.vcf.gz <span class="at">--minGQ</span> 30 <span class="at">--minDP</span> 5 <span class="at">--recode</span> <span class="at">--recode-INFO-all</span> <span class="kw">;</span> <span class="kw">}</span> <span class="dv">2</span><span class="op">&gt;&amp;</span><span class="dv">1</span> <span class="kw">|</span>  <span class="fu">cat</span> <span class="op">&gt;&gt;</span> time.txt</span>
+<span id="cb70-5"><a href="#cb70-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb70-6"><a href="#cb70-6" aria-hidden="true" tabindex="-1"></a><span class="kw">{</span> <span class="bu">time</span> /Users/devder/Downloads/vcftools/src/cpp/vcftools <span class="at">--gzvcf</span> benchmark.500K.vcf.gz <span class="at">--minGQ</span> 30 <span class="at">--minDP</span> 5 <span class="at">--recode</span> <span class="at">--recode-INFO-all</span> <span class="kw">;</span> <span class="kw">}</span> <span class="dv">2</span><span class="op">&gt;&amp;</span><span class="dv">1</span> <span class="kw">|</span>  <span class="fu">cat</span> <span class="op">&gt;&gt;</span> time.txt</span></code></pre></div>
 <div id="clean-output-file-with-sed-one-liner-to-keep-only-the-lines-beginning-with-real-which-contain-the-time-info-for-each-replicate-run" class="section level3">
 <h3 class="hasAnchor">
 <a href="#clean-output-file-with-sed-one-liner-to-keep-only-the-lines-beginning-with-real-which-contain-the-time-info-for-each-replicate-run" class="anchor"></a>clean output file with sed one-liner to keep only the lines beginning with “real” (which contain the time info for each replicate run)</h3>
-<div class="sourceCode" id="cb69"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> /Users/devder/Desktop/benchmarking.vcfs</span>
-<span id="cb69-2"><a href="#cb69-2" aria-hidden="true" tabindex="-1"></a><span class="co">#use sed one-liner to get only the times of each run in a single file</span></span>
-<span id="cb69-3"><a href="#cb69-3" aria-hidden="true" tabindex="-1"></a><span class="fu">sed</span> <span class="at">-n</span> <span class="at">-e</span> <span class="st">'/^real/ p'</span> time.txt <span class="op">&gt;</span> cleantimes.txt</span></code></pre></div>
+<div class="sourceCode" id="cb71"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb71-1"><a href="#cb71-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> /Users/devder/Desktop/benchmarking.vcfs</span>
+<span id="cb71-2"><a href="#cb71-2" aria-hidden="true" tabindex="-1"></a><span class="co">#use sed one-liner to get only the times of each run in a single file</span></span>
+<span id="cb71-3"><a href="#cb71-3" aria-hidden="true" tabindex="-1"></a><span class="fu">sed</span> <span class="at">-n</span> <span class="at">-e</span> <span class="st">'/^real/ p'</span> time.txt <span class="op">&gt;</span> cleantimes.txt</span></code></pre></div>
 </div>
 <div id="read-cleaned-file-into-r-and-manipulate-into-a-cohesive-dataframe-with-our-microbenchmark-output-dataframe" class="section level3">
 <h3 class="hasAnchor">
 <a href="#read-cleaned-file-into-r-and-manipulate-into-a-cohesive-dataframe-with-our-microbenchmark-output-dataframe" class="anchor"></a>read cleaned file into R and manipulate into a cohesive dataframe with our microbenchmark output dataframe</h3>
-<div class="sourceCode" id="cb70"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb72"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">#read in VCFtools times</span>
 <span class="va">vcftools.times</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/utils/read.table.html">read.table</a></span><span class="op">(</span><span class="st">"~/Desktop/benchmarking.vcfs/cleantimes.txt"</span>, sep <span class="op">=</span> <span class="st">"\t"</span><span class="op">)</span>
 
@@ -7540,14 +7546,12 @@ Processed variant: 500000
                      <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fl">100000</span>, times<span class="op">=</span><span class="fl">3</span><span class="op">)</span>,<span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fl">200000</span>, times<span class="op">=</span><span class="fl">3</span><span class="op">)</span>,<span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fl">300000</span>, times<span class="op">=</span><span class="fl">3</span><span class="op">)</span>,
                      <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fl">400000</span>, times<span class="op">=</span><span class="fl">3</span><span class="op">)</span>,<span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fl">500000</span>, times<span class="op">=</span><span class="fl">3</span><span class="op">)</span><span class="op">)</span>
 
-<span class="co">#make column 2 numeric</span>
-<span class="va">vcftools.times</span><span class="op">$</span><span class="va">V2</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/grep.html">gsub</a></span><span class="op">(</span><span class="st">"0m"</span>, <span class="st">""</span>, <span class="va">vcftools.times</span><span class="op">$</span><span class="va">V2</span><span class="op">)</span>
-<span class="va">vcftools.times</span><span class="op">$</span><span class="va">V2</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/grep.html">gsub</a></span><span class="op">(</span><span class="st">"1m"</span>, <span class="st">""</span>, <span class="va">vcftools.times</span><span class="op">$</span><span class="va">V2</span><span class="op">)</span>
+<span class="co">#format column 2</span>
+<span class="va">vcftools.times</span><span class="op">$</span><span class="va">V2</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/grep.html">gsub</a></span><span class="op">(</span><span class="st">"m"</span>, <span class="st">":"</span>, <span class="va">vcftools.times</span><span class="op">$</span><span class="va">V2</span><span class="op">)</span>
 <span class="va">vcftools.times</span><span class="op">$</span><span class="va">V2</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/grep.html">gsub</a></span><span class="op">(</span><span class="st">"s"</span>, <span class="st">""</span>, <span class="va">vcftools.times</span><span class="op">$</span><span class="va">V2</span><span class="op">)</span>
-<span class="va">vcftools.times</span><span class="op">$</span><span class="va">V2</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/character.html">as.character</a></span><span class="op">(</span><span class="va">vcftools.times</span><span class="op">$</span><span class="va">V2</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#account for the last 3 which took over a minute</span>
-<span class="va">vcftools.times</span><span class="op">$</span><span class="va">V2</span><span class="op">[</span><span class="fl">22</span><span class="op">:</span><span class="fl">24</span><span class="op">]</span><span class="op">&lt;-</span><span class="va">vcftools.times</span><span class="op">$</span><span class="va">V2</span><span class="op">[</span><span class="fl">22</span><span class="op">:</span><span class="fl">24</span><span class="op">]</span><span class="op">+</span><span class="fl">60</span>
-
+<span class="co">#vcftools.times$V2&lt;-as.numeric(as.character(vcftools.times$V2))</span>
+<span class="co">#convert minutes:seconds to just seconds as.numeric for plotting</span>
+<span class="va">vcftools.times</span><span class="op">$</span><span class="va">V2</span><span class="op">&lt;-</span><span class="fu">lubridate</span><span class="fu">::</span><span class="fu"><a href="https://lubridate.tidyverse.org/reference/period_to_seconds.html">period_to_seconds</a></span><span class="op">(</span><span class="fu">lubridate</span><span class="fu">::</span><span class="fu"><a href="https://lubridate.tidyverse.org/reference/hms.html">ms</a></span><span class="op">(</span><span class="va">vcftools.times</span><span class="op">$</span><span class="va">V2</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#get the mean of the runtimes across all three replicates, for each vcf file</span>
 <span class="va">v</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/stats/aggregate.html">aggregate</a></span><span class="op">(</span><span class="va">vcftools.times</span><span class="op">$</span><span class="va">V2</span>, <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="va">vcftools.times</span><span class="op">$</span><span class="va">V1</span><span class="op">)</span>, <span class="va">mean</span><span class="op">)</span>
 
@@ -7564,39 +7568,39 @@ Processed variant: 500000
 
 <span class="co">#final product:</span>
 <span class="va">benchmark.df</span></code></pre></div>
-<pre><code>##         approach  SNPs        mean
-## 1  SNPfiltR+vcfR 1e+04   1.5654089
-## 2       SNPfiltR 1e+04   0.4835082
-## 3  SNPfiltR+vcfR 2e+04   3.0020976
-## 4       SNPfiltR 2e+04   1.0150522
-## 5  SNPfiltR+vcfR 5e+04   8.5620016
-## 6       SNPfiltR 5e+04   3.3107700
-## 7  SNPfiltR+vcfR 1e+05  17.3877961
-## 8       SNPfiltR 1e+05   5.9581557
-## 9  SNPfiltR+vcfR 2e+05  32.7595985
-## 10      SNPfiltR 2e+05  14.4650797
-## 11 SNPfiltR+vcfR 3e+05  49.4578168
-## 12      SNPfiltR 3e+05  19.0052724
-## 13 SNPfiltR+vcfR 4e+05  69.1849466
-## 14      SNPfiltR 4e+05  26.1665908
-## 15 SNPfiltR+vcfR 5e+05  92.1427781
-## 16      SNPfiltR 5e+05  41.8744831
-## 17      VCFtools 1e+04   2.1116667
-## 18      VCFtools 2e+04   2.4543333
-## 19      VCFtools 5e+04   6.6126667
-## 20      VCFtools 1e+05  12.7150000
-## 21      VCFtools 2e+05  25.2453333
-## 22      VCFtools 3e+05  37.0873333
-## 23      VCFtools 4e+05  49.6120000
-## 24      VCFtools 5e+05 117.6413333</code></pre>
-<div class="sourceCode" id="cb72"><pre class="downlit sourceCode r">
+<pre><code>##         approach  SNPs       mean
+## 1  SNPfiltR+vcfR 1e+04  1.3795312
+## 2       SNPfiltR 1e+04  0.5059675
+## 3  SNPfiltR+vcfR 2e+04  2.6096785
+## 4       SNPfiltR 2e+04  0.7934269
+## 5  SNPfiltR+vcfR 5e+04  6.4684860
+## 6       SNPfiltR 5e+04  2.3705718
+## 7  SNPfiltR+vcfR 1e+05 13.4522993
+## 8       SNPfiltR 1e+05  4.5953264
+## 9  SNPfiltR+vcfR 2e+05 29.7158473
+## 10      SNPfiltR 2e+05 10.6140201
+## 11 SNPfiltR+vcfR 3e+05 48.3962636
+## 12      SNPfiltR 3e+05 19.7492181
+## 13 SNPfiltR+vcfR 4e+05 64.4157251
+## 14      SNPfiltR 4e+05 29.2289785
+## 15 SNPfiltR+vcfR 5e+05 92.7230837
+## 16      SNPfiltR 5e+05 47.8018653
+## 17      VCFtools 1e+04  1.5763333
+## 18      VCFtools 2e+04  2.0566667
+## 19      VCFtools 5e+04  5.9536667
+## 20      VCFtools 1e+05 11.6536667
+## 21      VCFtools 2e+05 19.6923333
+## 22      VCFtools 3e+05 29.7623333
+## 23      VCFtools 4e+05 41.9103333
+## 24      VCFtools 5e+05 49.7780000</code></pre>
+<div class="sourceCode" id="cb74"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/write.table.html">write.csv</a></span><span class="op">(</span><span class="va">benchmark.df</span>, file<span class="op">=</span><span class="st">"~/Desktop/benchmarking.vcfs/benchmark.info.csv"</span>, quote <span class="op">=</span> <span class="cn">F</span>, row.names <span class="op">=</span> <span class="cn">F</span><span class="op">)</span></code></pre></div>
 </div>
 </div>
 <div id="compare-runtimes" class="section level1">
 <h1 class="hasAnchor">
 <a href="#compare-runtimes" class="anchor"></a>Compare runtimes</h1>
-<div class="sourceCode" id="cb73"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb75"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">#visualize the comparative runtimes across SNPs and between approaches</span>
 <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">benchmark.df</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">SNPs</span>, y <span class="op">=</span> <span class="va">mean</span>, color <span class="op">=</span> <span class="va">approach</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>fill<span class="op">=</span><span class="va">approach</span><span class="op">)</span>,size<span class="op">=</span><span class="fl">3</span><span class="op">)</span> <span class="op">+</span>
@@ -7605,7 +7609,7 @@ Processed variant: 500000
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ylab</a></span><span class="op">(</span><span class="st">"mean runtime (seconds)"</span><span class="op">)</span><span class="op">+</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span><span class="op">(</span>legend.position <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.2</span>, <span class="fl">0.8</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <p><img src="performance-benchmarking_files/figure-html/unnamed-chunk-21-1.png" width="700"></p>
-<div class="sourceCode" id="cb74"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb76"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">runtime.plot</span><span class="op">&lt;-</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">benchmark.df</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">SNPs</span>, y <span class="op">=</span> <span class="va">mean</span>, color <span class="op">=</span> <span class="va">approach</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>fill<span class="op">=</span><span class="va">approach</span><span class="op">)</span>,size<span class="op">=</span><span class="fl">3</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>group <span class="op">=</span> <span class="va">approach</span><span class="op">)</span><span class="op">)</span><span class="op">+</span>

@@ -21,6 +21,7 @@ library(SNPfiltR)
 library(vcfR)
 library(microbenchmark)
 library(ggplot2)
+library(lubridate)
 ```
 
 # Benchmark 10K
@@ -395,14 +396,12 @@ vcftools.times$V1<-c(rep(10000, times=3),rep(20000, times=3),rep(50000, times=3)
                      rep(100000, times=3),rep(200000, times=3),rep(300000, times=3),
                      rep(400000, times=3),rep(500000, times=3))
 
-#make column 2 numeric
-vcftools.times$V2<-gsub("0m", "", vcftools.times$V2)
-vcftools.times$V2<-gsub("1m", "", vcftools.times$V2)
+#format column 2
+vcftools.times$V2<-gsub("m", ":", vcftools.times$V2)
 vcftools.times$V2<-gsub("s", "", vcftools.times$V2)
-vcftools.times$V2<-as.numeric(as.character(vcftools.times$V2))
-#account for the last 3 which took over a minute
-vcftools.times$V2[22:24]<-vcftools.times$V2[22:24]+60
-
+#vcftools.times$V2<-as.numeric(as.character(vcftools.times$V2))
+#convert minutes:seconds to just seconds as.numeric for plotting
+vcftools.times$V2<-lubridate::period_to_seconds(lubridate::ms(vcftools.times$V2))
 #get the mean of the runtimes across all three replicates, for each vcf file
 v<-aggregate(vcftools.times$V2, list(vcftools.times$V1), mean)
 
