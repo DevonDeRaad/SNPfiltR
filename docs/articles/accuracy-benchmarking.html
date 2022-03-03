@@ -688,7 +688,7 @@ Processed variant: 50000
 ## After filtering, kept 100 out of 100 Individuals
 ## Outputting VCF file...
 ## After filtering, kept 1435 out of a possible 10000 Sites
-## Run Time = 1.00 seconds
+## Run Time = 0.00 seconds
 ## 
 ## VCFtools - 0.1.17
 ## (C) Adam Auton and Anthony Marcketta 2009
@@ -704,7 +704,7 @@ Processed variant: 50000
 ## After filtering, kept 100 out of 100 Individuals
 ## Outputting VCF file...
 ## After filtering, kept 3241 out of a possible 20000 Sites
-## Run Time = 0.00 seconds
+## Run Time = 1.00 seconds
 ## 
 ## VCFtools - 0.1.17
 ## (C) Adam Auton and Anthony Marcketta 2009
@@ -720,7 +720,7 @@ Processed variant: 50000
 ## After filtering, kept 100 out of 100 Individuals
 ## Outputting VCF file...
 ## After filtering, kept 7782 out of a possible 50000 Sites
-## Run Time = 3.00 seconds</code></pre>
+## Run Time = 2.00 seconds</code></pre>
 </div>
 <div id="read-in-vcftools-files-1" class="section level3">
 <h3 class="hasAnchor">
@@ -1035,7 +1035,7 @@ Processed variant: 50000
 ## After filtering, kept 100 out of 100 Individuals
 ## Outputting VCF file...
 ## After filtering, kept 21031 out of a possible 50000 Sites
-## Run Time = 3.00 seconds</code></pre>
+## Run Time = 5.00 seconds</code></pre>
 </div>
 <div id="read-in-vcftools-files-2" class="section level3">
 <h3 class="hasAnchor">
@@ -1384,7 +1384,7 @@ Processed variant: 50000
 ## After filtering, kept 100 out of 100 Individuals
 ## Outputting VCF file...
 ## After filtering, kept 4826 out of a possible 20000 Sites
-## Run Time = 0.00 seconds
+## Run Time = 1.00 seconds
 ## 
 ## VCFtools - 0.1.17
 ## (C) Adam Auton and Anthony Marcketta 2009
@@ -1400,7 +1400,7 @@ Processed variant: 50000
 ## After filtering, kept 100 out of 100 Individuals
 ## Outputting VCF file...
 ## After filtering, kept 12541 out of a possible 50000 Sites
-## Run Time = 2.00 seconds</code></pre>
+## Run Time = 1.00 seconds</code></pre>
 </div>
 <div id="read-in-vcftools-files-3" class="section level3">
 <h3 class="hasAnchor">
@@ -1592,7 +1592,10 @@ Processed variant: 12541
 ## 469 Pseudo10_dna 4224491  101
 ## 532 Pseudo10_dna 4498157  101</code></pre>
 <div class="sourceCode" id="cb99"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co">### repeat for the VCFtools filtered vcf</span>
+<code class="sourceCode R"><span class="co">#store df</span>
+<span class="va">snpfilt.df</span><span class="op">&lt;-</span><span class="va">order.df</span>
+
+<span class="co">### repeat for the VCFtools filtered vcf</span>
 <span class="co">##</span>
 <span class="co">#</span>
 
@@ -1654,7 +1657,6 @@ Processed variant: 12541
 <span class="va">order.df</span><span class="op">&lt;-</span><span class="va">keep.df</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/match.html">match</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="va">df</span><span class="op">$</span><span class="va">CHROM</span>,<span class="va">df</span><span class="op">$</span><span class="va">POS</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="va">keep.df</span><span class="op">$</span><span class="va">CHROM</span>,<span class="va">keep.df</span><span class="op">$</span><span class="va">POS</span><span class="op">)</span><span class="op">)</span>,<span class="op">]</span>
 <span class="va">order.df</span><span class="op">&lt;-</span><span class="va">order.df</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/order.html">order</a></span><span class="op">(</span><span class="va">order.df</span><span class="op">$</span><span class="va">dist</span><span class="op">)</span>,<span class="op">]</span>
 
-<span class="co">#show the lower distribution of SNP distances</span>
 <span class="fu"><a href="https://rdrr.io/r/graphics/hist.html">hist</a></span><span class="op">(</span><span class="va">order.df</span><span class="op">$</span><span class="va">dist</span>, xlim <span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1000</span><span class="op">)</span>, breaks <span class="op">=</span> <span class="fl">50000</span>, main <span class="op">=</span> <span class="st">"thinning using VCFtools"</span>,
      xlab <span class="op">=</span> <span class="st">"Distance from nearest SNP (base pairs)"</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/graphics/abline.html">abline</a></span><span class="op">(</span>v<span class="op">=</span><span class="fl">100</span>, col<span class="op">=</span><span class="st">"red"</span><span class="op">)</span></code></pre></div>
@@ -1684,22 +1686,55 @@ Processed variant: 12541
 ## 9  Pseudo10_dna 225731 40189
 ## 10 Pseudo10_dna 228849  3118</code></pre>
 <div class="sourceCode" id="cb104"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co">#plot the two together on the same histogram</span>
+<span class="va">order.df</span><span class="op">$</span><span class="va">approach</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="st">"VCFtools"</span>, times<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">order.df</span><span class="op">)</span><span class="op">)</span>
+<span class="va">snpfilt.df</span><span class="op">$</span><span class="va">approach</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="st">"SNPfiltR"</span>, times<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">snpfilt.df</span><span class="op">)</span><span class="op">)</span>
+<span class="va">sum.df</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html">rbind</a></span><span class="op">(</span><span class="va">order.df</span>,<span class="va">snpfilt.df</span><span class="op">)</span>
+
+<span class="co">#plot both</span>
+<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">sum.df</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x<span class="op">=</span><span class="va">dist</span>, color<span class="op">=</span><span class="va">approach</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_histogram.html">geom_histogram</a></span><span class="op">(</span>bins<span class="op">=</span><span class="fl">100</span>, fill<span class="op">=</span><span class="st">"white"</span><span class="op">)</span><span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_classic</a></span><span class="op">(</span><span class="op">)</span><span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/lims.html">xlim</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1000</span><span class="op">)</span><span class="op">)</span><span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">xlab</a></span><span class="op">(</span>label <span class="op">=</span> <span class="st">"Distance from nearest SNP (base pairs)"</span><span class="op">)</span><span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_abline.html">geom_vline</a></span><span class="op">(</span>xintercept <span class="op">=</span> <span class="fl">100</span>, linetype<span class="op">=</span><span class="st">"dashed"</span><span class="op">)</span><span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span><span class="op">(</span>legend.position <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.8</span>, <span class="fl">0.8</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<pre><code>## Warning: Removed 3756 rows containing non-finite values (stat_bin).</code></pre>
+<pre><code>## Warning: Removed 4 rows containing missing values (geom_bar).</code></pre>
+<p><img src="accuracy-benchmarking_files/figure-html/unnamed-chunk-17-3.png" width="700"></p>
+<div class="sourceCode" id="cb107"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">hists</span><span class="op">&lt;-</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">sum.df</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x<span class="op">=</span><span class="va">dist</span>, color<span class="op">=</span><span class="va">approach</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_histogram.html">geom_histogram</a></span><span class="op">(</span>bins<span class="op">=</span><span class="fl">100</span>, fill<span class="op">=</span><span class="st">"white"</span><span class="op">)</span><span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_classic</a></span><span class="op">(</span><span class="op">)</span><span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/lims.html">xlim</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">2500</span><span class="op">)</span><span class="op">)</span><span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">xlab</a></span><span class="op">(</span>label <span class="op">=</span> <span class="st">"Distance from nearest SNP (base pairs)"</span><span class="op">)</span><span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_abline.html">geom_vline</a></span><span class="op">(</span>xintercept <span class="op">=</span> <span class="fl">100</span>, linetype<span class="op">=</span><span class="st">"dashed"</span><span class="op">)</span><span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span><span class="op">(</span>legend.position <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.8</span>, <span class="fl">0.8</span><span class="op">)</span><span class="op">)</span>
+
+<span class="co">#save plot</span>
+<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsave.html">ggsave</a></span><span class="op">(</span><span class="va">hists</span>,
+      filename <span class="op">=</span> <span class="st">"~/Desktop/SNPfiltR.mol.ecol.resour.submission/resubmission/validate.thinning.pdf"</span>,
+      height <span class="op">=</span> <span class="fl">2</span>, width <span class="op">=</span> <span class="fl">8</span>, units <span class="op">=</span> <span class="st">"in"</span><span class="op">)</span></code></pre></div>
+<pre><code>## Warning: Removed 3061 rows containing non-finite values (stat_bin).
+
+## Warning: Removed 4 rows containing missing values (geom_bar).</code></pre>
+<div class="sourceCode" id="cb109"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">#see how many retained SNPs overlap between the two approaches for each file</span>
 <span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/with.html">with</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="va">r.10k</span><span class="op">@</span><span class="va">fix</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="va">CHROM</span>,<span class="va">POS</span><span class="op">)</span><span class="op">)</span> <span class="op">%in%</span> <span class="fu"><a href="https://rdrr.io/r/base/with.html">with</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="va">bash.10k</span><span class="op">@</span><span class="va">fix</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="va">CHROM</span>,<span class="va">POS</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <pre><code>## 
 ## FALSE  TRUE 
 ##  1212  1579</code></pre>
-<div class="sourceCode" id="cb106"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb111"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/with.html">with</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="va">r.20k</span><span class="op">@</span><span class="va">fix</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="va">CHROM</span>,<span class="va">POS</span><span class="op">)</span><span class="op">)</span> <span class="op">%in%</span> <span class="fu"><a href="https://rdrr.io/r/base/with.html">with</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="va">bash.20k</span><span class="op">@</span><span class="va">fix</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="va">CHROM</span>,<span class="va">POS</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <pre><code>## 
 ## FALSE  TRUE 
 ##  2444  3174</code></pre>
-<div class="sourceCode" id="cb108"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb113"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/with.html">with</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="va">r.50k</span><span class="op">@</span><span class="va">fix</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="va">CHROM</span>,<span class="va">POS</span><span class="op">)</span><span class="op">)</span> <span class="op">%in%</span> <span class="fu"><a href="https://rdrr.io/r/base/with.html">with</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="va">bash.50k</span><span class="op">@</span><span class="va">fix</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="va">CHROM</span>,<span class="va">POS</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <pre><code>## 
 ## FALSE  TRUE 
 ##  6170  8308</code></pre>
-<div class="sourceCode" id="cb110"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb115"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">#store number of SNPs for each approach as a vector</span>
 <span class="va">r.snps</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">)</span>
 <span class="va">r.snps</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">r.10k</span><span class="op">@</span><span class="va">gt</span><span class="op">)</span>
@@ -1725,12 +1760,24 @@ Processed variant: 12541
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">xlab</a></span><span class="op">(</span><span class="st">"SNPs in input vcf file"</span><span class="op">)</span><span class="op">+</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ylab</a></span><span class="op">(</span><span class="st">"Number of thinned SNPs"</span><span class="op">)</span><span class="op">+</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_classic</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
-<p><img src="accuracy-benchmarking_files/figure-html/unnamed-chunk-17-3.png" width="700"></p>
+<p><img src="accuracy-benchmarking_files/figure-html/unnamed-chunk-17-4.png" width="700"></p>
+<div class="sourceCode" id="cb116"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">thin.bar</span><span class="op">&lt;-</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">bar.frame</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>fill<span class="op">=</span><span class="va">approach</span>, y<span class="op">=</span><span class="va">snps</span>, x<span class="op">=</span><span class="va">input.snps</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> 
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html">geom_bar</a></span><span class="op">(</span>position<span class="op">=</span><span class="st">"dodge"</span>, stat<span class="op">=</span><span class="st">"identity"</span><span class="op">)</span><span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">xlab</a></span><span class="op">(</span><span class="st">"SNPs in input vcf file"</span><span class="op">)</span><span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ylab</a></span><span class="op">(</span><span class="st">"Number of thinned SNPs"</span><span class="op">)</span><span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_classic</a></span><span class="op">(</span><span class="op">)</span><span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span><span class="op">(</span>legend.position <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.3</span>, <span class="fl">0.8</span><span class="op">)</span><span class="op">)</span>
+
+<span class="co">#save plot</span>
+<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsave.html">ggsave</a></span><span class="op">(</span><span class="va">thin.bar</span>,
+      filename <span class="op">=</span> <span class="st">"~/Desktop/SNPfiltR.mol.ecol.resour.submission/resubmission/thinning.comp.pdf"</span>,
+      height <span class="op">=</span> <span class="fl">3</span>, width <span class="op">=</span> <span class="fl">4.5</span>, units <span class="op">=</span> <span class="st">"in"</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="make-final-table-showing-genotpye-concordance-across-comparisons" class="section level3">
 <h3 class="hasAnchor">
 <a href="#make-final-table-showing-genotpye-concordance-across-comparisons" class="anchor"></a>Make final table showing genotpye concordance across comparisons</h3>
-<div class="sourceCode" id="cb111"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb117"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># print table showing concordance</span>
 <span class="va">concord</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>concordance<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">1</span>,
                                   <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/with.html">with</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="va">r.10k</span><span class="op">@</span><span class="va">fix</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="va">CHROM</span>,<span class="va">POS</span><span class="op">)</span><span class="op">)</span> <span class="op">%in%</span> <span class="fu"><a href="https://rdrr.io/r/base/with.html">with</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="va">bash.10k</span><span class="op">@</span><span class="va">fix</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="va">CHROM</span>,<span class="va">POS</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="va">r.10k</span><span class="op">@</span><span class="va">fix</span><span class="op">)</span><span class="op">)</span>,
@@ -1747,7 +1794,7 @@ Processed variant: 12541
 <span class="co">#print table</span>
 <span class="va">heat</span> <span class="op">&lt;-</span> <span class="fu">reshape</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/reshape/man/melt-24.html">melt</a></span><span class="op">(</span><span class="va">concord</span><span class="op">)</span></code></pre></div>
 <pre><code>## Using filtering, input.snps as id variables</code></pre>
-<div class="sourceCode" id="cb113"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb119"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">heat</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x<span class="op">=</span><span class="va">input.snps</span>, y<span class="op">=</span><span class="va">filtering</span>, fill<span class="op">=</span><span class="va">value</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> 
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_tile.html">geom_tile</a></span><span class="op">(</span>color <span class="op">=</span> <span class="st">"white"</span>, size<span class="op">=</span><span class="fl">1</span><span class="op">)</span><span class="op">+</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_text.html">geom_text</a></span><span class="op">(</span>data<span class="op">=</span><span class="va">heat</span>,<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>label<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="va">value</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">+</span>
@@ -1756,6 +1803,19 @@ Processed variant: 12541
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ylab</a></span><span class="op">(</span><span class="st">"type of filtering"</span><span class="op">)</span><span class="op">+</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">xlab</a></span><span class="op">(</span><span class="st">"Number of SNPs in input vcf file"</span><span class="op">)</span></code></pre></div>
 <p><img src="accuracy-benchmarking_files/figure-html/unnamed-chunk-18-1.png" width="700"></p>
+<div class="sourceCode" id="cb120"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">geno.concord.plot</span><span class="op">&lt;-</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">heat</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x<span class="op">=</span><span class="va">input.snps</span>, y<span class="op">=</span><span class="va">filtering</span>, fill<span class="op">=</span><span class="va">value</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> 
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_tile.html">geom_tile</a></span><span class="op">(</span>color <span class="op">=</span> <span class="st">"white"</span>, size<span class="op">=</span><span class="fl">1</span><span class="op">)</span><span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_text.html">geom_text</a></span><span class="op">(</span>data<span class="op">=</span><span class="va">heat</span>,<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>label<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="va">value</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_minimal</a></span><span class="op">(</span><span class="op">)</span><span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_gradient.html">scale_fill_gradient2</a></span><span class="op">(</span>low <span class="op">=</span> <span class="st">"white"</span>, high <span class="op">=</span> <span class="st">"cornflowerblue"</span>, space <span class="op">=</span> <span class="st">"Lab"</span>, name<span class="op">=</span><span class="st">"genotype\nconcordance"</span><span class="op">)</span><span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ylab</a></span><span class="op">(</span><span class="st">"type of filtering"</span><span class="op">)</span><span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">xlab</a></span><span class="op">(</span><span class="st">"Number of SNPs in input vcf file"</span><span class="op">)</span>
+
+<span class="co">#save plot</span>
+<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsave.html">ggsave</a></span><span class="op">(</span><span class="va">geno.concord.plot</span>,
+      filename <span class="op">=</span> <span class="st">"~/Desktop/SNPfiltR.mol.ecol.resour.submission/resubmission/geno.concord.pdf"</span>,
+      height <span class="op">=</span> <span class="fl">3</span>, width <span class="op">=</span> <span class="fl">5</span>, units <span class="op">=</span> <span class="st">"in"</span><span class="op">)</span></code></pre></div>
 </div>
 </div>
   </div>

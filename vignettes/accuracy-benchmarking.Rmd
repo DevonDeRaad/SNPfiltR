@@ -235,6 +235,9 @@ abline(v=100, col="red")
 
 head(order.df) #show the tail of SNP distances
 
+#store df
+snpfilt.df<-order.df
+
 ### repeat for the VCFtools filtered vcf
 ##
 #
@@ -297,7 +300,6 @@ for (t in chroms){
 order.df<-keep.df[match(paste(df$CHROM,df$POS), paste(keep.df$CHROM,keep.df$POS)),]
 order.df<-order.df[order(order.df$dist),]
 
-#show the lower distribution of SNP distances
 hist(order.df$dist, xlim =c(0,1000), breaks = 50000, main = "thinning using VCFtools",
      xlab = "Distance from nearest SNP (base pairs)")
 abline(v=100, col="red")
@@ -306,6 +308,33 @@ head(order.df) #show the tail of SNP distances
 #putting the dataframe in chromosomal order, we can see right away that SNPs less than 100bp apart have been retained
 order.df<-order.df[with(order.df, order(CHROM, POS)),]
 order.df[1:10,]
+
+#plot the two together on the same histogram
+order.df$approach<-rep("VCFtools", times=nrow(order.df))
+snpfilt.df$approach<-rep("SNPfiltR", times=nrow(snpfilt.df))
+sum.df<-rbind(order.df,snpfilt.df)
+
+#plot both
+ggplot(sum.df, aes(x=dist, color=approach)) +
+  geom_histogram(bins=100, fill="white")+
+  theme_classic()+
+  xlim(c(0, 1000))+
+  xlab(label = "Distance from nearest SNP (base pairs)")+
+  geom_vline(xintercept = 100, linetype="dashed")+
+  theme(legend.position = c(0.8, 0.8))
+
+hists<-ggplot(sum.df, aes(x=dist, color=approach)) +
+  geom_histogram(bins=100, fill="white")+
+  theme_classic()+
+  xlim(c(0, 2500))+
+  xlab(label = "Distance from nearest SNP (base pairs)")+
+  geom_vline(xintercept = 100, linetype="dashed")+
+  theme(legend.position = c(0.8, 0.8))
+
+#save plot
+ggsave(hists,
+      filename = "~/Desktop/SNPfiltR.mol.ecol.resour.submission/resubmission/validate.thinning.pdf",
+      height = 2, width = 8, units = "in")
 
 #see how many retained SNPs overlap between the two approaches for each file
 table(with(as.data.frame(r.10k@fix), paste0(CHROM,POS)) %in% with(as.data.frame(bash.10k@fix), paste0(CHROM,POS)))
@@ -337,6 +366,19 @@ ggplot(bar.frame, aes(fill=approach, y=snps, x=input.snps)) +
   xlab("SNPs in input vcf file")+
   ylab("Number of thinned SNPs")+
   theme_classic()
+
+thin.bar<-ggplot(bar.frame, aes(fill=approach, y=snps, x=input.snps)) + 
+  geom_bar(position="dodge", stat="identity")+
+  xlab("SNPs in input vcf file")+
+  ylab("Number of thinned SNPs")+
+  theme_classic()+
+  theme(legend.position = c(0.3, 0.8))
+
+#save plot
+ggsave(thin.bar,
+      filename = "~/Desktop/SNPfiltR.mol.ecol.resour.submission/resubmission/thinning.comp.pdf",
+      height = 3, width = 4.5, units = "in")
+
 ```
 
 ### Make final table showing genotpye concordance across comparisons
@@ -363,6 +405,20 @@ ggplot(data = heat, aes(x=input.snps, y=filtering, fill=value)) +
   scale_fill_gradient2(low = "white", high = "cornflowerblue", space = "Lab", name="genotype\nconcordance")+
   ylab("type of filtering")+
   xlab("Number of SNPs in input vcf file")
+
+geno.concord.plot<-ggplot(data = heat, aes(x=input.snps, y=filtering, fill=value)) + 
+  geom_tile(color = "white", size=1)+
+  geom_text(data=heat,aes(label=round(value, 2)))+
+  theme_minimal()+
+  scale_fill_gradient2(low = "white", high = "cornflowerblue", space = "Lab", name="genotype\nconcordance")+
+  ylab("type of filtering")+
+  xlab("Number of SNPs in input vcf file")
+
+#save plot
+ggsave(geno.concord.plot,
+      filename = "~/Desktop/SNPfiltR.mol.ecol.resour.submission/resubmission/geno.concord.pdf",
+      height = 3, width = 5, units = "in")
+
 
 ```
 
