@@ -104,7 +104,7 @@
     
     
 <p>This vignette is designed to validate the accuracy of the key functions from the SNPfiltR package against the established VCFtools program. For each function, I filtered 3 vcf files according to the same parameter thresholds using SNPfiltR and VCFtools, and then tested whether each genotype in the output vcf files matched. All functions matched exactly, except for the distance_thin() function. It seems that the SNPfiltR approach accurately thinned the dataset, while the ‘–thin 100’ flag from VCFtools allowed SNPs to remain in the output dataset despite being within 100 base pairs of nearby SNPs. I am not sure why VCFtools is less accurate on these vcf files I used for testing, and encourage more testing from other users in case this is an idiosyncratic issue with the particular vcf files I used. Meanwhile, I suggest using the SNPfiltR function distance_thin() which is validated clearly here, over the VCFtools approach.</p>
-<p>All of the input vcf files necessary to fully reproduce this accuracy comparison can be found <a href="github.com/DevonDeRaad/SNPfiltR.benchmarking.data">here</a></p>
+<p>All of the input vcf files necessary to fully reproduce this accuracy comparison can be found <a href="https://github.com/DevonDeRaad/SNPfiltR.benchmarking.data">here</a></p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">SNPfiltR</span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/knausb/vcfR">vcfR</a></span><span class="op">)</span></code></pre></div>
@@ -299,7 +299,7 @@ Processed variant: 50000
 ## After filtering, kept 100 out of 100 Individuals
 ## Outputting VCF file...
 ## After filtering, kept 10000 out of a possible 10000 Sites
-## Run Time = 1.00 seconds
+## Run Time = 2.00 seconds
 ## 
 ## VCFtools - 0.1.17
 ## (C) Adam Auton and Anthony Marcketta 2009
@@ -688,7 +688,7 @@ Processed variant: 50000
 ## After filtering, kept 100 out of 100 Individuals
 ## Outputting VCF file...
 ## After filtering, kept 1435 out of a possible 10000 Sites
-## Run Time = 0.00 seconds
+## Run Time = 1.00 seconds
 ## 
 ## VCFtools - 0.1.17
 ## (C) Adam Auton and Anthony Marcketta 2009
@@ -704,7 +704,7 @@ Processed variant: 50000
 ## After filtering, kept 100 out of 100 Individuals
 ## Outputting VCF file...
 ## After filtering, kept 3241 out of a possible 20000 Sites
-## Run Time = 1.00 seconds
+## Run Time = 2.00 seconds
 ## 
 ## VCFtools - 0.1.17
 ## (C) Adam Auton and Anthony Marcketta 2009
@@ -720,7 +720,7 @@ Processed variant: 50000
 ## After filtering, kept 100 out of 100 Individuals
 ## Outputting VCF file...
 ## After filtering, kept 7782 out of a possible 50000 Sites
-## Run Time = 2.00 seconds</code></pre>
+## Run Time = 3.00 seconds</code></pre>
 </div>
 <div id="read-in-vcftools-files-1" class="section level3">
 <h3 class="hasAnchor">
@@ -1035,7 +1035,7 @@ Processed variant: 50000
 ## After filtering, kept 100 out of 100 Individuals
 ## Outputting VCF file...
 ## After filtering, kept 21031 out of a possible 50000 Sites
-## Run Time = 5.00 seconds</code></pre>
+## Run Time = 3.00 seconds</code></pre>
 </div>
 <div id="read-in-vcftools-files-2" class="section level3">
 <h3 class="hasAnchor">
@@ -1368,7 +1368,7 @@ Processed variant: 50000
 ## After filtering, kept 100 out of 100 Individuals
 ## Outputting VCF file...
 ## After filtering, kept 2408 out of a possible 10000 Sites
-## Run Time = 0.00 seconds
+## Run Time = 1.00 seconds
 ## 
 ## VCFtools - 0.1.17
 ## (C) Adam Auton and Anthony Marcketta 2009
@@ -1384,7 +1384,7 @@ Processed variant: 50000
 ## After filtering, kept 100 out of 100 Individuals
 ## Outputting VCF file...
 ## After filtering, kept 4826 out of a possible 20000 Sites
-## Run Time = 1.00 seconds
+## Run Time = 0.00 seconds
 ## 
 ## VCFtools - 0.1.17
 ## (C) Adam Auton and Anthony Marcketta 2009
@@ -1400,7 +1400,7 @@ Processed variant: 50000
 ## After filtering, kept 100 out of 100 Individuals
 ## Outputting VCF file...
 ## After filtering, kept 12541 out of a possible 50000 Sites
-## Run Time = 1.00 seconds</code></pre>
+## Run Time = 2.00 seconds</code></pre>
 </div>
 <div id="read-in-vcftools-files-3" class="section level3">
 <h3 class="hasAnchor">

@@ -5,7 +5,7 @@ date: "10/27/2021"
 output: html_document
 ---
 
-This vignette shows the relative filtering time of the hard_filter() function from SNPfiltR versus the same filtering approach using VCFtools. I repeated this procedure and found little difference between compressed (.gz) vcf input and standard vcf input, so the comparisons shown here are done with gzipped vcf files as input. All of the input vcf files necessary to fully reproduce this performance comparison can be found [here](github.com/DevonDeRaad/SNPfiltR.benchmarking.data)
+This vignette shows the relative filtering time of the hard_filter() function from SNPfiltR versus the same filtering approach using VCFtools. I repeated this procedure and found little difference between compressed (.gz) vcf input and standard vcf input, so the comparisons shown here are done with gzipped vcf files as input. All of the input vcf files necessary to fully reproduce this performance comparison can be found [here](https://github.com/DevonDeRaad/SNPfiltR.benchmarking.data)
 
 ### We are going to do performance benchmarking on the hard_filter() function from the SNPfiltR package, against the same filtering approach implemented in VCFtools. I have already generated vcf files with 500K, 400K, 300K, 200K, 100K, 50K, 20K, and 10K SNPs, (each with 100 individuals) in order to compare performance across file sizes. For each vcf file, we will use the R package microbenchmark to benchmark the time it takes to:
 #### 1) Read in the vcf using vcfR::read.vcfR() and use SNPfiltR::hard_filter() to filter the file to a minimum depth of 5 per genotype and a minimum quality of 30 per genotype.

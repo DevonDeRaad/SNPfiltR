@@ -103,7 +103,7 @@
 
     
     
-<p>This vignette shows the relative filtering time of the hard_filter() function from SNPfiltR versus the same filtering approach using VCFtools. I repeated this procedure and found little difference between compressed (.gz) vcf input and standard vcf input, so the comparisons shown here are done with gzipped vcf files as input. All of the input vcf files necessary to fully reproduce this performance comparison can be found <a href="github.com/DevonDeRaad/SNPfiltR.benchmarking.data">here</a></p>
+<p>This vignette shows the relative filtering time of the hard_filter() function from SNPfiltR versus the same filtering approach using VCFtools. I repeated this procedure and found little difference between compressed (.gz) vcf input and standard vcf input, so the comparisons shown here are done with gzipped vcf files as input. All of the input vcf files necessary to fully reproduce this performance comparison can be found <a href="https://github.com/DevonDeRaad/SNPfiltR.benchmarking.data">here</a></p>
 <div id="we-are-going-to-do-performance-benchmarking-on-the-hard_filter-function-from-the-snpfiltr-package-against-the-same-filtering-approach-implemented-in-vcftools--i-have-already-generated-vcf-files-with-500k-400k-300k-200k-100k-50k-20k-and-10k-snps-each-with-100-individuals-in-order-to-compare-performance-across-file-sizes--for-each-vcf-file-we-will-use-the-r-package-microbenchmark-to-benchmark-the-time-it-takes-to" class="section level3">
 <h3 class="hasAnchor">
 <a href="#we-are-going-to-do-performance-benchmarking-on-the-hard_filter-function-from-the-snpfiltr-package-against-the-same-filtering-approach-implemented-in-vcftools--i-have-already-generated-vcf-files-with-500k-400k-300k-200k-100k-50k-20k-and-10k-snps-each-with-100-individuals-in-order-to-compare-performance-across-file-sizes--for-each-vcf-file-we-will-use-the-r-package-microbenchmark-to-benchmark-the-time-it-takes-to" class="anchor"></a>We are going to do performance benchmarking on the hard_filter() function from the SNPfiltR package, against the same filtering approach implemented in VCFtools. I have already generated vcf files with 500K, 400K, 300K, 200K, 100K, 50K, 20K, and 10K SNPs, (each with 100 individuals) in order to compare performance across file sizes. For each vcf file, we will use the R package microbenchmark to benchmark the time it takes to:</h3>
@@ -7569,30 +7569,30 @@ Processed variant: 500000
 <span class="co">#final product:</span>
 <span class="va">benchmark.df</span></code></pre></div>
 <pre><code>##         approach  SNPs       mean
-## 1  SNPfiltR+vcfR 1e+04  1.3795312
-## 2       SNPfiltR 1e+04  0.5059675
-## 3  SNPfiltR+vcfR 2e+04  2.6096785
-## 4       SNPfiltR 2e+04  0.7934269
-## 5  SNPfiltR+vcfR 5e+04  6.4684860
-## 6       SNPfiltR 5e+04  2.3705718
-## 7  SNPfiltR+vcfR 1e+05 13.4522993
-## 8       SNPfiltR 1e+05  4.5953264
-## 9  SNPfiltR+vcfR 2e+05 29.7158473
-## 10      SNPfiltR 2e+05 10.6140201
-## 11 SNPfiltR+vcfR 3e+05 48.3962636
-## 12      SNPfiltR 3e+05 19.7492181
-## 13 SNPfiltR+vcfR 4e+05 64.4157251
-## 14      SNPfiltR 4e+05 29.2289785
-## 15 SNPfiltR+vcfR 5e+05 92.7230837
-## 16      SNPfiltR 5e+05 47.8018653
-## 17      VCFtools 1e+04  1.5763333
-## 18      VCFtools 2e+04  2.0566667
-## 19      VCFtools 5e+04  5.9536667
-## 20      VCFtools 1e+05 11.6536667
-## 21      VCFtools 2e+05 19.6923333
-## 22      VCFtools 3e+05 29.7623333
-## 23      VCFtools 4e+05 41.9103333
-## 24      VCFtools 5e+05 49.7780000</code></pre>
+## 1  SNPfiltR+vcfR 1e+04  1.8324076
+## 2       SNPfiltR 1e+04  0.4819874
+## 3  SNPfiltR+vcfR 2e+04  2.6945795
+## 4       SNPfiltR 2e+04  0.8453141
+## 5  SNPfiltR+vcfR 5e+04  7.3575730
+## 6       SNPfiltR 5e+04  2.4129139
+## 7  SNPfiltR+vcfR 1e+05 15.7795578
+## 8       SNPfiltR 1e+05  4.5960022
+## 9  SNPfiltR+vcfR 2e+05 34.1815661
+## 10      SNPfiltR 2e+05 11.2228328
+## 11 SNPfiltR+vcfR 3e+05 45.6005359
+## 12      SNPfiltR 3e+05 17.7196720
+## 13 SNPfiltR+vcfR 4e+05 70.2888478
+## 14      SNPfiltR 4e+05 28.8419440
+## 15 SNPfiltR+vcfR 5e+05 93.3976516
+## 16      SNPfiltR 5e+05 44.4687848
+## 17      VCFtools 1e+04  1.2890000
+## 18      VCFtools 2e+04  2.0040000
+## 19      VCFtools 5e+04  4.7200000
+## 20      VCFtools 1e+05  9.6740000
+## 21      VCFtools 2e+05 20.2296667
+## 22      VCFtools 3e+05 31.7113333
+## 23      VCFtools 4e+05 39.5803333
+## 24      VCFtools 5e+05 52.9906667</code></pre>
 <div class="sourceCode" id="cb74"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/write.table.html">write.csv</a></span><span class="op">(</span><span class="va">benchmark.df</span>, file<span class="op">=</span><span class="st">"~/Desktop/benchmarking.vcfs/benchmark.info.csv"</span>, quote <span class="op">=</span> <span class="cn">F</span>, row.names <span class="op">=</span> <span class="cn">F</span><span class="op">)</span></code></pre></div>
 </div>
