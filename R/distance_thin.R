@@ -134,6 +134,11 @@ close(pb)
 #order the dataframe to match the order of the input vcf file
 order.df<-keep.df[match(paste(df$CHROM,df$POS), paste(keep.df$CHROM,keep.df$POS)),]
 
+#write a test to catch if this internal dataset is not able to match correctly
+if (sum(is.na(order.df)) > .5){
+  stop("internal error, vcf input order cannot be matched. Try updating R and/or investigating the format of your input vcf")
+}
+
 #subset vcfR locus info based on the logical column from our dataframe
 #vcfR@fix<-vcfR@fix[order.df$keep,]
 #subset genotypes based on logical
