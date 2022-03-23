@@ -38,6 +38,12 @@ filter_allele_balance <- function(vcfR,
 
   #extract AD from the vcf
   ad.matrix<- vcfR::extract.gt(vcfR, element='AD')
+
+  #write a test to catch if the variable of interest has not been specified
+  if (sum(!is.na(ad.matrix)) < .5){
+    stop("allele depth is not specified in input vcf, therefore allele balance cannot be calculated")
+  }
+
   #extract GT from the vcf
   gt.matrix<- vcfR::extract.gt(vcfR, element='GT')
 

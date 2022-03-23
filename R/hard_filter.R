@@ -37,6 +37,11 @@ hard_filter <- function(vcfR,
   #extract depth from the vcf
   dp.matrix<- vcfR::extract.gt(vcfR, element='DP', as.numeric=TRUE)
 
+  #write a test to catch if the variable of interest has not been specified
+  if (sum(!is.na(dp.matrix)) < .5){
+    stop("genotype depth not specified in input vcf")
+  }
+
   #calculate the SNPs that fall below the depth filter
   i<-round((sum(dp.matrix < depth, na.rm = TRUE)/sum(!is.na(dp.matrix)))*100, 2)
   #report filter
@@ -56,6 +61,11 @@ hard_filter <- function(vcfR,
     #extract depth from the vcf
     dp.matrix<- vcfR::extract.gt(vcfR, element='DP', as.numeric=TRUE)
 
+    #write a test to catch if the variable of interest has not been specified
+    if (sum(!is.na(dp.matrix)) < .5){
+      message("genotype depth not specified in input vcf")
+    }
+    else{
     #set plotting parameters
     #plot histogram of depth
     graphics::hist(dp.matrix,
@@ -67,7 +77,7 @@ hard_filter <- function(vcfR,
     #zoomed in histogram
     graphics::hist(dp.matrix[dp.matrix < 25],
          xlab = "genotype depth")
-
+    }
   }
 
   #if gq is specified
@@ -79,6 +89,11 @@ hard_filter <- function(vcfR,
 
   #extract gq from the vcf
   gq.matrix<- vcfR::extract.gt(vcfR, element='GQ', as.numeric=TRUE)
+
+  #write a test to catch if the variable of interest has not been specified
+  if (sum(!is.na(gq.matrix)) < .5){
+    stop("genotype quality not specified in input vcf")
+  }
 
   #calculate the SNPs that fall below the gq filter
   j<-round((sum(gq.matrix < gq, na.rm = TRUE)/sum(!is.na(gq.matrix)))*100, 2)
@@ -99,13 +114,18 @@ hard_filter <- function(vcfR,
     #extract gq from the vcf
     gq.matrix<- vcfR::extract.gt(vcfR, element='GQ', as.numeric=TRUE)
 
+    #write a test to catch if the variable of interest has not been specified
+    if (sum(!is.na(gq.matrix)) < .5){
+      message("genotype quality not specified in input vcf")
+    }
+    else{
     #plot histogram of gq
     graphics::hist(gq.matrix,
          xlab = "genotype quality")
     graphics::abline(v=mean(gq.matrix, na.rm = TRUE),
            col="red",
            lty="dashed")
-
+    }
   }
 
   #return

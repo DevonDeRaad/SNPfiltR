@@ -34,6 +34,11 @@ max_depth <- function(vcfR,
     #extract depth from the vcf
     dp.matrix<- vcfR::extract.gt(vcfR, element='DP', as.numeric=TRUE)
 
+    #write a test to catch if the variable of interest has not been specified
+    if (sum(!is.na(dp.matrix)) < .5){
+      stop("genotype depth not specified in input vcf")
+    }
+
     #calculate vector of depth per SNP
     snpdepth<-rowSums(dp.matrix, na.rm = TRUE)/rowSums(is.na(dp.matrix) == FALSE)
 
@@ -70,6 +75,11 @@ max_depth <- function(vcfR,
 
     #extract depth from the vcf
     dp.matrix<- vcfR::extract.gt(vcfR, element='DP', as.numeric=TRUE)
+
+    #write a test to catch if the variable of interest has not been specified
+    if (sum(!is.na(dp.matrix)) < .5){
+      stop("genotype depth not specified in input vcf")
+    }
 
     #calculate vector of depth per SNP
     snpdepth<-rowSums(dp.matrix, na.rm = TRUE)/rowSums(is.na(dp.matrix) == FALSE)
