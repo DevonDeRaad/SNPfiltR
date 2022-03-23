@@ -43,7 +43,7 @@ Preprint on Authorea. <http://dx.doi.org/10.22541/au.163976415.53888836/v1>
 
 Knaus, Brian J., and Niklaus J. Grunwald. 2017. VCFR: a package to manipulate and visualize variant call format data in R. Molecular Ecology Resources 17(1):44-53. http://dx.doi.org/10.1111/1755-0998.12549.
 
-## Full documentation
+## Full documentation 
 
 To see vignettes using SNPfiltR to execute an interactive SNP filtering pipeline for real empirical [UCE data](https://devonderaad.github.io/SNPfiltR/articles/scrub-jay-UCE-vignette.html) and [RADseq data](https://devonderaad.github.io/SNPfiltR/articles/scrub-jay-RADseq-vignette.html), please check out the [pkgdown site](https://devonderaad.github.io/SNPfiltR/). Or, for a quick start, simply follow the example pipeline executed below:
 

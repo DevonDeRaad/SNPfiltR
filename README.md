@@ -10,11 +10,11 @@
 ![License](https://img.shields.io/badge/license-MIT-red.svg)
 <!-- badges: end -->
 
-SNPfiltR is a package to streamline and automate the process of choosing
-appropriate filtering parameters for next-gen SNP datasets. The package
-was designed with RADseq (Restriction-site Associated DNA sequencing)
-data in mind, but can be used on any SNP dataset in need of data
-exploration and quality filtering (e.g., whole genome resequencing,
+SNPfiltR is an R package to streamline and automate the process of
+choosing appropriate filtering parameters for next-gen SNP datasets. The
+package was designed with RADseq (Restriction-site Associated DNA
+sequencing) data in mind, but can be used on any SNP dataset in need of
+data exploration and quality filtering (e.g., whole genome resequencing,
 UCEs, sequence capture, GBS). SNPfiltR shines when used on moderate
 sized reduced-representation genomic datasets, where an array of quality
 and completeness parameters can be rapidly explored in a single,
