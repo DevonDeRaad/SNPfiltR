@@ -7,6 +7,7 @@
 
 ![CRAN-status](https://www.r-pkg.org/badges/version-last-release/SNPfiltR)
 ![CRAN-Downloads](https://cranlogs.r-pkg.org/badges/grand-total/SNPfiltR)
+[![DOI](https://zenodo.org/badge/397722868.svg)](https://zenodo.org/badge/latestdoi/397722868)
 ![License](https://img.shields.io/badge/license-MIT-red.svg)
 <!-- badges: end -->
 
