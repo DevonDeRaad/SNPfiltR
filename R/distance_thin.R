@@ -132,12 +132,29 @@ for (t in chroms){
 close(pb)
 
 #order the dataframe to match the order of the input vcf file
-order.df<-keep.df[match(paste(df$CHROM,format(df$POS,scientific = FALSE)), paste(keep.df$CHROM,format(keep.df$POS,scientific = FALSE))),]
-#note: the position vector must be stripped of scientific notation otherwise identical numbers will not be recognized as matches, giving NA values
+#remove scientific notation
+keep.df$POS<-format(keep.df$POS,scientific = FALSE)
+df$POS<-format(df$POS,scientific = FALSE)
+#add tracking column
+df$id<-c(1:nrow(df))
+#merge
+order.df<-merge(keep.df,df)
+#order based on tracking column
+order.df<-order.df[order(order.df$id),]
 
-#write a test to catch if this internal dataset is not able to match correctly
+#order.df<-keep.df[match(paste(df$CHROM,format(df$POS,scientific = FALSE)), paste(keep.df$CHROM,format(keep.df$POS,scientific = FALSE))),]
+#note: the position vector must be stripped of scientific notation otherwise identical numbers will not be recognized as matches, giving NA values
+#note: this old approach using match() has been deprecated because there were too many formatting issues causing
+#match to not be able to correctly match the order between 'df' and 'keep.df'. Now we use merge() which seems to be more robust
+
+#write a test to catch if this internal dataset is not able to merge correctly
 if (sum(is.na(order.df)) > .5){
-  stop("internal error, vcf input order cannot be matched. Try updating R and/or investigating the format of your input vcf")
+  stop("internal error with the merge function. Please email a copy of your input vcf to devonderaad@gmail.com for a bug fix")
+}
+
+#write a test to catch if this internal dataset is not able to merge correctly
+if (order.df$id != c(1:nrow(df))){
+  stop("internal error with the merge function. Please email a copy of your input vcf to devonderaad@gmail.com for a bug fix")
 }
 
 #subset vcfR locus info based on the logical column from our dataframe
