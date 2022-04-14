@@ -15,3 +15,4 @@
 ^vignettes/scrub-jay-UCE-vignette.Rmd$
 ^cran-comments.md$
 ^vignettes/performance-benchmarking.Rmd$
+^vignettes/accuracy-benchmarking.Rmd$

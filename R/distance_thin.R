@@ -135,6 +135,12 @@ close(pb)
 #remove scientific notation
 keep.df$POS<-format(keep.df$POS,scientific = FALSE)
 df$POS<-format(df$POS,scientific = FALSE)
+#make sure class matches between the columns you're trying to merge
+keep.df$POS<-as.numeric(as.character(keep.df$POS))
+df$POS<-as.numeric(as.character(df$POS))
+#make sure class matches between the columns you're trying to merge
+keep.df$CHROM<-as.character(keep.df$CHROM)
+df$CHROM<-as.character(df$CHROM)
 #add tracking column
 df$id<-c(1:nrow(df))
 #merge
@@ -153,7 +159,7 @@ if (sum(is.na(order.df)) > .5){
 }
 
 #write a test to catch if this internal dataset is not able to merge correctly
-if (order.df$id != c(1:nrow(df))){
+if (sum(order.df$id != c(1:nrow(df))) > .5){
   stop("internal error with the merge function. Please email a copy of your input vcf to devonderaad@gmail.com for a bug fix")
 }
 

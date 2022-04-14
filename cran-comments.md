@@ -1,5 +1,5 @@
 ### Summary of new changes
-I fixed bugs in 'assess_missing_data_pca' and 'assess_missing_data_tsne' functions, which caused the vignette to throw an error and resulted in CRAN removal. I then incremented the package version 0.1.0 -> 0.1.1 for CRAN re-submission.
+I fixed bugs in the 'distance_thin()' function and added internal checkpoints to other functions like 'hard_filter()' to make sure that user-friendly error messages are returned if the input vcf file does not contain information on the quality metric that the user is attempting to filter based on. I then incremented the package version 0.1.1 -> 1.0.0 for CRAN re-submission. This is now the official release version of the package, corresponding to the publication of the following manuscript: DeRaad, D.A. (2022), SNPfiltR: an R package for interactive and reproducible SNP filtering. Molecular Ecology Resources, 00, 1–15 https://doi.org/10.1111/1755-0998.13618
 
 ### Output from rhub::check_for_cran() run on the tarball being submitted here.
 ## Test environments
@@ -11,19 +11,10 @@ I fixed bugs in 'assess_missing_data_pca' and 'assess_missing_data_tsne' functio
 * checking CRAN incoming feasibility ... NOTE
 Maintainer: ‘Devon DeRaad <devonderaad@gmail.com>’
 
-New submission
-
-Package was archived on CRAN
-
-Possibly mis-spelled words in DESCRIPTION:
-  Grünwald (18:34)
-  Knaus (18:24)
-  polymorphism (10:21)
-  reproducibly (9:47, 13:2)
-  Rmarkdown (13:19)
-  vcf (17:32, 20:43)
-  vcfR (19:55)
-
-CRAN repository db overrides:
-  X-CRAN-Comment: Archived on 2022-01-06 as check issues were not
-    corrected in time.
+Found the following (possibly) invalid DOIs:
+  DOI: 10.1111/1755-0998.12549
+    From: DESCRIPTION
+    Status: Service Unavailable
+    Message: 503
+    
+# This error message seems to be a result of the Rhub DOI checker service not being available at the moment.

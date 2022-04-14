@@ -1,8 +1,10 @@
 ---
-title: "Accuracy benchmarking"
-author: "Devon DeRaad"
-date: "2/28/2022"
-output: html_document
+title: "accuracy-benchmarking"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{accuracy-benchmarking}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
 ---
 
 This vignette is designed to validate the accuracy of the key functions from the SNPfiltR package against the established VCFtools program. For each function, I filtered 3 vcf files according to the same parameter thresholds using SNPfiltR and VCFtools, and then tested whether each genotype in the output vcf files matched. All functions matched exactly, except for the distance_thin() function. It seems that the SNPfiltR approach accurately thinned the dataset, while the '--thin 100' flag from VCFtools allowed SNPs to remain in the output dataset despite being within 100 base pairs of nearby SNPs. I am not sure why VCFtools is less accurate on these vcf files I used for testing, and encourage more testing from other users in case this is an idiosyncratic issue with the particular vcf files I used. Meanwhile, I suggest using the SNPfiltR function distance_thin() which is validated clearly here, over the VCFtools approach.
