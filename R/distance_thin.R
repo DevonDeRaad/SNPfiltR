@@ -132,7 +132,8 @@ for (t in chroms){
 close(pb)
 
 #order the dataframe to match the order of the input vcf file
-order.df<-keep.df[match(paste(df$CHROM,df$POS), paste(keep.df$CHROM,keep.df$POS)),]
+order.df<-keep.df[match(paste(df$CHROM,format(df$POS,scientific = FALSE)), paste(keep.df$CHROM,format(keep.df$POS,scientific = FALSE))),]
+#note: the position vector must be stripped of scientific notation otherwise identical numbers will not be recognized as matches, giving NA values
 
 #write a test to catch if this internal dataset is not able to match correctly
 if (sum(is.na(order.df)) > .5){
