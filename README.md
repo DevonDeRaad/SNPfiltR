@@ -26,10 +26,10 @@ interactive Rstudio session. SNPfiltR is available from both
 ## Installation
 
 ``` r
-#Install current release from CRAN (v0.1.1)
+#Install current release from CRAN
 install.packages("SNPfiltR")
 
-#Install current development version directly from GitHub (v0.2.0)
+#Install current development version directly from GitHub
 library(devtools)
 install_github("DevonDeRaad/SNPfiltR")
 ```

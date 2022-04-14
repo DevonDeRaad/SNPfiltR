@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">SNPfiltR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.0</span>
       </span>
     </div>
 
@@ -61,7 +61,7 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="../articles/accuracy-benchmarking.html">Accuracy benchmarking</a>
+      <a href="../articles/accuracy-benchmarking.html">accuracy-benchmarking</a>
     </li>
     <li>
       <a href="../articles/performance-benchmarking.html">Performance benchmarking</a>
@@ -104,6 +104,15 @@
 <p>This is a small, quick-running example showing how to use the SNPfiltR package to filter a next-generation sequencing (NGS) single nucleotide polymorphism (SNP) dataset. This vignette uses the small example dataset distributed with the package (20 samples, and 500 SNPs). The entire vignette can be rendered in &lt;60s, allowing rapid validation of the filtering pipeline shown here. Overall, this pipeline shows the power of SNPfiltR to facilitate the visualization, exploration, and interactive filtering of any SNP dataset. We start by reading in our vcf file as a vcfR object. Having the vcfR object stored in local memory allows for the rapid visualization and imposition of various filtering criteria, allowing users to make informed decisions and interactively explore parameter space. This vignette follows best-practices by implementing quality aware filters (i.e., filters based on genotype quality) first, and quality blind filters (e.g., distance-based thinning) last, in order to preserve as many high-quality genotypes as possible for downstream analyses.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">SNPfiltR</span><span class="op">)</span>
+<span class="co">#&gt; This is SNPfiltR v.1.0.0</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Detailed usage information is available at: devonderaad.github.io/SNPfiltR/ </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; If you use SNPfiltR in your published work, please cite the following papers: </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; DeRaad, D.A. (2022), SNPfiltR: an R package for interactive and reproducible SNP filtering. Molecular Ecology Resources, 00, 1–15. http://doi.org/10.1111/1755-0998.13618 </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Knaus, Brian J., and Niklaus J. Grunwald. 2017. VCFR: a package to manipulate and visualize variant call format data in R. Molecular Ecology Resources, 17.1:44-53. http://dx.doi.org/10.1111/1755-0998.12549</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/knausb/vcfR">vcfR</a></span><span class="op">)</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt;    *****       ***   vcfR   ***       *****</span>
@@ -359,24 +368,24 @@ assess_missing_data_tsne(vcfR = vcfR, popmap = popmap, thresholds = c(.8), clust
 #&gt; 64.65% of SNPs fell below a completeness cutoff of 0.8 and were removed from the VCF</a></code></pre>
 <p><img src="reproducible-vignette_files/figure-html/unnamed-chunk-8-4.png" width="700"><img src="reproducible-vignette_files/figure-html/unnamed-chunk-8-5.png" width="700"><img src="reproducible-vignette_files/figure-html/unnamed-chunk-8-6.png" width="700"></p>
 <pre><code>#&gt; [[1]]
-#&gt;             V1         V2          pop    missing
-#&gt; 1  -13.9925801   2.901471  californica 0.01428571
-#&gt; 2  -64.0064110 -28.467924  californica 0.08571429
-#&gt; 3  -25.8858131  12.247583  californica 0.07142857
-#&gt; 4  -46.0768572 -21.169087  californica 0.00000000
-#&gt; 5  -55.0052465 -15.918423  californica 0.01428571
-#&gt; 6   60.1421159  41.965635    insularis 0.00000000
-#&gt; 7   81.5167145  29.477146    insularis 0.00000000
-#&gt; 8   72.6342897  38.737758    insularis 0.01428571
-#&gt; 9   59.9068982  28.690072    insularis 0.00000000
-#&gt; 10  70.5535246  21.813366    insularis 0.00000000
-#&gt; 11 -25.9448356  -5.199745  woodhouseii 0.01428571
-#&gt; 12 -37.4868416  -8.878838  woodhouseii 0.48571429
-#&gt; 13 -29.8583365 -27.519217  woodhouseii 0.04285714
-#&gt; 14 -49.6919137   4.135243  woodhouseii 0.04285714
-#&gt; 15   0.3881401 -24.911728 coerulescens 0.21428571
-#&gt; 16  -9.5737824 -19.889508 coerulescens 0.51428571
-#&gt; 17  12.3809345 -28.013803 coerulescens 0.01428571</code></pre>
+#&gt;            V1         V2          pop    missing
+#&gt; 1  -27.699440   0.504800  californica 0.01428571
+#&gt; 2  -73.726672  -7.530026  californica 0.08571429
+#&gt; 3   -8.447948  -5.695262  californica 0.07142857
+#&gt; 4  -50.710891 -17.334099  californica 0.00000000
+#&gt; 5  -62.916094 -23.004145  californica 0.01428571
+#&gt; 6   85.199605  72.888293    insularis 0.00000000
+#&gt; 7   64.054586  57.926042    insularis 0.00000000
+#&gt; 8   64.367387  72.037898    insularis 0.01428571
+#&gt; 9   74.090496  85.953990    insularis 0.00000000
+#&gt; 10  83.900058  57.102125    insularis 0.00000000
+#&gt; 11 -25.286082 -20.828195  woodhouseii 0.01428571
+#&gt; 12 -37.590537 -31.280806  woodhouseii 0.48571429
+#&gt; 13 -56.718615 -46.367156  woodhouseii 0.04285714
+#&gt; 14 -33.809945 -54.868297  woodhouseii 0.04285714
+#&gt; 15   4.767038 -42.879079 coerulescens 0.21428571
+#&gt; 16  -9.058097 -38.997170 coerulescens 0.51428571
+#&gt; 17   9.585150 -57.628913 coerulescens 0.01428571</code></pre>
 <p>We can see that at an 80% per SNP completeness cutoff, samples with an excess of missing data are leaking toward the center (specifically coerulescens samples), indicating that they can’t be reliably clustered due to excess missing data.</p>
 <p>We can go back and target specific samples with too much missing data even at high filtering thresholds for removal using the following code:</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">

@@ -58,6 +58,16 @@ j=min.distance
 #generate dataframe containing information for chromosome and bp locality of each SNP
 df<-as.data.frame(vcfR@fix[,1:2])
 
+#write test to identify and remove duplicated SNPs in input vcf
+if (length(unique(paste(df$CHROM,df$POS))) < nrow(df)){
+  #remove duplicated SNPs
+  vcfR<-vcfR[!duplicated(paste(df$CHROM,df$POS)),]
+  #report to user
+  message(nrow(df) - length(unique(paste(df$CHROM,df$POS)))," duplicated SNPs removed from input vcf")
+  #regenerate df without duplicate inputs
+  df<-as.data.frame(vcfR@fix[,1:2])
+}
+
 #generate list of all unique chromosomes in alphabetical order
 chroms<-levels(as.factor(df$CHROM))
 
