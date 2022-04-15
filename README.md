@@ -45,7 +45,7 @@ based on various quality and completeness metrics.”
 
 DeRaad, D.A. (2022), SNPfiltR: an R package for interactive and
 reproducible SNP filtering. Molecular Ecology Resources, 00, 1–15.
-<http://doi.org/10.1111/1755-0998.13618>.
+<https://doi.org/10.1111/1755-0998.13618>.
 
 Knaus, Brian J., and Niklaus J. Grunwald. 2017. VCFR: a package to
 manipulate and visualize variant call format data in R. Molecular

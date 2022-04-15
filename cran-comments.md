@@ -17,4 +17,4 @@ Found the following (possibly) invalid DOIs:
     Status: Service Unavailable
     Message: 503
     
-# This error message seems to be a result of the Rhub DOI checker service not being available at the moment.
+# This DOI is valid (checked multiple times), and this NOTE seems to be unavoidable. According to Hadley, these notes can be safely ignored for publishing on CRAN (https://twitter.com/hadleywickham/status/1358170607314235392)
