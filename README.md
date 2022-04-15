@@ -20,7 +20,7 @@ UCEs, sequence capture, GBS). SNPfiltR shines when used on moderate
 sized reduced-representation genomic datasets, where an array of quality
 and completeness parameters can be rapidly explored in a single,
 interactive Rstudio session. SNPfiltR is available from both
-[CRAN](https://cran.r-project.org/web/packages/SNPfiltR/index.html) and
+[CRAN](https://CRAN.R-project.org/package=SNPfiltR) and
 [GitHub](https://github.com/DevonDeRaad/SNPfiltR).
 
 ## Installation
@@ -39,18 +39,18 @@ install_github("DevonDeRaad/SNPfiltR")
 If you are using SNPfiltR to investigate and filter your SNP dataset, I
 recommend citing both SNPfiltR and the R package vcfR (which is used to
 read in vcf files as ‘vcfR’ objects, and heavily used inside of SNPfiltR
-functions) e.g., “We used the R packages *SNPfiltR* (DeRaad, 2021) and
+functions) e.g., “We used the R packages *SNPfiltR* (DeRaad, 2022) and
 *vcfR* (Knaus and Grunwald, 2017) to iteratively filter our SNP dataset
 based on various quality and completeness metrics.”
 
-DeRaad, D.A. 2021. SNPfiltR: an R package for interactive and
-reproducible SNP filtering. Preprint on Authorea.
-<http://dx.doi.org/10.22541/au.163976415.53888836/v1>
+DeRaad, D.A. (2022), SNPfiltR: an R package for interactive and
+reproducible SNP filtering. Molecular Ecology Resources, 00, 1–15.
+<http://doi.org/10.1111/1755-0998.13618>.
 
 Knaus, Brian J., and Niklaus J. Grunwald. 2017. VCFR: a package to
 manipulate and visualize variant call format data in R. Molecular
 Ecology Resources 17(1):44-53.
-<http://dx.doi.org/10.1111/1755-0998.12549>.
+<https://doi.org/10.1111/1755-0998.12549>.
 
 ## Full documentation
 
