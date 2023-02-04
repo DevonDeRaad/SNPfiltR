@@ -17,7 +17,7 @@ filter_biallelic <- function(vcfR){
     }
 
     #store vector of number of alternate alleles at each SNP
-    v<-nchar(vcfR@fix[,"ALT"])
+    v<-nchar(gsub(",","",vcfR@fix[,"ALT"]))
     #add 1 to each value to account for the reference allele
     v<-v+1
 
