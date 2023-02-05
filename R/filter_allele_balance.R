@@ -36,19 +36,42 @@ filter_allele_balance <- function(vcfR,
   }
   #if these ratios have been specified by the user, leave them alone
 
-  #extract AD from the vcf
+  #extract allele depth from the vcf
+
+  #if allele depth is specified as 'AD', extract matrix
   ad.matrix<- vcfR::extract.gt(vcfR, element='AD')
 
-  #write a test to catch if the variable of interest has not been specified
-  if (sum(!is.na(ad.matrix)) < .5){
-    stop("allele depth is not specified in input vcf, therefore allele balance cannot be calculated")
+  #write a test to identify how allele depth is specified, or not specified
+  if (length(grep("AD",vcfR@gt[,1])) > 0.5){
+    #if allele depth is specified as 'AD', extract matrix
+    ad.matrix<- vcfR::extract.gt(vcfR, element='AD')
+  }else if(length(grep("CATG",vcfR@gt[,1])) > 0.5){
+    #print warning that this will be slow
+    print("Warning, allele depth encoded only as raw CATG counts, must first index out relevant allele depths, which is time consuming")
+    #if allele depth is specified as 'CATG', extract matrix of 'CATG' values
+    full.matrix<- vcfR::extract.gt(vcfR, element='CATG')
+    #open empty matrix to hold relevant AD info same size as full.matrix
+    ad.matrix<-matrix(, nrow = nrow(full.matrix), ncol = ncol(full.matrix))
+    #extract only REF and ALT allele depth values
+    for (i in 1:nrow(full.matrix)){
+        #convert reference allele to indexing tool, C > 1, A > 2, T > 3, G > 4
+        k<-as.numeric(gsub("G","4",gsub("T","3",gsub("A","2",gsub("C","1",as.data.frame(vcfR@fix)$REF[i])))))
+        #convert ALT allele to indexing tool, C > 1, A > 2, T > 3, G > 4
+        l<-as.numeric(gsub("G","4",gsub("T","3",gsub("A","2",gsub("C","1",as.data.frame(vcfR@fix)$ALT[i])))))
+        #extract the REF and ALT depths for each genotype and save them as a single vector, w/ values separated by a comma. Write that vector to the new matrix
+        ad.matrix[i,]<-sapply(lapply(strsplit(full.matrix[i,],","), '[', c(k,l)), paste0, collapse=",")
+    }
+    print("CATG format converted to REF,ALT allele depth")
+    }
+  }else{
+    stop("allele depth is not specified in input vcf in 'AD' or 'CATG' format, therefore allele balance cannot be calculated")
   }
 
   #extract GT from the vcf
   gt.matrix<- vcfR::extract.gt(vcfR, element='GT')
 
-  #mask dp matrix to include only called hets from gt matrix
-  ad.matrix[gt.matrix != "0/1"]<-NA
+  #mask ad matrix to include only called hets from gt matrix
+  ad.matrix[gt.matrix != "0/1" & gt.matrix != "1/0"]<-NA
 
   #split allele 1 depth from allele 2 depth
   al1<-structure(as.numeric(gsub(",.*", "", ad.matrix)), dim=dim(ad.matrix))
