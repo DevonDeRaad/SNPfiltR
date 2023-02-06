@@ -95,12 +95,21 @@ assess_missing_data_tsne <- function(vcfR,
   }
 
   #this PCA cannot tolerate invariant SNP positions, so check for invariant SNP positions
+
   #convert vcfR to matrix and make numeric
   gt.matrix<-vcfR::extract.gt(vcfR)
+  missingness.og<-sum(is.na(gt.matrix)) #store missingness
   gt.matrix[gt.matrix == "0/0"]<-0
   gt.matrix[gt.matrix == "0/1"]<-1
+  gt.matrix[gt.matrix == "1/0"]<-1
   gt.matrix[gt.matrix == "1/1"]<-2
   class(gt.matrix) <- "numeric"
+  missingness.new<-sum(is.na(gt.matrix)) #store missingness after the conversion
+
+  #if unrecognized genotype values were present throw an error
+  if (missingness.og != missingness.new){
+    stop("Unrecognized genotype values in input vcf. Only allowed genotype inputs are '0/0','0/1','1/0','1/1'. Use 'table(vcfR@gt)' to see your input genotypes.")
+  }
 
   #calc sfs
   sfs<-rowSums(gt.matrix, na.rm = TRUE)
@@ -177,7 +186,7 @@ assess_missing_data_tsne <- function(vcfR,
     pam.clust<-cluster::pam(tsne.df, pam.df$n.groups[pam.df$likelihood==max(pam.df$likelihood)])
 
     #match order for pop from popmap into this df
-    tsne.df$pop<-popmap$pop[order(popmap$id == colnames(vcfR@gt)[-1])]
+    tsne.df$pop<-popmap$pop[order(match(popmap$id,colnames(vcfR@gt)[-1]))]
     tsne.df$pam.clust<-pam.clust$clustering
 
     #add missingness to df
@@ -293,7 +302,7 @@ assess_missing_data_tsne <- function(vcfR,
       pam.clust<-cluster::pam(tsne.df, pam.df$n.groups[pam.df$likelihood==max(pam.df$likelihood)])
 
       #match order for pop from popmap into this df
-      tsne.df$pop<-popmap$pop[order(popmap$id == colnames(vcfR.filt@gt)[-1])]
+      tsne.df$pop<-popmap$pop[order(match(popmap$id,colnames(vcfR.filt@gt)[-1]))]
       tsne.df$pam.clust<-pam.clust$clustering
 
       #add missingness to df
@@ -393,7 +402,7 @@ assess_missing_data_tsne <- function(vcfR,
       tsne.df<-tsne.df[,c("V1","V2")]
 
       #match order for pop from popmap into this df
-      tsne.df$pop<-popmap$pop[order(popmap$id == colnames(vcfR@gt)[-1])]
+      tsne.df$pop<-popmap$pop[order(match(popmap$id,colnames(vcfR@gt)[-1]))]
 
       #add missingness to df
       #calculate missingness by individual
@@ -429,12 +438,12 @@ assess_missing_data_tsne <- function(vcfR,
       )
 
       #make clean df with info
-      df<-data.frame(tsne.ax1=tsne.df$V1,
-                     tsne.ax2=tsne.df$V2,
-                     popmap.pop=popmap$pop)
+      #df<-data.frame(tsne.ax1=tsne.df$V1,
+      #               tsne.ax2=tsne.df$V2,
+      #               popmap.pop=popmap$pop)
 
       #return
-      return(df)
+      return(tsne.df)
 
       #close if(is.null(thresholds))
     }
@@ -486,7 +495,7 @@ assess_missing_data_tsne <- function(vcfR,
         tsne.df<-tsne.df[,c("V1","V2")]
 
         #match order for pop from popmap into this df
-        tsne.df$pop<-popmap$pop[order(popmap$id == colnames(vcfR.filt@gt)[-1])]
+        tsne.df$pop<-popmap$pop[order(match(popmap$id, colnames(vcfR.filt@gt)[-1]))]
 
         #add missingness to df
         miss<-colSums(is.na(vcfR.filt@gt))/nrow(vcfR.filt@gt)
