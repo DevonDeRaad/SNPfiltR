@@ -90,28 +90,20 @@ missing_by_sample <- function(vcfR,
       #bring in popmap
       df.f<-merge(df.x, popmap, by="id")
       #plot missingness and depth by pop
-      plot1<-ggplot2::ggplot(df.f,
-                             ggplot2::aes(x= stats::reorder(pop, -missingness),
-                                          y=missingness)
-      )+
+      plot1<-ggplot2::ggplot(df.f, ggplot2::aes(x= stats::reorder(pop, -missingness),y=missingness))+
         ggplot2::geom_violin()+
         ggplot2::theme_classic()+
         ggplot2::theme(axis.title.x = ggplot2::element_blank(),
-                       axis.text.x = ggplot2::element_text(angle = 60, hjust = 1)
-        )+
+                       axis.text.x = ggplot2::element_text(angle = 60, hjust = 1))+
         ggplot2::ylab("proportion missing")+
         ggplot2::geom_dotplot(binaxis='y', stackdir='center', dotsize=.8)
 
       #dotplot avg depth of sequencing
-      plot2<-ggplot2::ggplot(df.f,
-                             ggplot2::aes(x= stats::reorder(pop, -missingness),
-                                          y=avg.depth)
-      )+
+      plot2<-ggplot2::ggplot(df.f, ggplot2::aes(x= stats::reorder(pop, -missingness),y=avg.depth))+
         ggplot2::geom_violin()+
         ggplot2::theme_classic()+
         ggplot2::theme(axis.title.x = ggplot2::element_blank(),
-                       axis.text.x = ggplot2::element_text(angle = 60, hjust = 1)
-        )+
+                       axis.text.x = ggplot2::element_text(angle = 60, hjust = 1))+
         ggplot2::ylab("average depth")+
         ggplot2::geom_dotplot(binaxis='y',
                               stackdir='center',
@@ -152,9 +144,7 @@ missing_by_sample <- function(vcfR,
       rownames(df.y)<-NULL
       #visualize color coded by individual
       print(
-        ggplot2::ggplot(df.y,
-                        ggplot2::aes(x=filt, y=snps.retained, color=indiv)
-        )+
+        ggplot2::ggplot(df.y, ggplot2::aes(x=filt, y=snps.retained, color=indiv))+
           ggplot2::geom_point()+
           ggplot2::ggtitle("SNPs retained by filtering scheme") +
           ggplot2::xlab("fraction of non-missing genotypes required to retain each SNP (0-1)")+

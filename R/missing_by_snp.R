@@ -32,7 +32,6 @@ missing_by_snp <- function(vcfR,
     stop("specified vcfR object must be of class 'vcfR'")
   }
 
-
   #if cutoff is NOT null, start here
   if (!is.null(cutoff)) {
 
@@ -270,5 +269,3 @@ missing_by_snp <- function(vcfR,
   } #end broader else statement
 
 } #close function
-
-
