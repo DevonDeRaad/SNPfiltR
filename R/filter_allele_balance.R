@@ -62,7 +62,6 @@ filter_allele_balance <- function(vcfR,
         ad.matrix[i,]<-sapply(lapply(strsplit(full.matrix[i,],","), '[', c(k,l)), paste0, collapse=",")
     }
     print("CATG format converted to REF,ALT allele depth")
-    }
   }else{
     stop("allele depth is not specified in input vcf in 'AD' or 'CATG' format, therefore allele balance cannot be calculated")
   }
