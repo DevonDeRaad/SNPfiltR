@@ -16,6 +16,18 @@ filter_biallelic <- function(vcfR){
       stop("specified vcfR object must be of class 'vcfR'")
     }
 
+    #if "ALT" is not specified, throw an informative error
+    if ("ALT" %in% colnames(vcfR@fix) == FALSE){
+      #if all "ALT" values are null, exit
+      stop(" 'ALT' column not specified in the input vcf, can't determine number of alternate alleles")
+    }
+
+    #if "ALT" is not informative, throw an informative error
+    if (sum(is.na(vcfR@fix[,"ALT"])) == length(vcfR@fix[,"ALT"])){
+      #if all "ALT" values are null, exit
+      stop("informative values are not supplied in the 'ALT' column of the input vcf, can't determine number of alternate alleles")
+    }
+
     #store vector of number of alternate alleles at each SNP
     v<-nchar(gsub(",","",vcfR@fix[,"ALT"]))
     #add 1 to each value to account for the reference allele
