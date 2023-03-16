@@ -31,7 +31,7 @@ install.packages("SNPfiltR")
 
 #Install current development version directly from GitHub
 library(devtools)
-install_github("DevonDeRaad/SNPfiltR")
+devtools::install_github("DevonDeRaad/SNPfiltR")
 ```
 
 ## Citation
@@ -44,8 +44,8 @@ functions) e.g., “We used the R packages *SNPfiltR* (DeRaad, 2022) and
 based on various quality and completeness metrics.”
 
 DeRaad, D.A. (2022), SNPfiltR: an R package for interactive and
-reproducible SNP filtering. Molecular Ecology Resources, 22, 2443–2453.
-<https://doi.org/10.1111/1755-0998.13618>.
+reproducible SNP filtering. Molecular Ecology Resources, 22, 2443–2453,
+1–15. <https://doi.org/10.1111/1755-0998.13618>.
 
 Knaus, Brian J., and Niklaus J. Grunwald. 2017. VCFR: a package to
 manipulate and visualize variant call format data in R. Molecular
@@ -90,15 +90,15 @@ job on a high performance computing cluster is also included
 
 ``` r
 library(SNPfiltR)
-#> This is SNPfiltR v.0.1.1
+#> This is SNPfiltR v.1.0.0
 #> 
 #> Detailed usage information is available at: devonderaad.github.io/SNPfiltR/ 
 #> 
 #> If you use SNPfiltR in your published work, please cite the following papers: 
 #> 
-#> DeRaad, D.A. 2021. SNPfiltR: an R package for interactive and reproducible SNP filtering. Preprint on Authorea. <http://dx.doi.org/10.22541/au.163976415.53888836/v1> 
+#> DeRaad, D.A. (2022), SNPfiltR: an R package for interactive and reproducible SNP filtering. Molecular Ecology Resources, 00, 1-15. http://doi.org/10.1111/1755-0998.13618 
 #> 
-#> Knaus, Brian J., and Niklaus J. Grunwald. 2017. VCFR: a package to manipulate and visualize variant call format data in R. Molecular Ecology Resources 17.1:44-53. http://dx.doi.org/10.1111/1755-0998.12549.
+#> Knaus, Brian J., and Niklaus J. Grunwald. 2017. VCFR: a package to manipulate and visualize variant call format data in R. Molecular Ecology Resources, 17.1:44-53. http://doi.org/10.1111/1755-0998.12549
 library(vcfR)
 #> 
 #>    *****       ***   vcfR   ***       *****
@@ -109,7 +109,12 @@ library(vcfR)
 ```
 
 ``` r
-#read in vcf as vcfR
+##If you want to follow along, run this bash code in a terminal window to download the input file used for this tutorial directly from GitHub into the 'Downloads' folder of your local machine
+#cd Downloads/
+#wget https://github.com/DevonDeRaad/SNPfiltR.benchmarking.data/blob/main/subset.scrub.vcf.gz?raw=true
+#gunzip subset.scrub.vcf.gz
+
+#read vcf into this R session as vcfR 
 vcfR <- read.vcfR("~/Downloads/subset.scrub.vcf")
 ```
 
@@ -293,10 +298,10 @@ missing_by_sample(vcfR=vcfR, popmap = popmap)
 ```
 
 <img src="man/figures/README-unnamed-chunk-9-1.png" width="100%" /><img src="man/figures/README-unnamed-chunk-9-2.png" width="100%" /><img src="man/figures/README-unnamed-chunk-9-3.png" width="100%" />
-#### Now we can try setting a reasonable threshold, and then visualizing
-clustering patterns to determine whether there are still problematic
-samples with excess missing data that can’t be accurately assigned to
-genetic clusters
+\#### Now we can try setting a reasonable threshold, and then
+visualizing clustering patterns to determine whether there are still
+problematic samples with excess missing data that can’t be accurately
+assigned to genetic clusters
 
 ``` r
 #run function to drop samples above the threshold we want from the vcf
@@ -503,8 +508,9 @@ vcfR::write.vcf(vcfR, "~/Downloads/aphelocoma.filtered.vcf.gz")
 
 #linkage filter vcf to thin SNPs to one per 500bp
 vcfR.thin<-distance_thin(vcfR, min.distance = 500)
+#> 1 duplicated SNPs removed from input vcf
 #>   |                                                                              |                                                                      |   0%  |                                                                              |==                                                                    |   3%  |                                                                              |====                                                                  |   6%  |                                                                              |======                                                                |   9%  |                                                                              |========                                                              |  12%  |                                                                              |==========                                                            |  15%  |                                                                              |============                                                          |  18%  |                                                                              |==============                                                        |  21%  |                                                                              |================                                                      |  24%  |                                                                              |===================                                                   |  26%  |                                                                              |=====================                                                 |  29%  |                                                                              |=======================                                               |  32%  |                                                                              |=========================                                             |  35%  |                                                                              |===========================                                           |  38%  |                                                                              |=============================                                         |  41%  |                                                                              |===============================                                       |  44%  |                                                                              |=================================                                     |  47%  |                                                                              |===================================                                   |  50%  |                                                                              |=====================================                                 |  53%  |                                                                              |=======================================                               |  56%  |                                                                              |=========================================                             |  59%  |                                                                              |===========================================                           |  62%  |                                                                              |=============================================                         |  65%  |                                                                              |===============================================                       |  68%  |                                                                              |=================================================                     |  71%  |                                                                              |===================================================                   |  74%  |                                                                              |======================================================                |  76%  |                                                                              |========================================================              |  79%  |                                                                              |==========================================================            |  82%  |                                                                              |============================================================          |  85%  |                                                                              |==============================================================        |  88%  |                                                                              |================================================================      |  91%  |                                                                              |==================================================================    |  94%  |                                                                              |====================================================================  |  97%  |                                                                              |======================================================================| 100%
-#> 2550 out of 7555 input SNPs were not located within 500 base-pairs of another SNP and were retained despite filtering
+#> 2550 out of 7554 input SNPs were not located within 500 base-pairs of another SNP and were retained despite filtering
 
 #write out thinned vcf
 #vcfR::write.vcf(vcfR.thin, "~/Downloads/aphelocoma.filtered.thinned.vcf.gz")

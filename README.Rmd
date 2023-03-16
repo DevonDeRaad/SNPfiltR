@@ -32,7 +32,7 @@ install.packages("SNPfiltR")
 
 #Install current development version directly from GitHub
 library(devtools)
-install_github("DevonDeRaad/SNPfiltR")
+devtools::install_github("DevonDeRaad/SNPfiltR")
 ```
 
 ## Citation
