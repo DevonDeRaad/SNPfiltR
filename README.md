@@ -90,7 +90,7 @@ job on a high performance computing cluster is also included
 
 ``` r
 library(SNPfiltR)
-#> This is SNPfiltR v.1.0.0
+#> This is SNPfiltR v.1.0.1
 #> 
 #> Detailed usage information is available at: devonderaad.github.io/SNPfiltR/ 
 #> 
