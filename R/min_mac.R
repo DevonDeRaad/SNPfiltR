@@ -27,7 +27,7 @@ min_mac <- function(vcfR,
   }
 
   #if all input SNPs are not bi-allelic, minor allele count can't be calculated accurately, let user know
-  if (max(nchar(gsub(",","",vcfR@fix[,"ALT"]))) > 1){
+  if (max(nchar(gsub(",","",vcfR@fix[,"ALT"])),na.rm=T) > 1){
     stop("Input vcf contains SNPs with > 2 alleles. MAC is calculated under a strict assumption that a single SNP can only possess two alleles. Please use 'filter_biallelic(vcfR)' to remove multi-allelic sites before implementing a MAC filter.")
   }
 
@@ -48,7 +48,7 @@ min_mac <- function(vcfR,
 
     #if unrecognized genotype values were present throw an error
     if (missingness.og != missingness.new){
-      stop("Unrecognized genotype values in input vcf. Only allowed genotype inputs are '0/0','0/1','1/0','1/1'.")
+      stop("Unrecognized genotype values in input vcf. Only allowed non-missing genotype inputs are '0/0','0/1','1/0','1/1'.")
     }
 
     #calc sfs

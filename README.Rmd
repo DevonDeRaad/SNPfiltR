@@ -62,7 +62,12 @@ library(vcfR)
 ```
 
 ```{r, results='hide'}
-#read in vcf as vcfR
+##If you want to follow along, run this bash code in a terminal window to download the input file used for this tutorial directly from GitHub into the 'Downloads' folder of your local machine
+#cd Downloads/
+#wget https://github.com/DevonDeRaad/SNPfiltR.benchmarking.data/blob/main/subset.scrub.vcf.gz?raw=true
+#gunzip subset.scrub.vcf.gz
+
+#read vcf into this R session as vcfR 
 vcfR <- read.vcfR("~/Downloads/subset.scrub.vcf")
 ```
 
