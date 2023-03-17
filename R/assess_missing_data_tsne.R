@@ -39,7 +39,7 @@ assess_missing_data_tsne <- function(vcfR,
   pop<- NULL
 
   #if vcfR is not class vcfR, fail gracefully
-  if (class(vcfR) != "vcfR"){
+  if (!inherits(vcfR, what = "vcfR")){
     stop("specified vcfR object must be of class 'vcfR'")
   }
 
@@ -49,7 +49,7 @@ assess_missing_data_tsne <- function(vcfR,
   }
 
   #if popmap not formatted correctly, fail gracefully
-  if (class(popmap) != "data.frame"){
+  if (!inherits(popmap, what = "data.frame")){
     stop("popmap must be of class 'data.frame'")
   }
 

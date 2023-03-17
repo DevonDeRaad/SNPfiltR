@@ -28,7 +28,7 @@ missing_by_snp <- function(vcfR,
   dp<- NULL
 
   #if specified vcfR is not class 'vcfR', fail gracefully
-  if (class(vcfR) != "vcfR"){
+  if (!inherits(vcfR, what = "vcfR")){
     stop("specified vcfR object must be of class 'vcfR'")
   }
 
@@ -36,7 +36,7 @@ missing_by_snp <- function(vcfR,
   if (!is.null(cutoff)) {
 
     #if specified cutoff is not numeric fail gracefully
-    if (class(cutoff) != "numeric"){
+    if (!inherits(cutoff, what = "numeric")){
       stop("specified cutoff must be class 'numeric'")
     }
 

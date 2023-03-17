@@ -21,7 +21,7 @@ max_depth <- function(vcfR,
                       maxdepth=NULL){
 
   #if specified vcfR is not class 'vcfR', fail gracefully
-  if (class(vcfR) != "vcfR"){
+  if (!inherits(vcfR, what = "vcfR")){
     stop("specified vcfR object must be of class 'vcfR'")
   }
 

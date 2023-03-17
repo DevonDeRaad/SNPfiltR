@@ -23,7 +23,7 @@ distance_thin <- function(vcfR,
                           min.distance=NULL){
 
   #if vcfR is not class vcfR, fail gracefully
-  if (class(vcfR) != "vcfR"){
+  if (!inherits(vcfR, what = "vcfR")){
     stop("specified vcfR object must be of class 'vcfR'")
   }
 

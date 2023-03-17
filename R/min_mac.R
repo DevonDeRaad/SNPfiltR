@@ -22,7 +22,7 @@ min_mac <- function(vcfR,
                     min.mac=NULL){
 
   #if vcfR is not class vcfR, fail gracefully
-  if (class(vcfR) != "vcfR"){
+  if (!inherits(vcfR, what = "vcfR")){
     stop("specified vcfR object must be of class 'vcfR'")
   }
 
@@ -74,7 +74,7 @@ min_mac <- function(vcfR,
   else{
 
     #if specified min.mac is not numeric, fail gracefully
-    if (class(min.mac) != "numeric"){
+    if (!inherits(min.mac, what = "numeric")){
       stop("specified min.mac must be numeric")
     }
 

@@ -30,8 +30,8 @@ assess_missing_data_pca <- function(vcfR,
   PC2<- NULL
   pop<- NULL
 
-  #if vcfR is not class vcfR, fail gracefully
-  if (class(vcfR) != "vcfR"){
+  #if vcfR fails check for class == vcfR, fail gracefully
+  if (!inherits(vcfR, what = "vcfR")){
     stop("specified vcfR object must be of class 'vcfR'")
   }
 
@@ -41,7 +41,7 @@ assess_missing_data_pca <- function(vcfR,
   }
 
   #if popmap not formatted correctly, fail gracefully
-  if (class(popmap) != "data.frame"){
+  if (!inherits(popmap, what = "data.frame")){
     stop("popmap must be of class 'data.frame'")
   }
 
