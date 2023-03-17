@@ -16,6 +16,7 @@ library(SNPfiltR)
 library(vcfR)
 library(microbenchmark)
 library(ggplot2)
+library(reshape2)
 ```
 
 # Validate the hard_filter() function
@@ -399,7 +400,7 @@ concord<-data.frame(concordance=c(1,1,1,1,1,1,1,1,1,
                       )
 
 #print table
-heat <- reshape::melt(concord)
+heat <- reshape2::melt(concord)
 ggplot(data = heat, aes(x=input.snps, y=filtering, fill=value)) + 
   geom_tile(color = "white", size=1)+
   geom_text(data=heat,aes(label=round(value, 2)))+
@@ -417,10 +418,8 @@ geno.concord.plot<-ggplot(data = heat, aes(x=input.snps, y=filtering, fill=value
   xlab("Number of SNPs in input vcf file")
 
 #save plot
-ggsave(geno.concord.plot,
-      filename = "~/Desktop/SNPfiltR.mol.ecol.resour.submission/resubmission/geno.concord.pdf",
-      height = 3, width = 5, units = "in")
-
-
+#ggsave(geno.concord.plot,
+#      filename = "~/Desktop/SNPfiltR.mol.ecol.resour.submission/resubmission/geno.concord.pdf",
+#      height = 3, width = 5, units = "in")
 ```
 

@@ -32,8 +32,15 @@ library(vcfR)
 ```
 
 ```{r, results='hide'}
+##to follow along with this tutorial, execute the following bash code in a terminal window to download the raw SNP file used here into your 'Downloads' folder:
+#cd Downloads
+##download, rename, and unzip the raw SNP file
+#wget https://datadryad.org/stash/downloads/file_stream/13538
+#mv 13538 wesj-toepads-rawSNPS-Q30.vcf.gz
+#gunzip wesj-toepads-rawSNPS-Q30.vcf.gz
+
 #read in vcf as vcfR
-vcfR <- read.vcfR("~/Downloads/doi_10.5061_dryad.qh8sh__v1/wesj-toepads-rawSNPS-Q30.vcf")
+vcfR <- read.vcfR("~/Downloads/wesj-toepads-rawSNPS-Q30.vcf")
 ```
 
 ```{r}
