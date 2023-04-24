@@ -1,6 +1,6 @@
 Package: SNPfiltR
 Title: Interactively Filter SNP Datasets
-Version: 1.0.1
+Version: 1.0.2
 Authors@R: person(given = "Devon",
            family = "DeRaad",
            role = c("aut", "cre"),

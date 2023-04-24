@@ -37,7 +37,7 @@ missing_by_sample <- function(vcfR,
   pop<- NULL
   missingness<- NULL
 
-
+  ##### Begin input data checks #####
 
   #if specified vcfR is not class 'vcfR', fail gracefully
   if (!inherits(vcfR, what = "vcfR")){
@@ -49,15 +49,20 @@ missing_by_sample <- function(vcfR,
                         element='DP',
                         as.numeric=TRUE)
 
-  #if cutoff is null, start here
+  #extract genotype field from the vcf
+  gt<- vcfR::extract.gt(vcfR)
+
+  #if no cutoff is specified, start here and just provide data visualizations to the user
   if (is.null(cutoff)){
 
-    #if no popmap, remind user
+    #if no popmap is provided, remind the user of this fact
     if (is.null(popmap)){
       message("No popmap provided")
     }
 
-    #else, start by checking the popmap
+    ##### Begin no cutoff, popmap provided module #####
+
+    #if popmap is provided, check the popmap
     else {
 
       #popmap must be a two column dataframe with 'id' and 'pop' columns
@@ -74,14 +79,15 @@ missing_by_sample <- function(vcfR,
       if (all(popmap$id %in% colnames(vcfR@gt)) == FALSE){
         stop("popmap ID's must match exactly the ID's in input vcf")
       }
+      ##### End input data checks #####
 
       #If checks pass, then calculate missingness by pop here and make dotplot
-      #calculate missingness by individual
-      miss<-colSums(is.na(dp))/nrow(dp)
+      #calculate missingness by individual using genotype field
+      miss<-colSums(is.na(gt))/nrow(gt)
       #calculate avg depth by individual
       avg.depth<-colMeans(dp, na.rm = TRUE)
       #store ordered column names
-      samples<-colnames(dp)
+      samples<-colnames(gt)
       #create df
       df.x<-data.frame(id=samples,
                        missingness=miss,
@@ -112,11 +118,12 @@ missing_by_sample <- function(vcfR,
       #arrange plots
       gridExtra::grid.arrange(plot1,plot2)
 
-      #close else statement
-    }
+    }##### End no cutoff, popmap provided module #####
+
+    ##### Begin no cutoff, no popmap provided module #####
 
     #IF this loop is going to fail from low data, kick message back to user and exit
-    if(is.null(nrow(dp[(rowSums(is.na(dp))/ncol(dp) <= 0),]))){
+    if(is.null(nrow(dp[(rowSums(is.na(gt))/ncol(gt) <= 0),]))){
       message("0 SNPs achieving a 100% completeness threshold, must remove low-data samples to run this function correctly")
       return(df.f)
     }
@@ -128,11 +135,11 @@ missing_by_sample <- function(vcfR,
       #loop
       for (i in c(.5,.6,.7,.8,.9,1)){
         #get vector of individuals we are looping over
-        indiv<-colnames(dp)
+        indiv<-colnames(gt)
         #calculate the completeness cutoff for each snp to be retained in this iteration
-        filt<-rep(i, times =ncol(dp))
+        filt<-rep(i, times =ncol(gt))
         #calculate the number of loci successfully genotyped in each sample in this iteration
-        snps.retained<-colSums(is.na(dp[(rowSums(is.na(dp))/ncol(dp) <= 1-i),]) == "FALSE")
+        snps.retained<-colSums(is.na(dp[(rowSums(is.na(gt))/ncol(gt) <= 1-i),]) == "FALSE")
         #append the data from this iteration to existing df
         df.y<-rbind(df.y, as.data.frame(cbind(indiv, filt, snps.retained)))
         #close for loop
@@ -153,22 +160,42 @@ missing_by_sample <- function(vcfR,
           ggplot2::theme(legend.position="none")
       )
 
-      #calculate missingness by individual
-      miss<-colSums(is.na(dp))/nrow(dp)
+      #get vector of individuals we are looping over
+      indiv<-colnames(gt)
+      #calculate missingness by individual using the genotype field
+      miss<-colSums(is.na(gt))/nrow(gt)
+      #calculate avg depth by individual
+      avg.depth<-colMeans(dp, na.rm = TRUE)
+
+      #make unfiltered, per-sample stats dataframe
+      unfiltered.stats<-data.frame(samples=indiv,
+                                   prop.missing=miss,
+                                   mean.depth=avg.depth)
+
+      #show plot with genotype depth by sample
+      graphics::dotchart(sort(avg.depth),
+                         cex=.5,
+                         xlab = "mean genotype depth")
+
       #show plot with missingness by sample
       graphics::dotchart(sort(miss),
-               cex=.5,
-               xlab = "proportion missing data")
+                         cex=.5,
+                         xlab = "proportion missing data")
       graphics::abline(v=c(.5,.6,.7,.8,.9,1),
-             lty="dashed")
+                       lty="dashed")
 
       #return the dataframe showing the missingness and avg depth per individual
-      return(df.y)
+      zz<-list(df.y, unfiltered.stats)
+      names(zz)<-c("missing.by.filter","unfiltered.stats")
+      return(zz)
 
     } #close else statement
 
-    #close if statement for starting with null cutoff
-  }
+  } #close if statement for starting with null cutoff
+
+  ##### End no cutoff provided module #####
+
+  ##### Begin cutoff provided module #####
 
   #if cutoff is not null, start here
   else {
@@ -179,12 +206,12 @@ missing_by_sample <- function(vcfR,
     }
 
     #calculate missingness by individual
-    miss<-colSums(is.na(dp))/nrow(dp)
+    miss<-colSums(is.na(gt))/nrow(gt)
     #vis plot to show where cutoff was set
     graphics::dotchart(sort(miss),
-             cex=.5)
+                       cex=.5)
     graphics::abline(v=cutoff,
-           col="red")
+                     col="red")
 
     #print
     message(length(labels(miss)[miss > cutoff])," samples are above a ",cutoff," missing data cutoff, and were removed from VCF")
