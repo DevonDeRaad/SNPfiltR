@@ -123,7 +123,7 @@ missing_by_sample <- function(vcfR,
     ##### Begin no cutoff, no popmap provided module #####
 
     #IF this loop is going to fail from low data, kick message back to user and exit
-    if(is.null(nrow(dp[(rowSums(is.na(gt))/ncol(gt) <= 0),]))){
+    if(is.null(nrow(gt[(rowSums(is.na(gt))/ncol(gt) <= 0),]))){
       message("0 SNPs achieving a 100% completeness threshold, must remove low-data samples to run this function correctly")
       return(df.f)
     }
@@ -139,7 +139,7 @@ missing_by_sample <- function(vcfR,
         #calculate the completeness cutoff for each snp to be retained in this iteration
         filt<-rep(i, times =ncol(gt))
         #calculate the number of loci successfully genotyped in each sample in this iteration
-        snps.retained<-colSums(is.na(dp[(rowSums(is.na(gt))/ncol(gt) <= 1-i),]) == "FALSE")
+        snps.retained<-colSums(is.na(gt[(rowSums(is.na(gt))/ncol(gt) <= 1-i),]) == "FALSE")
         #append the data from this iteration to existing df
         df.y<-rbind(df.y, as.data.frame(cbind(indiv, filt, snps.retained)))
         #close for loop
