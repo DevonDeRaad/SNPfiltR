@@ -114,7 +114,8 @@ assess_missing_data_pca <- function(vcfR,
       #execute PCA using this genlight
       #retain number of PC axes equivalent to the number of populations being discriminated + 2
       pca<-adegenet::glPca(gen,
-                           nf=length(levels(as.factor(popmap$pop)))+2)
+                           nf=length(levels(as.factor(popmap$pop)))+2,
+                           useC = FALSE)
 
       #pull pca scores out of df
       pca.scores<-as.data.frame(pca$scores)
@@ -217,7 +218,8 @@ assess_missing_data_pca <- function(vcfR,
         #execute PCA using this genlight
         #retain number of PC axes equivalent to the number of populations being discriminated + 2
         pca<-adegenet::glPca(gen,
-                             nf=length(levels(as.factor(popmap$pop)))+2)
+                             nf=length(levels(as.factor(popmap$pop)))+2,
+                             useC = FALSE)
 
         #pull pca scores out of df
         pca.scores<-as.data.frame(pca$scores)
@@ -333,7 +335,8 @@ assess_missing_data_pca <- function(vcfR,
       #execute PCA using this genlight
       #retain number of PC axes equivalent to the number of populations being discriminated + 2
       pca<-adegenet::glPca(gen,
-                           nf=length(levels(as.factor(popmap$pop)))+2)
+                           nf=length(levels(as.factor(popmap$pop)))+2,
+                           useC = FALSE)
 
       #pull pca scores out of df
       pca.scores<-as.data.frame(pca$scores)
@@ -413,7 +416,8 @@ assess_missing_data_pca <- function(vcfR,
         #execute PCA using this genlight
         #retain number of PC axes equivalent to the number of populations being discriminated + 2
         pca<-adegenet::glPca(gen,
-                             nf=length(levels(as.factor(popmap$pop)))+2)
+                             nf=length(levels(as.factor(popmap$pop)))+2,
+                             useC = FALSE)
 
         #pull pca scores out of df
         pca.scores<-as.data.frame(pca$scores)
