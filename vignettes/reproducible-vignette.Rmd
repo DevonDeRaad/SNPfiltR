@@ -124,7 +124,7 @@ We can see that at an 80% per SNP completeness cutoff, samples with an excess of
 We can go back and target specific samples with too much missing data even at high filtering thresholds for removal using the following code:
 ```{r, fig.height= 3, fig.width=4}
 #show me the samples with the most missing data at an 80% completeness threshold
-filt<-miss[miss$filt == .8,]
+filt<-miss$missing.by.filter[miss$missing.by.filter$filt == .8,]
 filt[order(filt$snps.retained),]
 
 #drop the three samples with an excess of missing data at an 80% SNP completeness threshold
