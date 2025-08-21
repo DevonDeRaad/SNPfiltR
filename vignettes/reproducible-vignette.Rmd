@@ -52,7 +52,7 @@ We now implement quality filters that don't involve missing data. This is becaus
 vcfR<-hard_filter(vcfR=vcfR.example, depth = 5, gq = 30)
 ```
 
-Jon Puritz has an excellent filtering tutorial that is focused specifically on [filtering RADseq data](https://www.ddocent.com/filtering/).From Puritz SNP filtering tutorial "Allele balance: a number between 0 and 1 representing the ratio of reads showing the reference allele to all reads, considering only reads from individuals called as heterozygous, we expect that the allele balance in our data (for real loci) should be close to 0.5". Here we will implement an allele balance filter converting called heterozygous genotypes outside of the .25-.75 range to NA.
+Jon Puritz has an excellent filtering tutorial that is focused specifically on [filtering RADseq data](https://ddocent.com/filtering/).From Puritz SNP filtering tutorial "Allele balance: a number between 0 and 1 representing the ratio of reads showing the reference allele to all reads, considering only reads from individuals called as heterozygous, we expect that the allele balance in our data (for real loci) should be close to 0.5". Here we will implement an allele balance filter converting called heterozygous genotypes outside of the .25-.75 range to NA.
 ```{r, fig.height= 3, fig.width=4}
 #execute allele balance filter
 vcfR<-filter_allele_balance(vcfR)
