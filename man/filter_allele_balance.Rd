@@ -21,7 +21,7 @@ filter have been converted to 'NA'.
 This function requires a vcfR object as input, and returns a vcfR object filtered
 to convert heterozygous sites with an allele balance falling outside of the
 specified ratio to 'NA'. If no ratio is specified, a default .25-.75 limit is imposed.
-From the \href{https://www.ddocent.com/filtering/}{dDocent filtering page} "Allele balance:
+From the \href{https://ddocent.com/filtering/}{dDocent filtering page} "Allele balance:
 a number between 0 and 1 representing the ratio of reads showing the reference allele to
 all reads, considering only reads from individuals called as heterozygous, we expect that the
 allele balance in our data (for real loci) should be close to 0.5".

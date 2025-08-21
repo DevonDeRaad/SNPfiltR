@@ -90,19 +90,19 @@ job on a high performance computing cluster is also included
 
 ``` r
 library(SNPfiltR)
-#> This is SNPfiltR v.1.0.1
+#> This is SNPfiltR v.1.0.2
 #> 
 #> Detailed usage information is available at: devonderaad.github.io/SNPfiltR/ 
 #> 
 #> If you use SNPfiltR in your published work, please cite the following papers: 
 #> 
-#> DeRaad, D.A. (2022), SNPfiltR: an R package for interactive and reproducible SNP filtering. Molecular Ecology Resources, 00, 1-15. http://doi.org/10.1111/1755-0998.13618 
+#> DeRaad, D.A. (2022), SNPfiltR: an R package for interactive and reproducible SNP filtering. Molecular Ecology Resources, 22, 2443-2453. http://doi.org/10.1111/1755-0998.13618 
 #> 
 #> Knaus, Brian J., and Niklaus J. Grunwald. 2017. VCFR: a package to manipulate and visualize variant call format data in R. Molecular Ecology Resources, 17.1:44-53. http://doi.org/10.1111/1755-0998.12549
 library(vcfR)
 #> 
 #>    *****       ***   vcfR   ***       *****
-#>    This is vcfR 1.12.0 
+#>    This is vcfR 1.14.0 
 #>      browseVignettes('vcfR') # Documentation
 #>      citation('vcfR') # Citation
 #>    *****       *****      *****       *****
@@ -161,12 +161,12 @@ Rstudio on a personal computer.
 #### Note:
 
 Jon Puritz has an excellent filtering tutorial that is focused
-specifically on [filtering RADseq
-data](https://www.ddocent.com/filtering/) Multiple functions in SNPfiltR
-were generated in order to follow the guidelines and suggestions laid
-out in this tutorial. We can follow these guidelines for hard filtering
-(he suggests minimum depth=3, gq =30), and can implement suggested
-filters like allele balance and max depth, here in R using SNPfiltR.
+specifically on [filtering RADseq data](https://ddocent.com/filtering/)
+Multiple functions in SNPfiltR were generated in order to follow the
+guidelines and suggestions laid out in this tutorial. We can follow
+these guidelines for hard filtering (he suggests minimum depth=3, gq
+=30), and can implement suggested filters like allele balance and max
+depth, here in R using SNPfiltR.
 
 #### start by visualizing the distributions of depth of sequencing and genotype quality among called genotypes, then set appropriate cutoffs for both values for this dataset.
 
@@ -198,7 +198,7 @@ hard_filter(vcfR=vcfR)
 #### Then use this function to filter for allele balance
 
 From the [Ddocent SNP filtering
-tutorial](https://www.ddocent.com/filtering/) “Allele balance: a number
+tutorial](https://ddocent.com/filtering/) “Allele balance: a number
 between 0 and 1 representing the ratio of reads showing the reference
 allele to all reads, considering only reads from individuals called as
 heterozygous, we expect that the allele balance in our data (for real
@@ -293,11 +293,13 @@ filtering choices are having on downstream results.
 ``` r
 #run function to visualize samples
 missing_by_sample(vcfR=vcfR, popmap = popmap)
-#> Bin width defaults to 1/30 of the range of the data. Pick better value with `binwidth`.
-#> Bin width defaults to 1/30 of the range of the data. Pick better value with `binwidth`.
+#> Bin width defaults to 1/30 of the range of the data. Pick better value with
+#> `binwidth`.
+#> Bin width defaults to 1/30 of the range of the data. Pick better value with
+#> `binwidth`.
 ```
 
-<img src="man/figures/README-unnamed-chunk-9-1.png" width="100%" /><img src="man/figures/README-unnamed-chunk-9-2.png" width="100%" /><img src="man/figures/README-unnamed-chunk-9-3.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-9-1.png" width="100%" /><img src="man/figures/README-unnamed-chunk-9-2.png" width="100%" /><img src="man/figures/README-unnamed-chunk-9-3.png" width="100%" /><img src="man/figures/README-unnamed-chunk-9-4.png" width="100%" />
 \#### Now we can try setting a reasonable threshold, and then
 visualizing clustering patterns to determine whether there are still
 problematic samples with excess missing data that can’t be accurately
@@ -323,6 +325,7 @@ vcfR<-min_mac(vcfR, min.mac = 1)
 <img src="man/figures/README-unnamed-chunk-10-2.png" width="100%" />
 
 ``` r
+
 #verify that missing data is not driving clustering patterns among the retained samples
 miss<-assess_missing_data_pca(vcfR=vcfR, popmap = popmap, thresholds = .8, clustering = FALSE)
 #> cutoff is specified, filtered vcfR object will be returned
@@ -333,6 +336,7 @@ miss<-assess_missing_data_pca(vcfR=vcfR, popmap = popmap, thresholds = .8, clust
 <img src="man/figures/README-unnamed-chunk-10-3.png" width="100%" /><img src="man/figures/README-unnamed-chunk-10-4.png" width="100%" /><img src="man/figures/README-unnamed-chunk-10-5.png" width="100%" />
 
 ``` r
+
 #if there are still problematic samples, drop them using the following syntax
 #vcfR <- vcfR[,colnames(vcfR@gt) != "A_woodhouseii_24711" & colnames(vcfR@gt) != "A_californica_45901"]
 ```
@@ -402,6 +406,7 @@ missing_by_snp(vcfR)
 <img src="man/figures/README-unnamed-chunk-11-9.png" width="100%" /><img src="man/figures/README-unnamed-chunk-11-10.png" width="100%" /><img src="man/figures/README-unnamed-chunk-11-11.png" width="100%" />
 
 ``` r
+
 #choose a value that retains an acceptable amount of missing data in each sample, and maximizes SNPs retained while minimizing overall missing data, and filter vcf
 vcfR<-missing_by_snp(vcfR, cutoff = .85)
 #> cutoff is specified, filtered vcfR object will be returned
@@ -411,6 +416,7 @@ vcfR<-missing_by_snp(vcfR, cutoff = .85)
 <img src="man/figures/README-unnamed-chunk-11-12.png" width="100%" />
 
 ``` r
+
 #check how many SNPs and samples are left
 vcfR
 #> ***** Object of Class vcfR *****
@@ -452,6 +458,7 @@ vcfR.mac<-min_mac(vcfR = vcfR, min.mac = 2)
 <img src="man/figures/README-unnamed-chunk-12-1.png" width="100%" />
 
 ``` r
+
 #assess clustering without MAC cutoff
 miss<-assess_missing_data_tsne(vcfR, popmap, clustering = FALSE)
 ```
@@ -459,6 +466,7 @@ miss<-assess_missing_data_tsne(vcfR, popmap, clustering = FALSE)
 <img src="man/figures/README-unnamed-chunk-12-2.png" width="100%" /><img src="man/figures/README-unnamed-chunk-12-3.png" width="100%" />
 
 ``` r
+
 #assess clustering with MAC cutoff
 miss<-assess_missing_data_tsne(vcfR.mac, popmap, clustering = FALSE)
 ```
@@ -466,6 +474,7 @@ miss<-assess_missing_data_tsne(vcfR.mac, popmap, clustering = FALSE)
 <img src="man/figures/README-unnamed-chunk-12-4.png" width="100%" /><img src="man/figures/README-unnamed-chunk-12-5.png" width="100%" />
 
 ``` r
+
 
 #based on these visualizations, singletons are not obviously biasing clustering patterns, so I will leave them in for now. If I want to run a program like STRUCTURE, where singletons are known to bias inference, I can write out the vcf with singletons removed as well:
 #vcfR::write.vcf(vcfR.mac, file = "~/Downloads/scrub.jay.mac.vcf.gz")
