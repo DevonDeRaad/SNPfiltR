@@ -47,7 +47,7 @@ filter_allele_balance <- function(vcfR,
     ad.matrix<- vcfR::extract.gt(vcfR, element='AD')
   }else if(length(grep("CATG",vcfR@gt[,1])) > 0.5){
     #print warning that this will be slow
-    print("Warning, allele depth encoded only as raw CATG counts, must first index out relevant allele depths, which is time consuming")
+    warning("Warning, allele depth encoded only as raw CATG counts, must first index out relevant allele depths, which is time consuming")
     #if allele depth is specified as 'CATG', extract matrix of 'CATG' values
     full.matrix<- vcfR::extract.gt(vcfR, element='CATG')
     #open empty matrix to hold relevant AD info same size as full.matrix
@@ -61,7 +61,7 @@ filter_allele_balance <- function(vcfR,
         #extract the REF and ALT depths for each genotype and save them as a single vector, w/ values separated by a comma. Write that vector to the new matrix
         ad.matrix[i,]<-sapply(lapply(strsplit(full.matrix[i,],","), '[', c(k,l)), paste0, collapse=",")
     }
-    print("CATG format converted to REF,ALT allele depth")
+    message("CATG format converted to REF,ALT allele depth")
   }else{
     stop("allele depth is not specified in input vcf in 'AD' or 'CATG' format, therefore allele balance cannot be calculated")
   }
